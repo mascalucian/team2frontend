@@ -1,7 +1,44 @@
 <template>
   <div>
-    <h1>Helllooo</h1>
-    <Search />
+    <div class="headerflex">
+      <div class="leftside">
+        <div class="titlediv">
+          <a 
+          href="https://principalgroup.udemy.com/organization/home/" 
+          class="companyname"> 
+          Principal Leryon Services SRL
+          </a>
+        </div>
+        <div class="btndiv">
+          <a 
+          href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
+          class="btn">
+            Explore
+          </a>
+        </div>
+      </div>
+      <div class="searchdiv">
+        <Search />
+      </div>
+      <div class="rightside">
+        <div class="btndiv">
+          <a 
+          href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
+          class="btn">
+            Teach
+          </a>
+        </div>
+        <div class="btndiv">
+          <a 
+          href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
+          class="btn">
+            My learning
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    
   </div>
 </template>
 
@@ -14,4 +51,55 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+*{
+  font-family: sf pro display,-apple-system,BlinkMacSystemFont,Roboto,segoe ui,Helvetica,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol;
+}
+.headerflex {
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 80px;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.leftside {
+  display: flex;
+  align-items: center;
+  left:0;
+}
+.rightside {
+  display: flex;
+  align-items: center;
+  right:0;
+}
+.titlediv {
+  width: 180px;
+  padding: 10px;
+}
+.companyname {
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.02rem;
+  font-size: 16px;
+}
+.btndiv {
+  padding-left: 20px;
+}
+.btn {
+  text-decoration: none;
+  color:black;
+  font-size: 14px;
+}
+.btn:hover {
+  color:rgb(150, 7, 150);
+}
+.searchdiv {
+  padding: 20px;
+}
+
+</style>
