@@ -1,9 +1,17 @@
 <template>
-  <h1>Helllooo</h1>
+  <div>
+    <h1>Helllooo</h1>
+    <Search />
+  </div>
 </template>
 
 <script>
-export default {};
+import Search from "./Search.vue";
+export default {
+  components: {
+    Search,
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>
