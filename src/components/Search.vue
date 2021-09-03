@@ -2,7 +2,7 @@
   ><div>
     <form @submit.prevent="search()">
       <input placeholder="Search.." v-model="searchQuery" />
-      <input type="submit" value="Search" />
+      <input type="submit" value="Search" :disabled="!searchQuery" />
     </form></div
 ></template>
 
@@ -10,8 +10,14 @@
 export default {
   data() {
     return {
-      searchQuery: "",
+      searchQuery: this.query || "",
     };
+  },
+  props: {
+    query: {
+      type: String,
+      required: false,
+    },
   },
   methods: {
     search() {
