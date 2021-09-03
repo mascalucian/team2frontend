@@ -47,6 +47,10 @@ export default {
   background-color: transparent;
   border: none;
   padding: 20px;
+  width: 80vw;
+}
+.input:focus {
+  outline:none;
 }
 .submit {
   background-image: url("https://cdn.iconscout.com/icon/free/png-256/search-1399-475061.png");
