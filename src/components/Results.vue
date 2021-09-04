@@ -1,6 +1,43 @@
 <template>
   <div id="wrapper">
-    <Search :query="query" />
+    <div>
+    <div class="headerflex">
+      <div class="leftside">
+        <div class="titlediv">
+          <a 
+          href="/" 
+          class="companyname"> 
+          Principal Leryon Services SRL
+          </a>
+        </div>
+        <div class="btndiv">
+          <a 
+          href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
+          class="btn">
+            Explore
+          </a>
+        </div>
+      </div>
+      <Search :query="query" />
+      <div class="rightside">
+        <div class="btndiv">
+          <a 
+          href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
+          class="btn">
+            Teach
+          </a>
+        </div>
+        <div class="btndiv">
+          <a 
+          href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
+          class="btn">
+            My learning
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+    
     <div id="results-wrapper">
       <Result v-for="result in testResults" :key="result" :course="result" />
     </div>
@@ -83,5 +120,58 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+.headerflex {
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 80px;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.searchflex {
+  margin-top: 150px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.leftside {
+  display: flex;
+  align-items: center;
+  left:0;
+}
+.rightside {
+  display: flex;
+  align-items: center;
+  right:0;
+}
+.titlediv {
+  width: 180px;
+  padding: 10px;
+}
+.companyname {
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.02rem;
+  font-size: 16px;
+}
+.btndiv {
+  padding-left: 12px;
+}
+.btn {
+  text-decoration: none;
+  color:black;
+  font-size: 14px;
+}
+.btn:hover {
+  color:rgb(150, 7, 150);
+}
+.searchdiv {
+  padding: 20px;
 }
 </style>
