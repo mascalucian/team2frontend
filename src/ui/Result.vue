@@ -34,10 +34,14 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: row;
+  align-items: center;
   background-color: white;
   text-decoration: none;
-  padding: 1.6rem 0;
-  border-bottom: 1px solid #d1d7dc;
+  padding: 1.6rem;
+  margin: 0.5em;
+
+  border-radius: 10px;
+  box-shadow: 0px 1px 5px #888888;
   height: 17rem;
   color: black;
   &:hover,
@@ -55,7 +59,6 @@ export default {
   #details-wrapper {
     display: inline-block;
     flex-grow: 1;
-    margin-top: auto !important;
   }
   h3 {
     font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,

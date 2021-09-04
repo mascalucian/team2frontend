@@ -75,6 +75,10 @@ export default {
   border-bottom: 1px solid #d1d7dc;
   box-shadow: 0px 1px 5px #888888;
 }
+
+a {
+  font-size: 1.15em !important;
+}
 .searchflex {
   margin-top: 150px;
   display: flex;

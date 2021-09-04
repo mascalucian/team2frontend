@@ -78,5 +78,8 @@ button {
   background: none;
   outline: none;
   border: none;
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>
