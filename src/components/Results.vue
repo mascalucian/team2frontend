@@ -241,12 +241,12 @@ footer {
     font-size: 1.5rem;
     padding: 0.5rem 0.75rem;
     &:hover,
-    :active,
     :focus-visible {
       color: $c-u-pur;
     }
     &:disabled {
       color: $c-u-gr;
+      cursor: default;
     }
   }
 
