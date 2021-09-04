@@ -98,6 +98,7 @@ export default {
     h5,
     h6 {
       margin: 0;
+      text-align: center;
     }
     img {
       height: 4rem;
