@@ -6,7 +6,11 @@
         placeholder="Search for anything"
         v-model="searchQuery"
       />
-      <button type="submit" class="fas fa-search" :disabled="!searchQuery" />
+      <button
+        type="submit"
+        class="fas fa-search fa-lg"
+        :disabled="!searchQuery"
+      />
     </form></div
 ></template>
 
@@ -42,18 +46,23 @@ export default {
   padding-right: 20px;
   display: flex;
   justify-content: space-between;
-  border: 7px solid black;
+  border: 2px solid black;
   border-radius: 40px;
   background-color: #ba9bc9;
   align-items: center;
 }
 .input {
   background-color: transparent;
+  color: white;
   border: none;
   padding: 20px;
   width: 80vw;
   font-size: 20px;
 }
+::placeholder {
+  color: white;
+}
+
 .input:focus {
   outline: none;
 }
@@ -68,6 +77,7 @@ export default {
   color: rgba(240, 240, 240, 0.411);
 }
 button {
+  color: white;
   background: none;
   outline: none;
   border: none;
