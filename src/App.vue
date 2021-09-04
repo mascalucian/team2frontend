@@ -9,6 +9,12 @@ export default {
 </script>
 
 <style>
+*,
+*:before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
@@ -26,6 +32,9 @@ body {
   display: flex;
   flex-direction: column;
   background-color: rgb(221, 221, 252);
+  font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
+    segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
+    segoe ui symbol;
 }
 
 #app {
