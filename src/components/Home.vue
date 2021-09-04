@@ -85,6 +85,10 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  img {
+    // min-width: 8em;
+    max-width: 30em;
+  }
 }
 .leftside {
   display: flex;

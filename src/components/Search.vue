@@ -46,7 +46,7 @@ export default {
   padding-right: 20px;
   display: flex;
   justify-content: space-between;
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 40px;
   background-color: transparent;
   align-items: center;
