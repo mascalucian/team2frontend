@@ -159,6 +159,7 @@ export default {
 #wrapper {
   width: 100%;
   flex-grow: 1;
+  position: relative;
 }
 #results-wrapper {
   padding: 4.8rem 2.4rem;
@@ -225,7 +226,8 @@ export default {
   padding: 20px;
 }
 footer {
-  position: sticky;
+  position: absolute;
+  width: 100%;
   bottom: 0;
   left: 0;
   border-top: 1px solid #d1d7dc;
