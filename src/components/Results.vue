@@ -40,7 +40,7 @@
     </div>
 
     <div id="results-wrapper">
-      <Result v-for="result in testResults" :key="result" :course="result" />
+      <Result v-for="result in results" :key="result.id" :course="result" />
     </div>
     <footer>
       <router-link to="/">Go back</router-link>
@@ -62,12 +62,14 @@
 </template>
 
 <script>
+import axios from "axios";
 import Search from "./Search.vue";
 import Result from "../ui/Result.vue";
 export default {
   data() {
     return {
       query: "",
+      results: [],
       testResults: [
         {
           title: "filmora 9. Make videos for youtube, instagram and facebook.",
@@ -118,6 +120,27 @@ export default {
     Result,
   },
   methods: {
+    fetchCourses() {
+      this.results.splice(0);
+      axios
+        .get(
+          `https://localhost:5001/UdemyCourse/${encodeURIComponent(
+            this.$route.params.query
+          )}/${this.$route.params.page}`
+        )
+        .then((response) => {
+          // handle success
+          console.log(
+            `https://localhost:5001/UdemyCourse/${encodeURIComponent(
+              this.$route.params.query
+            )}/${this.$route.params.page}`
+          );
+          console.log(this.$route.params.query);
+          console.log(response.data);
+          this.results = response.data;
+          this.$forceUpdate();
+        });
+    },
     next() {
       this.$router.push({
         name: "Results",
@@ -148,10 +171,12 @@ export default {
   },
   created() {
     this.query = this.$route.params.query;
+    this.fetchCourses();
   },
   beforeRouteUpdate(to, from, next) {
     this.query = to.params.query;
     next();
+    this.fetchCourses();
   },
 };
 </script>

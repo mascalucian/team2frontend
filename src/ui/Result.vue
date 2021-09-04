@@ -1,6 +1,6 @@
 <template
   ><a :href="'https://udemy.com' + course.url" target="_blank" id="wrapper">
-    <img :src="course.img" />
+    <img :src="course.courseImage" />
     <div id="details-wrapper">
       <h3>{{ course.title }}</h3>
       <p>{{ course.headline }}</p>
@@ -9,9 +9,9 @@
           ><h4>{{ course.price }}</h4></span
         >
         <span>
-          <img :src="course.instructor.img" />
-          <h5>{{ course.instructor.name }}</h5>
-          <h6>{{ course.instructor.title }}</h6>
+          <img :src="course.instructors[0].photo" />
+          <h5>{{ course.instructors[0].name }}</h5>
+          <h6>{{ course.instructors[0].title }}</h6>
         </span>
       </div>
     </div>
