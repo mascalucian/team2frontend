@@ -31,7 +31,7 @@ body {
   background: transparent;
   display: flex;
   flex-direction: column;
-  background-color: rgb(221, 221, 252);
+  background-color: whitesmoke;
   font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
     segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
     segoe ui symbol;

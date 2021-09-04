@@ -48,19 +48,16 @@ export default {
   justify-content: space-between;
   border: 2px solid black;
   border-radius: 40px;
-  background-color: #ba9bc9;
+  background-color: transparent;
   align-items: center;
 }
 .input {
   background-color: transparent;
-  color: white;
+  color: black;
   border: none;
   padding: 20px;
   width: 80vw;
   font-size: 20px;
-}
-::placeholder {
-  color: white;
 }
 
 .input:focus {
@@ -77,7 +74,7 @@ export default {
   color: rgba(240, 240, 240, 0.411);
 }
 button {
-  color: white;
+  color: black;
   background: none;
   outline: none;
   border: none;
