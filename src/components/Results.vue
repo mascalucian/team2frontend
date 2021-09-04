@@ -44,7 +44,7 @@
     </div>
     <footer>
       <router-link to="/">Go back</router-link>
-      <h4>Page: {{ $route.params.page }}</h4>
+      <h4>Page: {{ page }}</h4>
       <button @click.prevent="first()" :disabled="$route.params.page == '1'">
         <i class="fas fa-angle-double-left"></i>
       </button>
@@ -69,6 +69,7 @@ export default {
   data() {
     return {
       query: "",
+      page: 1,
       results: [],
       testResults: [
         {
@@ -120,24 +121,18 @@ export default {
     Result,
   },
   methods: {
-    fetchCourses() {
+    async fetchCourses() {
       this.results.splice(0);
       axios
         .get(
           `https://localhost:5001/UdemyCourse/${encodeURIComponent(
-            this.$route.params.query
-          )}/${this.$route.params.page}`
+            this.query
+          )}/${this.page}`
         )
         .then((response) => {
-          // handle success
-          console.log(
-            `https://localhost:5001/UdemyCourse/${encodeURIComponent(
-              this.$route.params.query
-            )}/${this.$route.params.page}`
-          );
-          console.log(this.$route.params.query);
-          console.log(response.data);
           this.results = response.data;
+        })
+        .finally(() => {
           this.$forceUpdate();
         });
     },
@@ -146,7 +141,7 @@ export default {
         name: "Results",
         params: {
           query: this.query,
-          page: parseInt(this.$route.params.page) + 1,
+          page: parseInt(this.page) + 1,
         },
       });
     },
@@ -155,7 +150,7 @@ export default {
         name: "Results",
         params: {
           query: this.query,
-          page: parseInt(this.$route.params.page) - 1,
+          page: parseInt(this.page) - 1,
         },
       });
     },
@@ -171,10 +166,12 @@ export default {
   },
   created() {
     this.query = this.$route.params.query;
+    this.page = this.$route.params.page;
     this.fetchCourses();
   },
   beforeRouteUpdate(to, from, next) {
     this.query = to.params.query;
+    this.page = to.params.page;
     next();
     this.fetchCourses();
   },
