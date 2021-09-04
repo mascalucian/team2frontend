@@ -46,6 +46,9 @@
         :background-color="'none'"
       ></loading>
       <Result v-for="result in results" :key="result.id" :course="result" />
+      <div v-if="results === [] && !isLoading">
+        No results were found.
+      </div>
     </div>
     <footer>
       <router-link to="/">Go back</router-link>

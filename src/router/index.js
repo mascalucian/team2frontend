@@ -10,6 +10,10 @@ const routes = [
     component: Home,
   },
   {
+    path: "/results/:query/0",
+    redirect: "/",
+  },
+  {
     path: "/results/:query/:page",
     name: "Results",
     component: Results,
