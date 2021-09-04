@@ -1,9 +1,5 @@
 <template
-  ><a
-    :href="'https://principalgroup.udemy.com' + course.url"
-    target="_blank"
-    id="wrapper"
-  >
+  ><a :href="'https://udemy.com' + course.url" target="_blank" id="wrapper">
     <img :src="course.img" />
     <div id="details-wrapper">
       <h3>{{ course.title }}</h3>
@@ -35,13 +31,14 @@ export default {
 
 <style lang="scss" scoped>
 #wrapper {
+  width: 100%;
   display: flex;
   flex-direction: row;
   background-color: white;
   text-decoration: none;
   padding: 1.6rem 0;
   border-bottom: 1px solid #d1d7dc;
-  height: 12rem;
+  height: 17rem;
   color: black;
   &:hover,
   :active,
@@ -49,7 +46,7 @@ export default {
     background-color: #d1d7dc;
   }
   img {
-    height: 10rem;
+    height: 100%;
     object-fit: contain;
     width: 260px;
     display: inline-block;
@@ -58,6 +55,7 @@ export default {
   #details-wrapper {
     display: inline-block;
     flex-grow: 1;
+    margin-top: auto !important;
   }
   h3 {
     font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,

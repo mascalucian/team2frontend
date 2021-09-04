@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div id="wrapper">
     <Search :query="query" />
-    <h3>You searched for:</h3>
-    <h1>{{ query }}</h1>
-    <Result v-for="result in testResults" :key="result" :course="result" />
+    <div id="results-wrapper">
+      <Result v-for="result in testResults" :key="result" :course="result" />
+    </div>
     <router-link to="/">Go back</router-link>
   </div>
 </template>
@@ -74,4 +74,14 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+#wrapper {
+  width: 100%;
+}
+#results-wrapper {
+  padding: 4.8rem 2.4rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+</style>
