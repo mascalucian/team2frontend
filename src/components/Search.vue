@@ -2,7 +2,7 @@
   ><div>
     <form class="search" @submit.prevent="search()">
       <input class="input" placeholder="Search for anything" v-model="searchQuery" />
-      <input  type="submit" value="" :disabled="!searchQuery"/>
+      <button type="submit" class="fas fa-search"  :disabled="!searchQuery"/>
     </form></div
 ></template>
 
@@ -49,6 +49,7 @@ export default {
   border: none;
   padding: 20px;
   width: 80vw;
+  font-size: 20px;
 }
 .input:focus {
   outline:none;
@@ -64,5 +65,9 @@ export default {
   color:rgba(240, 240, 240, 0.411);
 
 }
-
+button {
+  background: none;
+  outline: none;
+  border: none;
+}
 </style>
