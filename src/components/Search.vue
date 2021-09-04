@@ -1,8 +1,12 @@
 <template
   ><div>
     <form class="search" @submit.prevent="search()">
-      <input class="input" placeholder="Search for anything" v-model="searchQuery" />
-      <input  type="submit" value="" :disabled="!searchQuery"/>
+      <input
+        class="input"
+        placeholder="Search for anything"
+        v-model="searchQuery"
+      />
+      <input type="submit" value="" :disabled="!searchQuery" />
     </form></div
 ></template>
 
@@ -23,7 +27,7 @@ export default {
     search() {
       this.$router.push({
         name: "Results",
-        params: { query: this.searchQuery },
+        params: { query: this.searchQuery, page: 1 },
       });
     },
   },
@@ -31,17 +35,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .search {
   height: 50px;
-  width:38.5vw;
+  width: 38.5vw;
   min-width: 340px;
   padding-right: 20px;
   display: flex;
   justify-content: space-between;
   border: 7px solid black;
   border-radius: 40px;
-  background-color: #BA9BC9;
+  background-color: #ba9bc9;
   align-items: center;
 }
 .input {
@@ -51,18 +54,16 @@ export default {
   width: 80vw;
 }
 .input:focus {
-  outline:none;
+  outline: none;
 }
 .submit {
   background-image: url("https://cdn.iconscout.com/icon/free/png-256/search-1399-475061.png");
-  height:20px;
+  height: 20px;
   width: 20px;
   padding: 15px;
-  background-size:cover;
+  background-size: cover;
   border: none;
   background-color: transparent;
-  color:rgba(240, 240, 240, 0.411);
-
+  color: rgba(240, 240, 240, 0.411);
 }
-
 </style>
