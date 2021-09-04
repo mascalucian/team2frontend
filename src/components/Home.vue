@@ -17,9 +17,6 @@
           </a>
         </div>
       </div>
-      <div class="searchdiv">
-        <Search />
-      </div>
       <div class="rightside">
         <div class="btndiv">
           <a 
@@ -37,8 +34,12 @@
         </div>
       </div>
     </div>
-    
-    
+  </div>
+  <div class="searchflex">
+    <img src="../assets/udemi.png" alt="">
+    <div class="searchdiv">
+        <Search />
+    </div>
   </div>
 </template>
 
@@ -65,6 +66,13 @@ export default {
   padding-left: 20px;
   padding-right: 20px;
 }
+.searchflex {
+  margin-top: 150px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .leftside {
   display: flex;
   align-items: center;
@@ -88,7 +96,7 @@ export default {
   font-size: 16px;
 }
 .btndiv {
-  padding-left: 20px;
+  padding-left: 12px;
 }
 .btn {
   text-decoration: none;
@@ -100,6 +108,10 @@ export default {
 }
 .searchdiv {
   padding: 20px;
+}
+img {
+  width: 40vw;
+  min-width: 340px;
 }
 
 </style>

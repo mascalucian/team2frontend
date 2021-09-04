@@ -2,7 +2,7 @@
   ><div>
     <form class="search" @submit.prevent="search()">
       <input class="input" placeholder="Search for anything" v-model="searchQuery" />
-      <input class="submit" type="submit" value="" :disabled="!searchQuery"/>
+      <input  type="submit" value="" :disabled="!searchQuery"/>
     </form></div
 ></template>
 
@@ -34,13 +34,14 @@ export default {
 
 .search {
   height: 50px;
-  width:40vw;
+  width:38.5vw;
+  min-width: 340px;
   padding-right: 20px;
   display: flex;
   justify-content: space-between;
-  border: 1px solid black;
+  border: 7px solid black;
   border-radius: 40px;
-  background-color: rgba(240, 240, 240, 0.411);
+  background-color: #BA9BC9;
   align-items: center;
 }
 .input {

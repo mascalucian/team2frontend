@@ -25,6 +25,7 @@ body {
   background: transparent;
   display: flex;
   flex-direction: column;
+  background-color: rgb(221, 221, 252);
 }
 
 #app {
