@@ -1,5 +1,5 @@
 <template
-  ><div>
+  ><a :href="'https://principalgroup.udemy.com' + course.url" target="_blank">
     <img :src="course.img" />
     <div>
       <h3>{{ course.title }}</h3>
@@ -7,13 +7,13 @@
       <div id="instructor-prices">
         <span>{{ course.price }}</span>
         <span>
-          <img :src="course.instructor - image" />
-          <h5>{{ course.instructor - name }}</h5>
-          <h6>{{ course.instructor - title }}</h6>
+          <img :src="course.instructor.img" />
+          <h5>{{ course.instructor.name }}</h5>
+          <h6>{{ course.instructor.title }}</h6>
         </span>
       </div>
     </div>
-  </div></template
+  </a></template
 >
 
 <script>
