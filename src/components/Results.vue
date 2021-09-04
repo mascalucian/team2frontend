@@ -162,7 +162,7 @@ footer {
 
   a {
     text-decoration: none;
-    flex-grow: 0.5;
+    margin-right: 38%;
     padding-left: 2rem;
   }
 }
