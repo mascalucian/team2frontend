@@ -46,13 +46,13 @@
         :background-color="'none'"
       ></loading>
       <Result v-for="result in results" :key="result.id" :course="result" />
-      <div v-if="results === [] && !isLoading">
-        No results were found.
+      <div v-if="message && !isLoading" id="error-message">
+        {{ message }}
       </div>
     </div>
-    <footer>
+    <footer v-if="!message">
       <router-link to="/">Go back</router-link>
-      <h4>Page: {{ page }}</h4>
+      <h4>Page: {{ page }} of {{ maxPage }}</h4>
       <button
         @click.prevent="first()"
         :disabled="$route.params.page == '1' || isLoading"
@@ -65,12 +65,12 @@
       >
         <i class="fas fa-angle-left"></i>
       </button>
-      <button @click.prevent="next()" :disabled="isLoading">
+      <button @click.prevent="next()" :disabled="isLoading || page == maxPage">
         <i class="fas fa-angle-right"></i>
       </button>
-      <!-- <button @click.prevent="last()">
+      <button @click.prevent="last()" :disabled="isLoading || page == maxPage">
         <i class="fas fa-angle-double-right"></i>
-      </button> -->
+      </button>
     </footer>
   </div>
 </template>
@@ -88,6 +88,8 @@ export default {
       page: 1,
       results: [],
       isLoading: true,
+      message: "",
+      maxPage: undefined,
     };
   },
   components: {
@@ -97,6 +99,7 @@ export default {
   },
   methods: {
     async fetchCourses() {
+      this.message = "";
       this.isLoading = true;
       this.results.splice(0);
       axios
@@ -106,8 +109,14 @@ export default {
           )}/${this.page}`
         )
         .then((response) => {
-          this.results = response.data;
+          this.results = response.data.courses;
           this.isLoading = false;
+          this.maxPage = Math.ceil(response.data.numberOfCoursesFound / 12);
+          if (response.data.numberOfCoursesFound == 0) {
+            if (response.data.wasOverFullFiled)
+              this.message = "Page not found.";
+            if (response.data.noSearchFound) this.message = "No results found.";
+          }
         })
         .finally(() => {
           this.$forceUpdate();
@@ -137,6 +146,15 @@ export default {
         params: {
           query: this.query,
           page: 1,
+        },
+      });
+    },
+    last() {
+      this.$router.push({
+        name: "Results",
+        params: {
+          query: this.query,
+          page: parseInt(this.maxPage),
         },
       });
     },
@@ -182,6 +200,13 @@ export default {
     font-size: 1.15em !important;
   }
 }
+
+#error-message {
+  text-align: center;
+  color: black;
+  font-size: 2rem;
+}
+
 .searchflex {
   margin-top: 150px;
   display: flex;
