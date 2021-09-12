@@ -4,6 +4,7 @@ import Home from "../components/Home.vue";
 import Results from "../components/Results.vue";
 import ViewCourse from "../components/ViewCourse.vue";
 import Skills from "../components/Skills.vue";
+import Recommend from "../components/Recommend.vue";
 
 const routes = [
   {
@@ -30,6 +31,10 @@ const routes = [
   {
     path: "/skills",
     component: Skills,
+  },
+  {
+    path: "/recommend",
+    component: Recommend,
   },
 ];
 
