@@ -84,6 +84,27 @@ export default {
           name: "Alex Drăghiciu",
           feedback: "Good for Javascript",
         },
+        {
+          id: 5,
+          courseId: "851712",
+          rating: 1,
+          name: "Alex Drăghiciu",
+          feedback: "Good for Javascript",
+        },
+        {
+          id: 6,
+          courseId: "851712",
+          rating: 2,
+          name: "Alex Drăghiciu",
+          feedback: "Good for Javascript",
+        },
+        {
+          id: 7,
+          courseId: "851712",
+          rating: 1,
+          name: "Alex Drăghiciu",
+          feedback: "Good for Javascript",
+        },
       ],
     };
   },

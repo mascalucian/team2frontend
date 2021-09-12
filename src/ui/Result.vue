@@ -23,6 +23,24 @@
             <i class="fas fa-medal"></i>
             <p>Recommendations: {{ recommendations.length }}</p>
             <div class="badge-tooltip">
+              <h6>Average rating: {{ avgRating }}</h6>
+              <span class="stars-wrapper">
+                <i class="far fa-star star"></i>
+                <i class="far fa-star star"></i>
+                <i class="far fa-star star"></i>
+                <i class="far fa-star star"></i>
+                <i class="far fa-star star"></i>
+                <span
+                  class="stars-filled"
+                  :style="{ width: filledStarsWidth + 'px' }"
+                >
+                  <i class="fas fa-star star"></i>
+                  <i class="fas fa-star star"></i>
+                  <i class="fas fa-star star"></i>
+                  <i class="fas fa-star star"></i>
+                  <i class="fas fa-star star"></i>
+                </span>
+              </span>
               <h6>Recommended by:</h6>
               <ul>
                 <li
@@ -53,6 +71,8 @@ export default {
   data() {
     return {
       isRecommended: false,
+      avgRating: undefined,
+      filledStarsWidth: undefined,
     };
   },
   props: {
@@ -68,7 +88,17 @@ export default {
   created() {
     if (this.recommendations[0]) {
       this.isRecommended = true;
+      this.avgRating =
+        this.recommendations.reduce(function(a, b) {
+          return a + b.rating;
+        }, 0) / this.recommendations.length;
+      //console.log(this.avgRating);
+      this.avgRating = (Math.round(this.avgRating * 100) / 100).toFixed(1);
     }
+  },
+  mounted() {
+    let starWidth = document.querySelector(".stars-filled").offsetWidth;
+    this.filledStarsWidth = (starWidth * this.avgRating) / 5;
   },
 };
 </script>
@@ -207,6 +237,7 @@ export default {
 
 .badge {
   text-align: center;
+  position: relative;
   i {
     font-size: 3rem;
     color: rgb(255, 253, 128);
@@ -215,10 +246,38 @@ export default {
   p {
     font-size: 1rem !important;
   }
-  position: relative;
+  .stars-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    padding-top: 1rem;
+  }
+
+  .stars-filled {
+    white-space: nowrap;
+    padding-top: 1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: clip;
+    height: 2rem;
+    box-sizing: content-box;
+    text-align: left;
+  }
+
+  .star {
+    color: #e59819;
+    text-shadow: none;
+    font-size: 2rem;
+  }
 }
 
 .badge-tooltip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   height: 0;
   text-align: left;
   width: 20rem;
@@ -230,11 +289,13 @@ export default {
   opacity: 0;
 
   max-height: 20rem;
-  overflow: auto;
   z-index: 100;
   border: 1px solid $c-u-gr;
   padding-right: 1rem;
   transition: all 0.4s ease;
+  ul {
+    overflow: auto;
+  }
   h6 {
     margin: 0;
     font-size: large;
