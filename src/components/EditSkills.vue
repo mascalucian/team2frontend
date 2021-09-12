@@ -5,7 +5,7 @@
         Skills
       </h1>
       <div id="add-skill">
-        <h3 class="btndiv">
+        <h3>
           Add skill:
         </h3>
         <form v-on:submit="addSkill()">
@@ -17,19 +17,19 @@
     </header>
 
     <section>
-      <article
-        v-for="skill in testSkills"
-        :key="skill.id"
-        @click.stop="goToSkill(skill)"
-      >
-        <Skill v-bind:skillName="skill.name" />
+      <article v-for="skill in testSkills" :key="skill.id">
+        <Skill
+          v-bind:skillName="skill.name"
+          v-bind:skillId="skill.id"
+          @updateSkills="deleteSkill"
+        />
       </article>
     </section>
   </main>
 </template>
 
 <script>
-import Skill from "./Skill.vue";
+import Skill from "../ui/Skill.vue";
 
 export default {
   components: {
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      newSkill: "test",
+      newSkill: "",
       testSkills: [
         {
           id: 1,
@@ -77,6 +77,10 @@ export default {
       this.testSkills.push({ id, name });
       this.newSkill = "";
       console.log(this.testSkills);
+    },
+    deleteSkill(e) {
+      var index = this.testSkills.find((skill) => skill.id === e);
+      this.testSkills.splice(this.testSkills.indexOf(index), 1);
     },
     goToSkill(skill) {
       this.$router.push({

@@ -1,6 +1,17 @@
 <template>
-  <i class="fab " :class="getFaIcon(skillName)"> </i>
-  <h2>{{ skillName }}</h2>
+  <div id="wrapper">
+    <div class="delete">
+      <div v-on:click="deleteSkill(skillId)">
+        <i class="fas fa-trash-alt fa-lg"></i>
+      </div>
+    </div>
+
+    <i class="fab " :class="getFaIcon(skillName)"> </i>
+    <div id="skill-name">
+      <h2>{{ skillName }}</h2>
+      <i class="fas fa-pen fa-lg" v-on:click="editName()"></i>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -10,8 +21,15 @@ export default {
       type: String,
       required: true,
     },
+    skillId: {
+      required: true,
+    },
   },
   methods: {
+    deleteSkill(id) {
+      this.$emit("updateSkills", id);
+    },
+    editName() {},
     getFaIcon(name) {
       let filterName = name.toUpperCase();
       if (
@@ -86,8 +104,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-i {
-  margin: 2rem 0;
-  font-size: 5rem;
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .delete {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    i {
+      position: relative;
+      margin: 0.45em 0.75em 0 0;
+    }
+  }
+  .fab {
+    margin: 2rem 0;
+    font-size: 5rem;
+  }
+  #skill-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    h2 {
+      padding-right: 0.5em;
+    }
+  }
+  .fas {
+    &:hover {
+      cursor: wait;
+    }
+  }
 }
 </style>
