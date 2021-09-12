@@ -124,11 +124,54 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+header {
+  background-color: $c-u-bl;
+  color: white;
+  font-family: $f-u-bm;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: $f-u-bm;
+    margin: 0;
+    margin-left: 2rem;
+  }
+  h1 {
+    padding: 2rem 0 1rem 0;
+  }
+  h4 {
+    padding: 1rem 0;
+  }
+}
 section {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
 }
 article {
   width: 20rem;
+  background-color: $c-u-pur;
+  color: white;
+  margin: 3%;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 20px;
+  box-shadow: 0 2px 11px 1px rgb(0 0 0 / 26%);
+  i {
+    margin: 2rem 0;
+    font-size: 5rem;
+  }
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 2px 7px 4px rgb(0 0 0 / 26%);
+    background-color: $c-u-bl;
+  }
+  h2 {
+    font-size: xx-large;
+    font-weight: bolder;
+  }
 }
 </style>
