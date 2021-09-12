@@ -1,10 +1,15 @@
 <template>
+  <Nav />
   <router-view></router-view>
 </template>
 
 <script>
+import Nav from "./ui/Nav.vue";
 export default {
   name: "App",
+  components: {
+    Nav,
+  },
 };
 </script>
 
@@ -38,6 +43,7 @@ body {
 }
 
 #app {
+  padding-top: 80px;
   height: 100%;
   flex-grow: 1;
   display: flex;

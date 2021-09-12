@@ -18,14 +18,8 @@
 export default {
   data() {
     return {
-      searchQuery: this.query || "",
+      searchQuery: this.$route.params.query || "",
     };
-  },
-  props: {
-    query: {
-      type: String,
-      required: false,
-    },
   },
   methods: {
     search() {
@@ -33,6 +27,11 @@ export default {
         name: "Results",
         params: { query: this.searchQuery, page: 1 },
       });
+    },
+  },
+  watch: {
+    $route(to) {
+      this.searchQuery = to.params.query;
     },
   },
 };

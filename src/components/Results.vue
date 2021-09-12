@@ -1,44 +1,5 @@
 <template>
   <div id="wrapper">
-    <div>
-      <div class="headerflex">
-        <div class="leftside">
-          <div class="titlediv">
-            <a href="/" class="companyname">
-              Principal Leryon Services SRL
-            </a>
-          </div>
-          <div class="btndiv">
-            <a
-              href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-              class="btn"
-            >
-              Explore
-            </a>
-          </div>
-        </div>
-        <Search :query="query" />
-        <div class="rightside">
-          <div class="btndiv">
-            <a
-              href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-              class="btn"
-            >
-              Teach
-            </a>
-          </div>
-          <div class="btndiv">
-            <a
-              href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-              class="btn"
-            >
-              My learning
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div id="results-wrapper" class="vld-parent">
       <loading
         v-model:active="isLoading"
@@ -77,7 +38,6 @@
 
 <script>
 import axios from "axios";
-import Search from "./Search.vue";
 import Result from "../ui/Result.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
@@ -93,7 +53,6 @@ export default {
     };
   },
   components: {
-    Search,
     Result,
     Loading,
   },

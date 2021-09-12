@@ -28,7 +28,7 @@ export default {
         },
         {
           id: 2,
-          name: "Java",
+          name: "Cacat",
         },
         {
           id: 3,

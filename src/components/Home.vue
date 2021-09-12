@@ -1,44 +1,4 @@
 <template>
-  <div>
-    <div class="headerflex">
-      <div class="leftside">
-        <div class="titlediv">
-          <a
-            href="https://principalgroup.udemy.com/organization/home/"
-            class="companyname"
-          >
-            Principal Leryon Services SRL
-          </a>
-        </div>
-        <div class="btndiv">
-          <a
-            href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-            class="btn"
-          >
-            Explore
-          </a>
-        </div>
-      </div>
-      <div class="rightside">
-        <div class="btndiv">
-          <a
-            href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-            class="btn"
-          >
-            Teach
-          </a>
-        </div>
-        <div class="btndiv">
-          <a
-            href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-            class="btn"
-          >
-            My learning
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="searchflex">
     <img src="../assets/udemi.png" alt="" />
     <div class="searchdiv">
