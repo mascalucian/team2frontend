@@ -8,7 +8,9 @@
         <h3 class="btndiv">
           Add skill:
         </h3>
-        <input type="text" />
+        <form v-on:submit="addSkill()">
+          <input type="text" v-model="newSkill" />
+        </form>
       </div>
 
       <h4>Recommended skills for our company:</h4>
@@ -35,6 +37,7 @@ export default {
   },
   data() {
     return {
+      newSkill: "test",
       testSkills: [
         {
           id: 1,
@@ -66,6 +69,24 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    addSkill() {
+      var id = this.testSkills.length + 1;
+      var name = this.newSkill;
+      this.testSkills.push({ id, name });
+      this.newSkill = "";
+      console.log(this.testSkills);
+    },
+    goToSkill(skill) {
+      this.$router.push({
+        name: "Results",
+        params: { query: skill.name, page: 1 },
+        query: {
+          skillId: skill.id,
+        },
+      });
+    },
   },
 };
 </script>

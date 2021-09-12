@@ -12,15 +12,6 @@ export default {
     },
   },
   methods: {
-    goToSkill(skill) {
-      this.$router.push({
-        name: "Results",
-        params: { query: skill.name, page: 1 },
-        query: {
-          skillId: skill.id,
-        },
-      });
-    },
     getFaIcon(name) {
       let filterName = name.toUpperCase();
       if (
