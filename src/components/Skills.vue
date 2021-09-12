@@ -5,7 +5,11 @@
       <h4>Recommended skills for our company:</h4>
     </header>
     <section>
-      <article v-for="skill in testSkills" :key="skill.id">
+      <article
+        v-for="skill in testSkills"
+        :key="skill.id"
+        @click.stop="goToSkill(skill.name)"
+      >
         <i class="fab " :class="getFaIcon(skill.name)"> </i>
         <h2>{{ skill.name }}</h2>
       </article>
@@ -50,6 +54,12 @@ export default {
     };
   },
   methods: {
+    goToSkill(name) {
+      this.$router.push({
+        name: "Results",
+        params: { query: name, page: 1 },
+      });
+    },
     getFaIcon(name) {
       let filterName = name.toUpperCase();
       if (
