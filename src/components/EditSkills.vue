@@ -20,18 +20,18 @@
         :key="skill.id"
         @click.stop="goToSkill(skill)"
       >
-        <EditSkill v-bind:skillName="skill.name" />
+        <Skill v-bind:skillName="skill.name" />
       </article>
     </section>
   </main>
 </template>
 
 <script>
-import EditSkill from "./EditSkill.vue";
+import Skill from "./Skill.vue";
 
 export default {
   components: {
-    EditSkill,
+    Skill,
   },
   data() {
     return {

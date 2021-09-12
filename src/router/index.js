@@ -5,7 +5,7 @@ import {
 
 import Home from "../components/Home.vue";
 import Results from "../components/Results.vue";
-import Skills from "../components/Skills.vue";
+import EditSkills from "../components/EditSkills.vue";
 
 const routes = [{
         path: "/",
@@ -24,7 +24,7 @@ const routes = [{
     },
     {
         path: "/skills",
-        component: Skills,
+        component: EditSkills,
     },
 ];
 
