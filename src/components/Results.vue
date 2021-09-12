@@ -6,7 +6,12 @@
         :is-full-page="false"
         :background-color="'none'"
       ></loading>
-      <Result v-for="result in results" :key="result.id" :course="result" />
+      <Result
+        v-for="result in results"
+        :key="result.id"
+        :course="result"
+        :recommendations="getRecommendationsForCourse(result)"
+      />
       <div v-if="message && !isLoading" id="error-message">
         {{ message }}
       </div>
@@ -50,6 +55,22 @@ export default {
       isLoading: true,
       message: "",
       maxPage: undefined,
+      testRecommendations: [
+        {
+          id: 1,
+          courseId: "3941068",
+          rating: 5,
+          name: "Alex Drăghiciu",
+          feedback: "Good for Javascript",
+        },
+        {
+          id: 2,
+          courseId: "2508942",
+          rating: 3,
+          name: "Andrei Dîrlea",
+          feedback: "Ok for Javascript",
+        },
+      ],
     };
   },
   components: {
@@ -80,6 +101,11 @@ export default {
         .finally(() => {
           this.$forceUpdate();
         });
+    },
+    getRecommendationsForCourse(course) {
+      return this.testRecommendations.filter((_) => {
+        return _.courseId == course.id;
+      });
     },
     next() {
       this.$router.push({

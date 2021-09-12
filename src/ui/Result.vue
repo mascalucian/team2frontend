@@ -1,18 +1,33 @@
 <template
-  ><a :href="'https://udemy.com' + course.url" target="_blank" id="wrapper">
-    <img :src="course.courseImage" />
+  ><a
+    :href="'https://udemy.com' + course.url"
+    target="_blank"
+    id="wrapper"
+    :class="{ recommended: isRecommended }"
+  >
+    <img class="course-img" :src="course.courseImage" />
     <div id="details-wrapper">
       <h3>{{ course.title }}</h3>
-      <p>{{ course.headline }}</p>
-      <div id="instructor-prices">
-        <span id="price"
-          ><h4>{{ course.price }}</h4></span
-        >
-        <span>
-          <img :src="course.instructors[0].photo" />
-          <h5>{{ course.instructors[0].name }}</h5>
-          <h6>{{ course.instructors[0].title }}</h6>
-        </span>
+      <div class="details">
+        <div class="details-left">
+          <p>{{ course.headline }}</p>
+          <div id="instructor-prices">
+            <span id="price"
+              ><h4>{{ course.price }}</h4></span
+            >
+          </div>
+        </div>
+
+        <div class="badge-instructor">
+          <div class="badge" v-if="isRecommended">
+            <i class="fas fa-medal"></i>
+          </div>
+          <div class="instructor">
+            <img class="instructor-img" :src="course.instructors[0].photo" />
+            <h5>{{ course.instructors[0].name }}</h5>
+            <h6>{{ course.instructors[0].title }}</h6>
+          </div>
+        </div>
       </div>
     </div>
   </a></template
@@ -20,11 +35,25 @@
 
 <script>
 export default {
+  data() {
+    return {
+      isRecommended: false,
+    };
+  },
   props: {
     course: {
       required: true,
       type: Object,
     },
+    recommendations: {
+      required: false,
+      type: Array,
+    },
+  },
+  created() {
+    if (this.recommendations[0]) {
+      this.isRecommended = true;
+    }
   },
 };
 </script>
@@ -49,7 +78,7 @@ export default {
   :focus-visible {
     background-color: #d1d7dc;
   }
-  img {
+  .course-img {
     height: 100%;
     object-fit: contain;
     width: 260px;
@@ -57,7 +86,16 @@ export default {
     margin-right: 1.6rem;
   }
   #details-wrapper {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-grow: 1;
+    height: 100%;
+  }
+  .details {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
     flex-grow: 1;
   }
   h3 {
@@ -84,45 +122,68 @@ export default {
     line-height: 1.4;
     font-size: 1.2rem;
   }
-  #instructor-prices {
-    width: 100%;
+}
+
+#instructor-prices {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  span {
+    width: 10rem;
     display: flex;
-    justify-content: space-between;
-    span {
-      width: 10rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-    }
-    h5,
-    h6 {
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  #price {
+    h4 {
       margin: 0;
-      text-align: center;
+      width: 100%;
     }
-    img {
-      height: 4rem;
-      object-fit: cover;
-      width: 4rem;
-      display: inline-block;
-      border-radius: 50%;
-      margin: 0;
-    }
-    #price {
-      h4 {
-        margin: 0;
-        width: 100%;
-      }
-      color: #b4690e;
-      font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
-        segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
-        segoe ui emoji, segoe ui symbol;
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: -0.02rem;
-      font-size: 1.4rem;
-      text-align: left;
-    }
+    color: #b4690e;
+    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
+      segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
+      segoe ui symbol;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02rem;
+    font-size: 1.4rem;
+    text-align: left;
+  }
+}
+
+.instructor-img {
+  height: 4rem;
+  width: 4rem !important;
+  object-fit: cover;
+  width: 1rem;
+  display: inline-block;
+  border-radius: 50%;
+  margin: 0;
+}
+
+.recommended {
+  background-color: yellowgreen !important;
+}
+
+.badge-instructor {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.instructor {
+  margin-top: auto !important;
+  width: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  h5,
+  h6 {
+    margin: 0;
+    text-align: center;
   }
 }
 </style>

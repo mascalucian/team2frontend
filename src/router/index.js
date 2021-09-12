@@ -19,6 +19,7 @@ const routes = [
     path: "/results/:query/:page",
     name: "Results",
     component: Results,
+    query: "?skillId",
   },
   {
     //  path: "/results/:query/:course",

@@ -8,7 +8,7 @@
       <article
         v-for="skill in testSkills"
         :key="skill.id"
-        @click.stop="goToSkill(skill.name)"
+        @click.stop="goToSkill(skill)"
       >
         <i class="fab " :class="getFaIcon(skill.name)"> </i>
         <h2>{{ skill.name }}</h2>
@@ -54,10 +54,13 @@ export default {
     };
   },
   methods: {
-    goToSkill(name) {
+    goToSkill(skill) {
       this.$router.push({
         name: "Results",
-        params: { query: name, page: 1 },
+        params: { query: skill.name, page: 1 },
+        query: {
+          skillId: skill.id,
+        },
       });
     },
     getFaIcon(name) {
