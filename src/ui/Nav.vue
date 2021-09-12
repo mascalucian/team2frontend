@@ -92,7 +92,7 @@ a {
 }
 .companyname {
   text-decoration: none;
-  color: black;
+  color: black !important;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02rem;
@@ -106,7 +106,8 @@ a {
   color: black;
   font-size: 14px;
 }
-.btn:hover {
+.btn:hover,
+.router-link-active {
   color: rgb(150, 7, 150);
 }
 </style>

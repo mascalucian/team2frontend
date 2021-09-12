@@ -58,7 +58,7 @@ export default {
       testRecommendations: [
         {
           id: 1,
-          courseId: "3941068",
+          courseId: "851712",
           rating: 5,
           name: "Alex Drăghiciu",
           feedback: "Good for Javascript",
@@ -69,6 +69,20 @@ export default {
           rating: 3,
           name: "Andrei Dîrlea",
           feedback: "Ok for Javascript",
+        },
+        {
+          id: 3,
+          courseId: "2508942",
+          rating: 5,
+          name: "Luci Mașca",
+          feedback: "Very Good",
+        },
+        {
+          id: 4,
+          courseId: "2508942",
+          rating: 5,
+          name: "Alex Drăghiciu",
+          feedback: "Good for Javascript",
         },
       ],
     };
@@ -148,6 +162,7 @@ export default {
     this.query = this.$route.params.query;
     this.page = this.$route.params.page;
     this.fetchCourses();
+    // console.log(this.$route.query.skillId);
   },
   beforeRouteUpdate(to, from, next) {
     this.query = to.params.query;
