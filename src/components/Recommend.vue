@@ -1,7 +1,21 @@
 <template>
+<div class="body">
     <div class="bigcontainer">
+        <div class="title">
+            <div>
+                How would you rate the course:  
+            </div>
+            <div>
+                Title
+            </div>
+        </div>
         <div class="stars">
             <form action="">
+                <div>
+                <label for="fullname">Full name: </label>
+                <input type="text" id="fullname" name="fullname"/>
+                </div>
+                <div>
                 <input class="star star-5" id="star-5" type="radio" name="star"/>
                 <label class="star star-5" for="star-5"></label>
                 <input class="star star-4" id="star-4" type="radio" name="star"/>
@@ -12,38 +26,74 @@
                 <label class="star star-2" for="star-2"></label>
                 <input class="star star-1" id="star-1" type="radio" name="star"/>
                 <label class="star star-1" for="star-1"></label>
+                </div>
             </form>
         </div>
     </div>
+</div>
 </template>
 
 <script>
 export default {
+    data() {
+        return {
+            courseId:"851712",
+            title:"",
+            feedback:"",
+            fullname:"",
+            rating:5,
+            methods: {
+                getCourseInfo() {
+
+                },
+                sendFeedback() {
+
+                }
+            },
+        }
+    }
     
 }
 </script>
 
 <style scoped>
-
+.body {
+    display: flex;
+    justify-content: center;
+    padding-top: 70px;
+    width: 100vw;
+}
 .bigcontainer {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     width:70%;
-    min-width: 800px;
+    height: 700px;
+    min-width: 400px;
+    background-color: rgba(76, 0, 255, 0.164);
+    border-radius: 20px;
+
+}
+.title {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
 }
 
 div.stars {
-  width: 370px;
+  width: 80%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 input.star { display: none; }
 
 label.star {
   float: right;
-  padding: 10px;
+  padding: 5px;
   font-size: 36px;
   color: #444;
   transition: all .2s;
