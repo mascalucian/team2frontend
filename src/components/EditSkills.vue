@@ -21,7 +21,8 @@
         <Skill
           v-bind:skillName="skill.name"
           v-bind:skillId="skill.id"
-          @updateSkills="deleteSkill"
+          @delete-skill="deleteSkill"
+          @edit-skill="editSkill"
         />
       </article>
     </section>
@@ -78,19 +79,11 @@ export default {
       this.newSkill = "";
       console.log(this.testSkills);
     },
-    deleteSkill(e) {
-      var index = this.testSkills.find((skill) => skill.id === e);
+    deleteSkill(id) {
+      var index = this.testSkills.find((skill) => skill.id === id);
       this.testSkills.splice(this.testSkills.indexOf(index), 1);
     },
-    goToSkill(skill) {
-      this.$router.push({
-        name: "Results",
-        params: { query: skill.name, page: 1 },
-        query: {
-          skillId: skill.id,
-        },
-      });
-    },
+    editSkill() {},
   },
 };
 </script>
