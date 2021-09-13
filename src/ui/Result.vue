@@ -4,6 +4,8 @@
     target="_blank"
     id="wrapper"
     :class="{ recommended: isRecommended }"
+    @mouseenter="showButtons = true"
+    @mouseleave="showButtons = false"
   >
     <img class="course-img" :src="course.courseImage" />
     <div id="details-wrapper">
@@ -55,6 +57,13 @@
         </div>
       </div>
     </div>
+    <button
+      id="result-menu"
+      v-if="showButtons && $route.query.skillId"
+      @click.stop.prevent="goToRecommend()"
+    >
+      Recommend this!
+    </button>
   </a>
 </template>
 
@@ -65,6 +74,7 @@ export default {
       isRecommended: false,
       avgRating: undefined,
       filledStarsWidth: undefined,
+      showButtons: false,
     };
   },
   props: {
@@ -75,6 +85,19 @@ export default {
     recommendations: {
       required: false,
       type: Array,
+    },
+  },
+  methods: {
+    goToRecommend() {
+      this.$router.push({
+        name: "Recommend",
+        params: {
+          courseId: this.course.id,
+        },
+        query: {
+          skillId: this.$route.query.skillId,
+        },
+      });
     },
   },
   created() {
@@ -107,7 +130,7 @@ export default {
   text-decoration: none;
   padding: 1.6rem;
   margin: 0.5em;
-
+  position: relative;
   border-radius: 10px;
   box-shadow: 0px 1px 5px #888888;
   height: 20rem;
@@ -280,7 +303,7 @@ export default {
   opacity: 0;
 
   max-height: 20rem;
-  z-index: 100;
+  z-index: 1000 !important;
   border: 1px solid $c-u-gr;
   padding-right: 1rem;
   transition: all 0.4s ease;
@@ -302,5 +325,27 @@ export default {
 
 .details-left {
   flex-grow: 1;
+}
+
+#result-menu {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 2rem;
+  font-size: 1.7rem;
+  border: 0;
+  background-color: rgba($c-u-pur, 0.3);
+  font-family: $f-u-bm;
+  color: white;
+  border-radius: 30px;
+  padding: 0.3rem 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 11px 1px rgb(0 0 0 / 26%);
+  transition: all 0.4s ease;
+  z-index: 100;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 2px 7px 4px rgb(0 0 0 / 26%);
+    background-color: rgba($c-u-pur, 0.8);
+  }
 }
 </style>
