@@ -29,7 +29,7 @@ export default {
       this.$emit("delete-skill", id);
     },
     editName(id) {
-      this.$emit("updateSkills", id);
+      this.$emit("edit-skill", id);
     },
     goToSkill() {
       this.$router.push({
@@ -146,7 +146,7 @@ export default {
   }
 
   .fas {
-    position: fixed;
+    position: relative;
     &:hover {
       cursor: wait;
     }

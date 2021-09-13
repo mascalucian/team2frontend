@@ -74,14 +74,19 @@ export default {
   methods: {
     addSkill() {
       var id = this.testSkills.length + 1;
-      var name = this.newSkill;
+      var name =
+        this.newSkill.charAt(0).toUpperCase() +
+        this.newSkill.toLowerCase().slice(1);
       this.testSkills.push({ id, name });
       this.newSkill = "";
       console.log(this.testSkills);
     },
     deleteSkill(id) {
-      var index = this.testSkills.find((skill) => skill.id === id);
-      this.testSkills.splice(this.testSkills.indexOf(index), 1);
+      var canDelete = confirm("Are you sure you want to delete the skill?");
+      if (canDelete) {
+        var index = this.testSkills.find((skill) => skill.id === id);
+        this.testSkills.splice(this.testSkills.indexOf(index), 1);
+      }
     },
     editSkill() {},
   },
