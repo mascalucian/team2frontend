@@ -1,23 +1,25 @@
 <template>
   <main>
     <header>
-      <h1>
-        Skills
-      </h1>
+      <h1>Skills</h1>
       <div id="add-skill">
-        <h3>
-          Add skill:
-        </h3>
-        <form v-on:submit="addSkill()">
-          <input type="text" v-model="newSkill" />
+        <h3>Add skill:</h3>
+        <form @submit.prevent="addSkill()">
+          <input type="text" v-model="newSkill" @keyup.escape="newSkill = ''" />
+          <input type="submit" value="Submit" :disabled="!newSkill" />
         </form>
       </div>
 
       <h4>Recommended skills for our company:</h4>
     </header>
 
-    <section>
-      <article v-for="skill in testSkills" :key="skill.id">
+    <section class="vld-parent">
+      <loading
+        v-model:active="isLoading"
+        :is-full-page="false"
+        :background-color="'none'"
+      ></loading>
+      <article v-for="skill in skills" :key="skill.id">
         <Skill
           v-bind:skillName="skill.name"
           v-bind:skillId="skill.id"
@@ -30,70 +32,91 @@
 </template>
 
 <script>
+import axios from "axios";
 import Skill from "../ui/Skill.vue";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   components: {
     Skill,
+    Loading,
   },
   data() {
     return {
       newSkill: "",
-      testSkills: [
-        {
-          id: 1,
-          name: "Javascript",
-        },
-        {
-          id: 2,
-          name: "Docker",
-        },
-        {
-          id: 3,
-          name: "Angular",
-        },
-        {
-          id: 4,
-          name: "Node",
-        },
-        {
-          id: 5,
-          name: "Java Tips",
-        },
-        {
-          id: 6,
-          name: "CSS",
-        },
-        {
-          id: 7,
-          name: "SQL",
-        },
-      ],
+      skills: [],
+      isLoading: true,
     };
   },
   methods: {
     addSkill() {
-      var id = this.testSkills.length + 1;
-      var name =
-        this.newSkill.charAt(0).toUpperCase() +
-        this.newSkill.toLowerCase().slice(1);
-      this.testSkills.push({ id, name });
-      this.newSkill = "";
-      console.log(this.testSkills);
+      this.newSkill =
+        this.newSkill.charAt(0).toUpperCase() + this.newSkill.toLowerCase().slice(1);
+      axios
+        .post("https://localhost:5001/Skills", {
+          name: this.newSkill,
+        })
+        .then(() => {
+          this.newSkill = "";
+          this.fetchSkills();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     deleteSkill(id) {
       var canDelete = confirm("Are you sure you want to delete the skill?");
       if (canDelete) {
-        var skillObj = this.testSkills.find((skill) => skill.id === id);
-        this.testSkills.splice(this.testSkills.indexOf(skillObj), 1);
-        console.log(skillObj);
+        axios
+          .delete(`https://localhost:5001/Skills/${id}`)
+          .then(() => {
+            this.fetchSkills();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     },
     editSkill(name, id) {
-      var skillToEdit = this.testSkills.find((skill) => skill.id === id);
-      var index = this.testSkills.indexOf(skillToEdit);
-      this.testSkills[index].name = name;
+      // var skillToEdit = this.testSkills.find((skill) => skill.id === id);
+      // // this.testSkills.splice(this.testSkills.indexOf(skill), 1, name);
+      // //console.log(name);
+      // var index = this.testSkills.indexOf(skillToEdit);
+      // this.testSkills[index].name = name;
+      // console.log(name);
+      // console.log(index);
+      // console.log(skillToEdit);
+      // console.log(this.testSkills);
+      axios
+        .put(`https://localhost:5001/Skills/${id}`, {
+          id: id,
+          name: name,
+        })
+        .then(() => {
+          this.fetchSkills();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
+    async fetchSkills() {
+      this.skills = this.skills.splice(0);
+      this.isLoading = true;
+      axios
+        .get("https://localhost:5001/Skills")
+        .then((response) => {
+          this.isLoading = false;
+          this.skills = response.data;
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.log(error);
+        });
+    },
+  },
+  created() {
+    this.fetchSkills();
   },
 };
 </script>
@@ -151,6 +174,39 @@ article {
   h2 {
     font-size: xx-large;
     font-weight: bolder;
+  }
+}
+
+form {
+  input[type="text"] {
+    height: 2rem;
+    border-radius: 25px;
+    outline: none;
+    text-indent: 1rem;
+  }
+  input[type="submit"] {
+    margin-left: 3rem;
+    height: 2rem;
+    border-radius: 25px;
+    font-family: $f-u-bm;
+    padding: 0 1rem;
+    background-color: $c-u-pur;
+    color: white;
+    border: 0;
+    box-shadow: 0 2px 11px 1px rgb(0 0 0 / 26%);
+    cursor: pointer;
+    &:hover,
+    :active,
+    :focus-visible {
+      box-shadow: 0 2px 7px 4px rgb(0 0 0 / 26%);
+      background-color: yellowgreen;
+    }
+    &:disabled {
+      background-color: transparent !important;
+      box-shadow: inherit !important;
+      color: gray !important;
+      cursor: default;
+    }
   }
 }
 </style>
