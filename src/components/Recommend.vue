@@ -10,22 +10,25 @@
             </div>
         </div>
         <div class="stars">
-            <form action="">
+            <form id="feedback-form" @submit.prevent=submit()>
                 <div>
-                <label for="fullname">Full name: </label>
-                <input type="text" id="fullname" name="fullname"/>
+                    <label for="fullname">Full name: </label>
+                    <input type="text" name="fullname" v-model="rating.fullname"/>
                 </div>
                 <div>
-                <input class="star star-5" id="star-5" type="radio" name="star"/>
-                <label class="star star-5" for="star-5"></label>
-                <input class="star star-4" id="star-4" type="radio" name="star"/>
-                <label class="star star-4" for="star-4"></label>
-                <input class="star star-3" id="star-3" type="radio" name="star"/>
-                <label class="star star-3" for="star-3"></label>
-                <input class="star star-2" id="star-2" type="radio" name="star"/>
-                <label class="star star-2" for="star-2"></label>
-                <input class="star star-1" id="star-1" type="radio" name="star"/>
-                <label class="star star-1" for="star-1"></label>
+                    <input class="star star-5" id="star-5" type="radio" name="star"/>
+                    <label class="star star-5" for="star-5"></label>
+                    <input class="star star-4" id="star-4" type="radio" name="star"/>
+                    <label class="star star-4" for="star-4"></label>
+                    <input class="star star-3" id="star-3" type="radio" name="star"/>
+                    <label class="star star-3" for="star-3"></label>
+                    <input class="star star-2" id="star-2" type="radio" name="star"/>
+                    <label class="star star-2" for="star-2"></label>
+                    <input class="star star-1" id="star-1" type="radio" name="star"/>
+                    <label class="star star-1" for="star-1"></label>
+                </div>
+                <div class="stars">
+                    <button >Send feedback</button>
                 </div>
             </form>
         </div>
@@ -35,23 +38,24 @@
 
 <script>
 export default {
-    data() {
-        return {
-            courseId:"851712",
-            title:"",
-            feedback:"",
-            fullname:"",
-            rating:5,
-            methods: {
-                getCourseInfo() {
-
-                },
-                sendFeedback() {
-
-                }
-            },
+    data() {      
+        return{
+            
+            rating:{
+                fullname:'',
+                feedback:'',
+                stars:5,
+            }
         }
-    }
+        
+    },
+    methods: {
+        submit() {
+            
+             console.log(this.rating.fullname);
+        },
+    },
+
     
 }
 </script>
@@ -71,7 +75,7 @@ export default {
     width:70%;
     height: 700px;
     min-width: 400px;
-    background-color: rgba(76, 0, 255, 0.164);
+    background-color: rgba(236, 143, 20, 0.164);
     border-radius: 20px;
 
 }
@@ -101,7 +105,7 @@ label.star {
 
 input.star:checked ~ label.star:before {
   content: '\f005';
-  color: #FD4;
+  color: #e59819;
   transition: all .25s;
 }
 
