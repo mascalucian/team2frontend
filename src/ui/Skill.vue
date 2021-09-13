@@ -1,65 +1,79 @@
 <template>
-  <main>
-    <header>
-      <h1>Skills</h1>
-      <h4>Recommended skills for our company:</h4>
-    </header>
-    <section>
-      <article
-        v-for="skill in testSkills"
-        :key="skill.id"
+  <div id="wrapper">
+    <div id="delete">
+      <i
+        class="event fas fa-trash-alt fa-lg "
+        v-on:click="deleteSkill(skillId)"
+      ></i>
+    </div>
+    <div id="route">
+      <i
+        class="fab "
+        :class="getFaIcon(skillName)"
         @click.stop="goToSkill(skill)"
       >
-        <i class="fab " :class="getFaIcon(skill.name)"> </i>
-        <h2>{{ skill.name }}</h2>
-      </article>
-    </section>
-  </main>
+      </i>
+      <div id="skill-name" class="event">
+        <input
+          type="text"
+          v-if="edit"
+          v-model="name"
+          @keydown.enter="
+            editSkill(name, skillId);
+            edit = !edit;
+          "
+          @blur="
+            editSkill(name, skillId);
+            edit = !edit;
+          "
+        />
+        <h2 v-else v-on:click="edit = !edit">
+          {{ skillName }}
+        </h2>
+        <i
+          v-if="edit"
+          class="fas fa-save fa-lg"
+          v-on:click="
+            editSkill(name, skillId);
+            edit = !edit;
+          "
+        ></i>
+        <i v-else class="fas fa-pen fa-lg" v-on:click="edit = !edit"></i>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      testSkills: [
-        {
-          id: 1,
-          name: "Javascript",
-        },
-        {
-          id: 2,
-          name: "PHP",
-        },
-        {
-          id: 3,
-          name: "Angular",
-        },
-        {
-          id: 4,
-          name: "Node",
-        },
-        {
-          id: 5,
-          name: "Java",
-        },
-        {
-          id: 6,
-          name: "CSS",
-        },
-        {
-          id: 7,
-          name: "SQL",
-        },
-      ],
+      edit: false,
+      name: this.skillName,
     };
   },
+  props: {
+    skillName: {
+      type: String,
+      required: true,
+    },
+    skillId: {
+      required: true,
+    },
+  },
   methods: {
-    goToSkill(skill) {
+    deleteSkill(id) {
+      this.$emit("delete-skill", id);
+    },
+    editSkill(name, id) {
+      this.$emit("edit-skill", name, id);
+    },
+    goToSkill() {
       this.$router.push({
         name: "Results",
-        params: { query: skill.name, page: 1 },
+        params: { query: this.skillName, page: 1 },
         query: {
-          skillId: skill.id,
+          skillId: this.skillId,
         },
       });
     },
@@ -137,54 +151,48 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-header {
-  background-color: $c-u-bl;
-  color: white;
-  font-family: $f-u-bm;
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: $f-u-bm;
-    margin: 0;
-    margin-left: 2rem;
-  }
-  h1 {
-    padding: 2rem 0 1rem 0;
-  }
-  h4 {
-    padding: 1rem 0;
-  }
-}
-section {
+#wrapper {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
-}
-article {
-  width: 20rem;
-  background-color: $c-u-pur;
-  color: white;
-  margin: 3%;
-  text-align: center;
-  padding: 1rem;
-  border-radius: 20px;
-  box-shadow: 0 2px 11px 1px rgb(0 0 0 / 26%);
-  i {
-    margin: 2rem 0;
-    font-size: 5rem;
+  flex-direction: column;
+  align-items: center;
+  #delete {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    i {
+      margin: 0.45em 0.75em 0 0;
+    }
   }
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0 2px 7px 4px rgb(0 0 0 / 26%);
-    background-color: $c-u-bl;
+  #route {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .fab {
+      width: 100%;
+      padding: 2rem 0 1.5rem 0;
+      font-size: 5rem;
+    }
+    #skill-name {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      height: 4.5em;
+      h2,
+      input {
+        margin-right: 0.5em;
+      }
+      input {
+        width: 70%;
+      }
+    }
   }
-  h2 {
-    font-size: xx-large;
-    font-weight: bolder;
+  .event {
+    z-index: 5;
+    &:hover {
+      cursor: wait;
+    }
   }
 }
 </style>
