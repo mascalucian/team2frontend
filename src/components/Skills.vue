@@ -28,7 +28,7 @@ export default {
         },
         {
           id: 2,
-          name: "Cacat",
+          name: "PHP",
         },
         {
           id: 3,
@@ -40,7 +40,7 @@ export default {
         },
         {
           id: 5,
-          name: "Java Tips",
+          name: "Java",
         },
         {
           id: 6,

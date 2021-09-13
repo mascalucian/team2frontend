@@ -1,5 +1,5 @@
-<template
-  ><a
+<template>
+  <a
     :href="'https://udemy.com' + course.url"
     target="_blank"
     id="wrapper"
@@ -30,10 +30,7 @@
                 <i class="far fa-star star"></i>
                 <i class="far fa-star star"></i>
                 <i class="far fa-star star"></i>
-                <span
-                  class="stars-filled"
-                  :style="{ width: filledStarsWidth + 'px' }"
-                >
+                <span class="stars-filled" :style="{ width: filledStarsWidth + 'px' }">
                   <i class="fas fa-star star"></i>
                   <i class="fas fa-star star"></i>
                   <i class="fas fa-star star"></i>
@@ -43,14 +40,9 @@
               </span>
               <h6>Recommended by:</h6>
               <ul>
-                <li
-                  v-for="recommendation in recommendations"
-                  :key="recommendation.id"
-                >
+                <li v-for="recommendation in recommendations" :key="recommendation.id">
                   {{ recommendation.name }}
-                  gave rating {{ recommendation.rating }}: "{{
-                    recommendation.feedback
-                  }}"
+                  gave rating {{ recommendation.rating }}: "{{ recommendation.feedback }}"
                 </li>
               </ul>
             </div>
@@ -63,8 +55,8 @@
         </div>
       </div>
     </div>
-  </a></template
->
+  </a>
+</template>
 
 <script>
 export default {
@@ -89,7 +81,7 @@ export default {
     if (this.recommendations[0]) {
       this.isRecommended = true;
       this.avgRating =
-        this.recommendations.reduce(function(a, b) {
+        this.recommendations.reduce(function (a, b) {
           return a + b.rating;
         }, 0) / this.recommendations.length;
       //console.log(this.avgRating);
@@ -97,8 +89,10 @@ export default {
     }
   },
   mounted() {
-    let starWidth = document.querySelector(".stars-filled").offsetWidth;
-    this.filledStarsWidth = (starWidth * this.avgRating) / 5;
+    if (this.isRecommended) {
+      let starWidth = document.querySelector(".stars-filled").offsetWidth;
+      this.filledStarsWidth = (starWidth * this.avgRating) / 5;
+    }
   },
 };
 </script>
@@ -142,9 +136,8 @@ export default {
     flex-grow: 1;
   }
   h3 {
-    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
-      segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
-      segoe ui symbol;
+    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui,
+      Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02rem;
@@ -158,9 +151,8 @@ export default {
     margin: 0;
   }
   p {
-    font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
-      segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
-      segoe ui symbol;
+    font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto, segoe ui,
+      Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
     font-weight: 400;
     line-height: 1.4;
     font-size: 1.2rem;
@@ -184,9 +176,8 @@ export default {
       width: 100%;
     }
     color: #b4690e;
-    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
-      segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
-      segoe ui symbol;
+    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui,
+      Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02rem;

@@ -19,16 +19,10 @@
     <footer v-if="!message">
       <router-link to="/">Go back</router-link>
       <h4>Page: {{ page }} of {{ maxPage }}</h4>
-      <button
-        @click.prevent="first()"
-        :disabled="$route.params.page == '1' || isLoading"
-      >
+      <button @click.prevent="first()" :disabled="$route.params.page == '1' || isLoading">
         <i class="fas fa-angle-double-left"></i>
       </button>
-      <button
-        @click.prevent="prev()"
-        :disabled="$route.params.page == '1' || isLoading"
-      >
+      <button @click.prevent="prev()" :disabled="$route.params.page == '1' || isLoading">
         <i class="fas fa-angle-left"></i>
       </button>
       <button @click.prevent="next()" :disabled="isLoading || page == maxPage">
@@ -55,6 +49,7 @@ export default {
       isLoading: true,
       message: "",
       maxPage: undefined,
+      skillId: undefined,
       testRecommendations: [
         {
           id: 1,
@@ -105,6 +100,20 @@ export default {
           name: "Alex Drăghiciu",
           feedback: "Good for Javascript",
         },
+        {
+          id: 8,
+          courseId: "364426",
+          rating: 3,
+          name: "Andrei Dîrlea",
+          feedback: "Ok for Javascript",
+        },
+        {
+          id: 9,
+          courseId: "364426",
+          rating: 1,
+          name: "Andrei Dîrlea",
+          feedback: "Ok for Javascript",
+        },
       ],
     };
   },
@@ -119,22 +128,34 @@ export default {
       this.results.splice(0);
       axios
         .get(
-          `https://localhost:5001/UdemyCourse/${encodeURIComponent(
-            this.query
-          )}/${this.page}`
+          `https://localhost:5001/UdemyCourse/${encodeURIComponent(this.query)}/${
+            this.page
+          }`
         )
         .then((response) => {
           this.results = response.data.courses;
           this.isLoading = false;
           this.maxPage = Math.ceil(response.data.numberOfCoursesFound / 12);
           if (response.data.numberOfCoursesFound == 0) {
-            if (response.data.wasOverFullFiled)
-              this.message = "Page not found.";
+            if (response.data.wasOverFullFiled) this.message = "Page not found.";
             if (response.data.noSearchFound) this.message = "No results found.";
+          }
+          if (this.$route.query.skillId) {
+            console.log("Searched by Skill");
+            this.results = this.results.sort((a, b) => {
+              return this.hasRecommendations(a) === this.hasRecommendations(b)
+                ? 0
+                : this.hasRecommendations(a) > this.hasRecommendations(b)
+                ? -1
+                : 1;
+            });
           }
         })
         .finally(() => {
           this.$forceUpdate();
+          // this.results.forEach((_) => {
+          //   console.log(this.hasRecommendations(_));
+          // });
         });
     },
     getRecommendationsForCourse(course) {
@@ -142,12 +163,20 @@ export default {
         return _.courseId == course.id;
       });
     },
+    hasRecommendations(course) {
+      return this.testRecommendations.filter((_) => {
+        return _.courseId == course.id;
+      }).length;
+    },
     next() {
       this.$router.push({
         name: "Results",
         params: {
           query: this.query,
           page: parseInt(this.page) + 1,
+        },
+        query: {
+          skillId: this.skillId,
         },
       });
     },
@@ -158,6 +187,9 @@ export default {
           query: this.query,
           page: parseInt(this.page) - 1,
         },
+        query: {
+          skillId: this.skillId,
+        },
       });
     },
     first() {
@@ -166,6 +198,9 @@ export default {
         params: {
           query: this.query,
           page: 1,
+        },
+        query: {
+          skillId: this.skillId,
         },
       });
     },
@@ -176,18 +211,23 @@ export default {
           query: this.query,
           page: parseInt(this.maxPage),
         },
+        query: {
+          skillId: this.skillId,
+        },
       });
     },
   },
   created() {
     this.query = this.$route.params.query;
     this.page = this.$route.params.page;
+    this.skillId = this.$route.query.skillId;
     this.fetchCourses();
     // console.log(this.$route.query.skillId);
   },
   beforeRouteUpdate(to, from, next) {
     this.query = to.params.query;
     this.page = to.params.page;
+    this.skillId = to.query.skillId;
     next();
     this.fetchCourses();
   },
