@@ -54,7 +54,7 @@ export default {
       // this.newSkill =
       //   this.newSkill.charAt(0).toUpperCase() + this.newSkill.toLowerCase().slice(1);
       axios
-        .post("https://localhost:5001/Skills", {
+        .post("https://team-2-backend.herokuapp.com/Skills", {
           name: this.newSkill,
         })
         .then(() => {
@@ -69,7 +69,7 @@ export default {
       var canDelete = confirm("Are you sure you want to delete the skill?");
       if (canDelete) {
         axios
-          .delete(`https://localhost:5001/Skills/${id}`)
+          .delete(`https://team-2-backend.herokuapp.com/Skills/${id}`)
           .then(() => {
             this.fetchSkills();
           })
@@ -89,7 +89,7 @@ export default {
       // console.log(skillToEdit);
       // console.log(this.testSkills);
       axios
-        .put(`https://localhost:5001/Skills/${id}`, {
+        .put(`https://team-2-backend.herokuapp.com/Skills/${id}`, {
           id: id,
           name: name,
         })
@@ -104,7 +104,7 @@ export default {
       this.skills = this.skills.splice(0);
       this.isLoading = true;
       axios
-        .get("https://localhost:5001/Skills")
+        .get("https://team-2-backend.herokuapp.com/Skills")
         .then((response) => {
           this.isLoading = false;
           this.skills = response.data;

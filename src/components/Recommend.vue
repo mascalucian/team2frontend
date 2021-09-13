@@ -101,7 +101,7 @@ export default {
     submit() {
       axios
         .post(
-          `https://localhost:5001/Recomandations/SkillId?SkillId=${this.recomandation.skillId}`,
+          `https://team-2-backend.herokuapp.com/Recomandations/SkillId?SkillId=${this.recomandation.skillId}`,
           {
             courseId: this.recomandation.courseId,
             authorName: this.recomandation.authorName,

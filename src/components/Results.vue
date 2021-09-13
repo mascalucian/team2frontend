@@ -64,16 +64,19 @@ export default {
       this.results.splice(0);
       if (this.skillId) {
         await axios
-          .get(`https://localhost:5001/Recomandations/${this.skillId}`)
+          .get(`https://team-2-backend.herokuapp.com/Recomandations/${this.skillId}`)
           .then((response) => {
             this.recommendations = response.data;
+          })
+          .catch(() => {
+            this.recommendations.splice(0);
           });
       }
       axios
         .get(
-          `https://localhost:5001/UdemyCourse/${encodeURIComponent(this.query)}/${
-            this.page
-          }`
+          `https://team-2-backend.herokuapp.com/UdemyCourse/${encodeURIComponent(
+            this.query
+          )}/${this.page}`
         )
         .then((response) => {
           this.results = response.data.courses;
