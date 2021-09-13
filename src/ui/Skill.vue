@@ -18,6 +18,10 @@
           type="text"
           v-if="edit"
           v-model="name"
+          @blur="
+            editSkill(name, skillId);
+            edit = !edit;
+          "
           @keydown.enter="
             editSkill(name, skillId);
             edit = !edit;
@@ -165,15 +169,21 @@ export default {
     flex-direction: column;
     align-items: center;
     .fab {
-      margin: 3rem 0 1.5rem 0;
+      margin: 2rem 0 1.5rem 0;
       font-size: 5rem;
     }
     #skill-name {
       display: flex;
       flex-direction: row;
       align-items: center;
-      h2 {
-        padding-right: 0.5em;
+      justify-content: center;
+      height: 4.5em;
+      h2,
+      input {
+        margin-right: 0.5em;
+      }
+      input {
+        width: 70%;
       }
     }
   }
