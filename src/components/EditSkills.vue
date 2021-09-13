@@ -84,11 +84,22 @@ export default {
     deleteSkill(id) {
       var canDelete = confirm("Are you sure you want to delete the skill?");
       if (canDelete) {
-        var index = this.testSkills.find((skill) => skill.id === id);
-        this.testSkills.splice(this.testSkills.indexOf(index), 1);
+        var skillObj = this.testSkills.find((skill) => skill.id === id);
+        this.testSkills.splice(this.testSkills.indexOf(skillObj), 1);
+        console.log(skillObj);
       }
     },
-    editSkill() {},
+    editSkill(name, id) {
+      var skillToEdit = this.testSkills.find((skill) => skill.id === id);
+      // this.testSkills.splice(this.testSkills.indexOf(skill), 1, name);
+      //console.log(name);
+      var index = this.testSkills.indexOf(skillToEdit);
+      this.testSkills[index].name = name;
+      console.log(name);
+      console.log(index);
+      console.log(skillToEdit);
+      console.log(this.testSkills);
+    },
   },
 };
 </script>

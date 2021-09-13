@@ -1,13 +1,40 @@
 <template>
   <div id="wrapper">
     <div id="delete">
-      <i class="fas fa-trash-alt fa-lg" v-on:click="deleteSkill(skillId)"></i>
+      <i
+        class="event fas fa-trash-alt fa-lg "
+        v-on:click="deleteSkill(skillId)"
+      ></i>
     </div>
-    <div id="route" @click.stop="goToSkill(skill)">
-      <i class="fab " :class="getFaIcon(skillName)"> </i>
-      <div id="skill-name">
-        <h2>{{ skillName }}</h2>
-        <!-- <i class="fas fa-pen fa-lg" v-on:click="editName()"></i> -->
+    <div id="route">
+      <i
+        class="fab "
+        :class="getFaIcon(skillName)"
+        @click.stop="goToSkill(skill)"
+      >
+      </i>
+      <div id="skill-name" class="event">
+        <input
+          type="text"
+          v-if="edit"
+          v-model="name"
+          @keydown.enter="
+            editSkill(name, skillId);
+            edit = !edit;
+          "
+        />
+        <h2 v-else v-on:click="edit = !edit">
+          {{ skillName }}
+        </h2>
+        <i
+          v-if="edit"
+          class="fas fa-save fa-lg"
+          v-on:click="
+            editSkill(name, skillId);
+            edit = !edit;
+          "
+        ></i>
+        <i v-else class="fas fa-pen fa-lg" v-on:click="edit = !edit"></i>
       </div>
     </div>
   </div>
@@ -15,6 +42,12 @@
 
 <script>
 export default {
+  data() {
+    return {
+      edit: false,
+      name: this.skillName,
+    };
+  },
   props: {
     skillName: {
       type: String,
@@ -28,8 +61,8 @@ export default {
     deleteSkill(id) {
       this.$emit("delete-skill", id);
     },
-    editName(id) {
-      this.$emit("edit-skill", id);
+    editSkill(name, id) {
+      this.$emit("edit-skill", name, id);
     },
     goToSkill() {
       this.$router.push({
@@ -144,8 +177,7 @@ export default {
       }
     }
   }
-
-  .fas {
+  .event {
     position: relative;
     &:hover {
       cursor: wait;
