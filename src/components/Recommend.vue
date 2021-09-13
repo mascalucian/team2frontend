@@ -6,7 +6,8 @@
                 How would you rate the course:  
             </div>
             <div id="title">
-                Title
+                Title 
+                <!-- aici trebuie modificat sa ia titlul pe care dai click -->
             </div>
         </div>
         <div class="stars">
@@ -50,18 +51,16 @@ export default {
                 fullname:'',
                 feedback:'',
                 stars:5,
-                courseId:255,
+                courseId:255, //aici trebuie modificat sa importe cursul pe care dai click din results
             }
         }
         
     },
     methods: {
         submit() {
-            console.log(this.picked);
             this.rating.stars=this.picked;
-            console.log(this.rating.fullname);
-            console.log(this.rating.stars);
             console.log(this.rating);
+            // this.rating trebuie trimis catre backend
         },
     },
 
