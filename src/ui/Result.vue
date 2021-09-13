@@ -41,7 +41,7 @@
               <h6>Recommended by:</h6>
               <ul>
                 <li v-for="recommendation in recommendations" :key="recommendation.id">
-                  {{ recommendation.name }}
+                  {{ recommendation.authorName }}
                   gave rating {{ recommendation.rating }}: "{{ recommendation.feedback }}"
                 </li>
               </ul>
