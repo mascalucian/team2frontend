@@ -68,23 +68,40 @@ export default {
     deleteSkill(id) {
       var canDelete = confirm("Are you sure you want to delete the skill?");
       if (canDelete) {
-        var skillObj = this.testSkills.find((skill) => skill.id === id);
-        this.testSkills.splice(this.testSkills.indexOf(skillObj), 1);
-        console.log(skillObj);
+        axios
+          .delete(`https://localhost:5001/Skills/${id}`)
+          .then(() => {
+            this.fetchSkills();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     },
     editSkill(name, id) {
-      var skillToEdit = this.testSkills.find((skill) => skill.id === id);
-      // this.testSkills.splice(this.testSkills.indexOf(skill), 1, name);
-      //console.log(name);
-      var index = this.testSkills.indexOf(skillToEdit);
-      this.testSkills[index].name = name;
-      console.log(name);
-      console.log(index);
-      console.log(skillToEdit);
-      console.log(this.testSkills);
+      // var skillToEdit = this.testSkills.find((skill) => skill.id === id);
+      // // this.testSkills.splice(this.testSkills.indexOf(skill), 1, name);
+      // //console.log(name);
+      // var index = this.testSkills.indexOf(skillToEdit);
+      // this.testSkills[index].name = name;
+      // console.log(name);
+      // console.log(index);
+      // console.log(skillToEdit);
+      // console.log(this.testSkills);
+      axios
+        .put(`https://localhost:5001/Skills/${id}`, {
+          id: id,
+          name: name,
+        })
+        .then(() => {
+          this.fetchSkills();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     async fetchSkills() {
+      this.skills = this.skills.splice(0);
       this.isLoading = true;
       axios
         .get("https://localhost:5001/Skills")
