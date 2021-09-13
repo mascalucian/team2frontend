@@ -50,71 +50,7 @@ export default {
       message: "",
       maxPage: undefined,
       skillId: undefined,
-      testRecommendations: [
-        {
-          id: 1,
-          courseId: "851712",
-          rating: 5,
-          name: "Alex Drăghiciu",
-          feedback: "Good for Javascript",
-        },
-        {
-          id: 2,
-          courseId: "2508942",
-          rating: 3,
-          name: "Andrei Dîrlea",
-          feedback: "Ok for Javascript",
-        },
-        {
-          id: 3,
-          courseId: "2508942",
-          rating: 5,
-          name: "Luci Mașca",
-          feedback: "Very Good",
-        },
-        {
-          id: 4,
-          courseId: "2508942",
-          rating: 5,
-          name: "Alex Drăghiciu",
-          feedback: "Good for Javascript",
-        },
-        {
-          id: 5,
-          courseId: "851712",
-          rating: 1,
-          name: "Alex Drăghiciu",
-          feedback: "Good for Javascript",
-        },
-        {
-          id: 6,
-          courseId: "851712",
-          rating: 2,
-          name: "Alex Drăghiciu",
-          feedback: "Good for Javascript",
-        },
-        {
-          id: 7,
-          courseId: "851712",
-          rating: 1,
-          name: "Alex Drăghiciu",
-          feedback: "Good for Javascript",
-        },
-        {
-          id: 8,
-          courseId: "364426",
-          rating: 3,
-          name: "Andrei Dîrlea",
-          feedback: "Ok for Javascript",
-        },
-        {
-          id: 9,
-          courseId: "364426",
-          rating: 1,
-          name: "Andrei Dîrlea",
-          feedback: "Ok for Javascript",
-        },
-      ],
+      recommendations: [],
     };
   },
   components: {
@@ -126,6 +62,13 @@ export default {
       this.message = "";
       this.isLoading = true;
       this.results.splice(0);
+      if (this.skillId) {
+        await axios
+          .get(`https://localhost:5001/Recomandations/${this.skillId}`)
+          .then((response) => {
+            this.recommendations = response.data;
+          });
+      }
       axios
         .get(
           `https://localhost:5001/UdemyCourse/${encodeURIComponent(this.query)}/${
@@ -159,12 +102,12 @@ export default {
         });
     },
     getRecommendationsForCourse(course) {
-      return this.testRecommendations.filter((_) => {
+      return this.recommendations.filter((_) => {
         return _.courseId == course.id;
       });
     },
     hasRecommendations(course) {
-      return this.testRecommendations.filter((_) => {
+      return this.recommendations.filter((_) => {
         return _.courseId == course.id;
       }).length;
     },
@@ -228,6 +171,9 @@ export default {
     this.query = to.params.query;
     this.page = to.params.page;
     this.skillId = to.query.skillId;
+    if (!this.skillId) {
+      this.recommendations.splice(0);
+    }
     next();
     this.fetchCourses();
   },
