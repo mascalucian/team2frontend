@@ -106,7 +106,7 @@ export default {
             courseId: this.recomandation.courseId,
             authorName: this.recomandation.authorName,
             feedback: this.recomandation.feedback,
-            rating: this.recomandation.rating,
+            rating: this.picked,
             skillId: this.recomandation.skillId,
           }
         )
