@@ -1,10 +1,7 @@
 <template>
   <div id="wrapper">
     <div id="delete">
-      <i
-        class="event fas fa-trash-alt fa-lg "
-        v-on:click="deleteSkill(skillId)"
-      ></i>
+      <i class="fas fa-trash-alt fa-lg " v-on:click="deleteSkill(skillId)"></i>
     </div>
     <div id="route">
       <i
@@ -13,18 +10,14 @@
         @click.stop="goToSkill(skill)"
       >
       </i>
-      <div id="skill-name" class="event">
+      <div id="skill-name">
         <input
           type="text"
           v-if="edit"
           v-model="name"
           @keydown.enter="
-            editSkill(name, skillId);
             edit = !edit;
-          "
-          @blur="
             editSkill(name, skillId);
-            edit = !edit;
           "
         />
         <h2 v-else v-on:click="edit = !edit">
@@ -186,12 +179,6 @@ export default {
       input {
         width: 70%;
       }
-    }
-  }
-  .event {
-    z-index: 5;
-    &:hover {
-      cursor: wait;
     }
   }
 }

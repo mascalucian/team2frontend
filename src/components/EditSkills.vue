@@ -93,10 +93,6 @@ export default {
       var skillToEdit = this.testSkills.find((skill) => skill.id === id);
       var index = this.testSkills.indexOf(skillToEdit);
       this.testSkills[index].name = name;
-      console.log(name);
-      console.log(index);
-      console.log(skillToEdit);
-      console.log(this.testSkills);
     },
   },
 };
