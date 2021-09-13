@@ -14,7 +14,7 @@
             <form id="feedback-form" @submit.prevent=submit() class="formflex">
                 <div class="inputbox">
                     <label for="fullname">Full name: </label>
-                    <input type="text" name="fullname" v-model="rating.fullname"/>
+                    <input type="text" name="fullname" v-model="recomandation.authorname"/>
                 </div>
                 <div>
                     <input class="star star-5" id="star-5" type="radio" name="star" value=5 v-model="picked"/>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="inputbox">
                     <label for="feedback">Details: </label>
-                    <input type="text" name="feedback" v-model="rating.feedback"/>
+                    <input type="text" name="feedback" v-model="recomandation.feedback"/>
                 </div>
 
                 <div class="stars">
@@ -47,10 +47,10 @@ export default {
     data() {      
         return{
             picked:1,
-            rating:{
-                fullname:'',
+            recomandation:{
+                authorname:'',
                 feedback:'',
-                stars:5,
+                rating:5,
                 courseId:255, //aici trebuie modificat sa importe cursul pe care dai click din results
             }
         }
@@ -58,8 +58,8 @@ export default {
     },
     methods: {
         submit() {
-            this.rating.stars=this.picked;
-            console.log(this.rating);
+            this.recomandation.rating=this.picked;
+            console.log(this.recomandation);
             // this.rating trebuie trimis catre backend
         },
     },
