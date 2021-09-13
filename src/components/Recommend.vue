@@ -86,6 +86,7 @@ input[type=text] {
     justify-content: center;
     padding-top: 70px;
     width: 100vw;
+    color:white;
 }
 .bigcontainer {
     display: flex;
@@ -95,7 +96,7 @@ input[type=text] {
     width:70%;
     height: 700px;
     min-width: 400px;
-    background-color: rgba(236, 143, 20, 0.164);
+    background-color: #5624d0;
     border-radius: 20px;
 
 }
@@ -138,7 +139,7 @@ label.star {
   float: right;
   padding: 5px;
   font-size: 36px;
-  color: #444;
+  color: white;
   transition: all .2s;
 }
 
