@@ -51,8 +51,8 @@ export default {
   },
   methods: {
     addSkill() {
-      this.newSkill =
-        this.newSkill.charAt(0).toUpperCase() + this.newSkill.toLowerCase().slice(1);
+      // this.newSkill =
+      //   this.newSkill.charAt(0).toUpperCase() + this.newSkill.toLowerCase().slice(1);
       axios
         .post("https://localhost:5001/Skills", {
           name: this.newSkill,
