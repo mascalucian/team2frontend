@@ -15,7 +15,7 @@ export default {
   },
   setup() {
     const signalr = useSignalR();
-    signalr.on("Yeehaw", () => console.log("Yeeeeeeeeeehaw!:cowboy_hat_face:"));
+    signalr.on("Yeehaw", () => console.log("Yeeeeeeeeeehaw! 🤠"));
   },
 };
 </script>

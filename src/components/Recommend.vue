@@ -82,7 +82,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   data() {
     return {
@@ -99,17 +98,14 @@ export default {
   },
   methods: {
     submit() {
-      axios
-        .post(
-          `https://team-2-backend.herokuapp.com/Recomandations/SkillId?SkillId=${this.recomandation.skillId}`,
-          {
-            courseId: this.recomandation.courseId,
-            authorName: this.recomandation.authorName,
-            feedback: this.recomandation.feedback,
-            rating: this.picked,
-            skillId: this.recomandation.skillId,
-          }
-        )
+      this.$http
+        .post(`/Recomandations`, {
+          courseId: this.recomandation.courseId,
+          authorName: this.recomandation.authorName,
+          feedback: this.recomandation.feedback,
+          rating: this.picked,
+          skillId: this.recomandation.skillId,
+        })
         .then(() => {
           this.message = "Recommended successfully!";
           setTimeout(() => {
