@@ -41,9 +41,9 @@
           <router-link to="/login" class="btn">
             Log in
           </router-link>
-          <a href="/register" class="btn">
+          <router-link to="/register" class="btn">
             Register
-          </a>
+          </router-link>
         </div>
       </div>
     </div>
