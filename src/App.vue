@@ -5,10 +5,17 @@
 
 <script>
 import Nav from "./ui/Nav.vue";
+import PubSub from "pubsub.js";
+import { inject } from "vue";
+import { useSignalR } from "@quangdao/vue-signalr";
 export default {
   name: "App",
   components: {
     Nav,
+  },
+  setup() {
+    const signalr = useSignalR();
+    signalr.on("Yeehaw", () => console.log("Yeeeeeeeeeehaw!:cowboy_hat_face:"));
   },
 };
 </script>
@@ -37,9 +44,8 @@ body {
   display: flex;
   flex-direction: column;
   background-color: whitesmoke;
-  font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
-    segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
-    segoe ui symbol;
+  font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui,
+    Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
 }
 
 #app {

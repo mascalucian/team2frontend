@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import Skill from "../ui/Skill.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
@@ -53,8 +52,8 @@ export default {
     addSkill() {
       // this.newSkill =
       //   this.newSkill.charAt(0).toUpperCase() + this.newSkill.toLowerCase().slice(1);
-      axios
-        .post("https://team-2-backend.herokuapp.com/Skills", {
+      this.$http
+        .post("/Skills", {
           name: this.newSkill,
         })
         .then(() => {
@@ -68,8 +67,8 @@ export default {
     deleteSkill(id) {
       var canDelete = confirm("Are you sure you want to delete the skill?");
       if (canDelete) {
-        axios
-          .delete(`https://team-2-backend.herokuapp.com/Skills/${id}`)
+        this.$http
+          .delete(`/Skills/${id}`)
           .then(() => {
             this.fetchSkills();
           })
@@ -88,8 +87,8 @@ export default {
       // console.log(index);
       // console.log(skillToEdit);
       // console.log(this.testSkills);
-      axios
-        .put(`https://team-2-backend.herokuapp.com/Skills/${id}`, {
+      this.$http
+        .put(`/Skills/${id}`, {
           id: id,
           name: name,
         })
@@ -103,8 +102,8 @@ export default {
     async fetchSkills() {
       this.skills = this.skills.splice(0);
       this.isLoading = true;
-      axios
-        .get("https://team-2-backend.herokuapp.com/Skills")
+      this.$http
+        .get("/Skills")
         .then((response) => {
           this.isLoading = false;
           this.skills = response.data;

@@ -6,6 +6,8 @@ import "vue-loading-overlay/dist/vue-loading.css";
 import router from "./router";
 import axios from "axios";
 
+import { VueSignalR } from "@quangdao/vue-signalr";
+
 const app = createApp(App);
 
 if (process.env.NODE_ENV === "development") {
@@ -27,4 +29,7 @@ app.use(
     // slots
   }
 );
+app.use(VueSignalR, {
+  url: `${app.config.globalProperties.$http.defaults.baseURL}/message-hub`,
+});
 app.mount("#app");
