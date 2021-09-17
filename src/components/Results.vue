@@ -63,8 +63,8 @@ export default {
       this.isLoading = true;
       this.results.splice(0);
       if (this.skillId) {
-        await axios
-          .get(`https://team-2-backend.herokuapp.com/Recomandations/${this.skillId}`)
+        await this.$http
+          .get(`/Recomandations/${this.skillId}`)
           .then((response) => {
             this.recommendations = response.data;
           })
