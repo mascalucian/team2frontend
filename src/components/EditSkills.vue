@@ -118,7 +118,7 @@ export default {
       this.skills.push(this.skills.splice(index, 1)[0]);
     });
     signalr.on("SkillDeleted", (data) => {
-      let index = this.skills.findIndex((_) => _.id == data);
+      let index = this.skills.findIndex((_) => _.id == data.id);
       this.skills.splice(index, 1);
     });
   },
