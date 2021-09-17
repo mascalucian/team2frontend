@@ -38,6 +38,12 @@
           >
             My learning
           </a>
+          <router-link to="/login" class="btn">
+            Log in
+          </router-link>
+          <a href="/register" class="btn">
+            Register
+          </a>
         </div>
       </div>
     </div>
@@ -105,6 +111,7 @@ a {
   text-decoration: none;
   color: black;
   font-size: 14px;
+  margin: 0 0.25em;
 }
 .btn:hover,
 .router-link-active {
