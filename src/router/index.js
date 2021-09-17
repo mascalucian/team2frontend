@@ -4,6 +4,8 @@ import Home from "../components/Home.vue";
 import Results from "../components/Results.vue";
 import EditSkills from "../components/EditSkills.vue";
 import Recommend from "../components/Recommend.vue";
+import Login from "../components/Login.vue";
+import Register from "../components/Register.vue";
 
 const routes = [
   {
@@ -24,6 +26,14 @@ const routes = [
   {
     path: "/skills",
     component: EditSkills,
+  },
+  {
+    path: "/login",
+    component: Login,
+  },
+  {
+    path: "/register",
+    component: Register,
   },
   {
     path: "/recommend/:courseId",
