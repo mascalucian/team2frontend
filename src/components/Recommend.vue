@@ -8,7 +8,7 @@
         <form id="feedback-form" @submit.prevent="submit()" class="formflex">
           <div class="inputbox">
             <label for="fullname">Full name: </label>
-            <input type="text" name="fullname" v-model="recomandation.authorName" />
+            <input type="text" name="fullname" v-model="recomandation.userName" />
           </div>
           <div>
             <input
@@ -88,7 +88,7 @@ export default {
       picked: 1,
       message: "",
       recomandation: {
-        authorName: "",
+        userName: "",
         feedback: "",
         rating: 5,
         courseId: undefined,
@@ -101,7 +101,7 @@ export default {
       this.$http
         .post(`/Recomandations`, {
           courseId: this.recomandation.courseId,
-          authorName: this.recomandation.authorName,
+          userName: this.recomandation.userName,
           feedback: this.recomandation.feedback,
           rating: this.picked,
           skillId: this.recomandation.skillId,
