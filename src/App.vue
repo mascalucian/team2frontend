@@ -1,10 +1,12 @@
 <template>
   <Nav />
   <router-view></router-view>
+  <Notifications />
 </template>
 
 <script>
 import Nav from "./ui/Nav.vue";
+import Notifications from "./ui/Notifications.vue";
 import PubSub from "pubsub.js";
 import { inject } from "vue";
 import { useSignalR } from "@quangdao/vue-signalr";
@@ -12,6 +14,7 @@ export default {
   name: "App",
   components: {
     Nav,
+    Notifications,
   },
   setup() {
     const signalr = useSignalR();
@@ -54,6 +57,8 @@ body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 
 * {
