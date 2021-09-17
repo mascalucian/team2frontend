@@ -4,21 +4,26 @@
       <div class="logo">
         <img class="logo-img" src="../assets/udemi.png" />
       </div>
-      <div class="input-group">
-        <div class="input-group-1">
+      <div class="data">
+        <div class="data-input">
           <i class="fas fa-user"></i>
-          <input type="text" class="text-box" placeholder="Username" />
+          <input type="text" class="text-box" placeholder="Username" required />
         </div>
-        <div class="input-group-2">
+        <div class="data-input">
           <i class="fas fa-key"></i>
-          <input type="password" class="text-box" placeholder="Password" />
+          <input
+            type="password"
+            class="text-box"
+            placeholder="Password"
+            required
+          />
         </div>
         <button type="submit" class="button">Log in</button>
       </div>
       <div>
         <p>
           Don't have an account?
-          <router-link to="/register">Sign up</router-link>
+          <router-link to="/register" class="link">Sign up</router-link>
         </p>
       </div>
     </form>
@@ -52,16 +57,16 @@ export default {
     // width: 22em;
     // height: 25em;
     // margin-bottom: 100px;
-    height: 400px;
+    height: 370px;
     width: 350px;
     margin-top: auto;
     margin-bottom: auto;
     background-color: whitesmoke;
     color: black;
-    border-radius: 25px;
+    border-radius: 20px;
     .logo {
       position: absolute;
-      top: 130px;
+      top: 145px;
       height: 170px;
       width: 170px;
       border-radius: 50%;
@@ -78,17 +83,25 @@ export default {
         object-fit: fill;
       }
     }
-    .input-group {
+    .data {
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      // margin-bottom: 130px;
-      &-1,
-      &-2 {
+      margin-top: 5em;
+      .data-input {
         display: flex;
         padding: 0.25em;
-        margin: 0.25em;
+        margin: 0.55em;
+        input {
+          outline: none;
+          border: 1px solid grey;
+          border-radius: 0 0.25rem 0.25rem 0;
+          &:focus,
+          &:hover {
+            border-color: #40abdd;
+          }
+        }
       }
       i {
         background: #ba9bc9;
@@ -102,11 +115,15 @@ export default {
         border: none;
         color: white;
         padding: 0.75em 1.5em;
+        margin: 1em 0 1.35em 0;
         border-radius: 25px;
         &:hover {
           cursor: pointer;
         }
       }
+    }
+    .link {
+      text-decoration: none;
     }
   }
 }
