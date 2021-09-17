@@ -4,6 +4,7 @@ import Home from "../components/Home.vue";
 import Results from "../components/Results.vue";
 import EditSkills from "../components/EditSkills.vue";
 import Recommend from "../components/Recommend.vue";
+import UserPage from "../components/UserPage.vue";
 
 const routes = [
   {
@@ -32,6 +33,10 @@ const routes = [
     query: {
       skillId: "?skillId",
     },
+  },
+  {
+    path: "/userpage",
+    component: UserPage,
   },
 ];
 
