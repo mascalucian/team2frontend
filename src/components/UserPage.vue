@@ -1,11 +1,15 @@
 <template>
     <div class="banner background-tint">
+        <div>
+            <a href="/#/skills"><img src="../assets/home.png" class="home"></a>
+        </div>
     </div>
     <div class="alignment">
         <div class="main-container">
             <div class="user-data">
                 <img src="../assets/logo.png" class="avatar">
                 <h1>Lucian Masca</h1>
+                <h1 class="nrrec">0 recomendations made.</h1>
             </div>
             <div class="user-recommends">
                 <h1 class="recommended">Recommended courses:</h1>
@@ -31,17 +35,27 @@ export default {
 </script>
 
 <style scoped>
+.home {
+    width: 100px;
+    -webkit-filter: drop-shadow(2px 2px 5px rgb(255, 255, 255));
+     filter: drop-shadow(2px 2px 5px rgb(255, 255, 255));
+
+}
+.nrrec {
+    font-size: 30px;
+}
 .avatar{
     width: 200px;
     height: 200px;
     background-color:black;
     border-radius: 50%;
     margin-top: -100px;
+    padding:4px;
 }
 .user-data{
     width: 40%;
     background: rgb(112,54,103);
-background: linear-gradient(34deg, rgba(112,54,103,1) 0%, rgba(185,63,111,1) 100%);
+    background: linear-gradient(34deg, rgb(65, 5, 88) 0%, rgb(60, 12, 194) 100%);
     display:flex;
     flex-direction: column;
     align-items: center;
@@ -67,7 +81,7 @@ background: linear-gradient(34deg, rgba(112,54,103,1) 0%, rgba(185,63,111,1) 100
     min-height: 60%;
 }
 .background-tint {
-  background-color: rgba(200, 0, 27, 0.5); 
+  background-color: #5624D0; 
   background-blend-mode: multiply;
 }
 .banner {
@@ -75,9 +89,13 @@ background: linear-gradient(34deg, rgba(112,54,103,1) 0%, rgba(185,63,111,1) 100
     background-image: url("https://thumbs.dreamstime.com/b/vector-education-pattern-educattion-seamless-background-vector-education-pattern-educattion-seamless-background-vector-113988685.jpg");
     min-height: 40%;
     max-height: 40%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
 }
 h1 { 
-    color: #ffffff; font-size: 48px; font-family: 'Signika', sans-serif; padding-bottom: 10px; text-align: center; 
+    color: #ffffff; font-size: 48px; font-family: 'Signika', sans-serif; padding-bottom: 10px; text-align: center;
+    padding-top:30px; 
 }
 .recommended {
     color:black;
@@ -89,7 +107,7 @@ h1 {
     }
     .user-recommends {
         width: 100%;
-        justify-content: center;
+        
         min-height: 60%;
                 
     }
@@ -102,6 +120,12 @@ h1 {
     }
     .alignment {
         min-height: 80%;
+    }
+    .nrrec {
+        margin-top: -20px;
+    }
+    h1 {
+        padding-top:0px; 
     }
 }
 
