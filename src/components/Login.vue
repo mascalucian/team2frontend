@@ -1,32 +1,30 @@
 <template>
   <div id="wrapper">
-    <form id="login">
-      <div class="logo">
+    <Form id="login" :validation-schema="loginSchema">
+      <router-link to="/" class="logo">
         <img class="logo-img" src="../assets/udemi.png" />
-      </div>
+      </router-link>
       <div class="data">
         <div class="data-input">
           <i class="fas fa-user"></i>
-          <input
-            v-model="username"
-            type="text"
+          <Field
             class="text-box"
+            name="username"
+            v-model="username"
             placeholder="Username"
-            pattern="[A-Za-z]+"
-            title="Only letters in your username please"
-            required
           />
         </div>
+        <ErrorMessage name="username" />
         <div class="data-input">
           <i class="fas fa-key"></i>
-          <input
-            v-model="password"
-            type="password"
+          <Field
             class="text-box"
+            name="password"
+            v-model="password"
             placeholder="Password"
-            required
           />
         </div>
+        <ErrorMessage name="password" />
         <button type="submit" class="button">Log in</button>
       </div>
       <div>
@@ -35,17 +33,36 @@
           <router-link to="/register" class="link">Sign up</router-link>
         </p>
       </div>
-    </form>
+    </Form>
   </div>
 </template>
 
 <script lang="ts">
 // import axios from "axios";
+import { Field, Form, ErrorMessage } from "vee-validate";
+import * as yup from "yup";
 export default {
+  components: {
+    Field,
+    Form,
+    ErrorMessage,
+  },
   data() {
+    const loginSchema = yup.object().shape({
+      email: yup
+        .string()
+        .email()
+        .required(),
+      password: yup
+        .string()
+        .required()
+        .min(6)
+        .max(25),
+    });
     return {
       username: "",
       password: "",
+      loginSchema,
     };
   },
   methods: {},
@@ -62,13 +79,13 @@ export default {
   justify-content: center;
   background-color: #838bc5;
   #login {
+    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
+      segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
+      segoe ui symbol;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    // width: 22em;
-    // height: 25em;
-    // margin-bottom: 100px;
     height: 370px;
     width: 350px;
     margin-top: auto;
@@ -84,7 +101,6 @@ export default {
       border-radius: 50%;
       background: whitesmoke;
       padding: 10px;
-      //text-align: center;
       display: flex;
       align-items: center;
       border: 10px solid #838bc5;

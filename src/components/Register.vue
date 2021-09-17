@@ -1,74 +1,98 @@
 <template>
   <div id="wrapper">
-    <form id="login">
-      <div class="logo">
+    <Form id="register" :validation-schema="registerSchema">
+      <router-link to="/" class="logo">
         <img class="logo-img" src="../assets/udemi.png" />
-      </div>
+      </router-link>
       <div class="data">
         <div class="data-input">
           <i class="fas fa-user"></i>
-          <input
-            v-model.trim="username"
-            type="text"
+          <Field
             class="text-box"
+            name="username"
+            v-model="username"
             placeholder="Username *"
-            pattern="[A-Za-z]+"
-            title="Only letters in your username please"
-            required
           />
         </div>
-        <div class="data-input">
-          <i class="fas fa-key"></i>
-          <input
-            v-model="password"
-            type="password"
-            class="text-box"
-            placeholder="Password *"
-            required
-          />
-        </div>
-        <div class="data-input">
-          <i class="fas fa-key"></i>
-          <input
-            v-model="confirmedPassword"
-            type="password"
-            class="text-box"
-            placeholder="Confirm Password *"
-            required
-          />
-        </div>
+        <ErrorMessage name="username" />
         <div class="data-input">
           <i class="fas fa-envelope"></i>
-          <input
-            v-model.trim="email"
-            type="email"
+          <Field
             class="text-box"
+            name="email"
+            v-model="email"
             placeholder="Email *"
-            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-            required
           />
         </div>
+        <ErrorMessage name="email" as="div" />
+        <div class="data-input">
+          <i class="fas fa-key"></i>
+          <Field
+            class="text-box"
+            name="password"
+            v-model="password"
+            placeholder="Password *"
+          />
+        </div>
+        <ErrorMessage name="password" />
+        <div class="data-input">
+          <i class="fas fa-key"></i>
+          <Field
+            class="text-box"
+            name="confirmedPassword"
+            v-model="confirmedPassword"
+            placeholder="Confirm Password *"
+          />
+        </div>
+        <ErrorMessage name="confirmedPassword" />
         <button type="submit" class="button">Log in</button>
       </div>
-      <div>
+      <div id="text">
         <p>
           Already have an account?
           <router-link to="/login" class="link">Log in</router-link>
         </p>
       </div>
-    </form>
+    </Form>
   </div>
 </template>
 
 <script lang="ts">
 // import axios from "axios";
+import { Field, Form, ErrorMessage } from "vee-validate";
+import * as yup from "yup";
 export default {
+  components: {
+    Field,
+    Form,
+    ErrorMessage,
+  },
   data() {
+    const registerSchema = yup.object().shape({
+      username: yup.string().required(),
+      email: yup
+        .string()
+        .email()
+        .required(),
+      password: yup
+        .string()
+        .required()
+        .min(6)
+        .max(25)
+        .matches(
+          /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+          "Must Contain: /<br>/ 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+        ),
+      passwordConfirm: yup
+        .string()
+        .oneOf([yup.ref("password"), null], "Passwords must match"),
+    });
     return {
       username: "",
       password: "",
       confirmedPassword: "",
       email: "",
+      registerSchema,
     };
   },
   methods: {},
@@ -84,12 +108,17 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: #838bc5;
-  #login {
+  #register {
+    //overflow-y: scroll;
+    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
+      segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
+      segoe ui symbol;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 450px;
+    ///height: 450px;
+    height: fit-content;
     width: 350px;
     margin-top: auto;
     margin-bottom: auto;
@@ -98,7 +127,7 @@ export default {
     border-radius: 20px;
     .logo {
       position: absolute;
-      top: 100px;
+      top: 110px;
       height: 170px;
       width: 170px;
       border-radius: 50%;
@@ -119,7 +148,7 @@ export default {
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      margin-top: 5em;
+      margin-top: 6em;
       .data-input {
         display: flex;
         padding: 0.25em;
@@ -146,15 +175,18 @@ export default {
         border: none;
         color: white;
         padding: 0.75em 1.5em;
-        margin: 1em 0 1.35em 0;
+        margin: 1em 0 1em 0;
         border-radius: 25px;
         &:hover {
           cursor: pointer;
         }
       }
     }
-    .link {
-      text-decoration: none;
+    #text {
+      margin-bottom: 1em;
+      .link {
+        text-decoration: none;
+      }
     }
   }
 }
