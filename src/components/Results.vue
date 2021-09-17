@@ -36,7 +36,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import { inject } from "vue";
+import { useSignalR } from "@quangdao/vue-signalr";
 import Result from "../ui/Result.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
@@ -63,8 +64,8 @@ export default {
       this.isLoading = true;
       this.results.splice(0);
       if (this.skillId) {
-        await axios
-          .get(`https://team-2-backend.herokuapp.com/Recomandations/${this.skillId}`)
+        await this.$http
+          .get(`/Recomandations/${this.skillId}`)
           .then((response) => {
             this.recommendations = response.data;
           })
@@ -72,12 +73,8 @@ export default {
             this.recommendations.splice(0);
           });
       }
-      axios
-        .get(
-          `https://team-2-backend.herokuapp.com/UdemyCourse/${encodeURIComponent(
-            this.query
-          )}/${this.page}`
-        )
+      this.$http
+        .get(`/UdemyCourse/${encodeURIComponent(this.query)}/${this.page}`)
         .then((response) => {
           this.results = response.data.courses;
           this.isLoading = false;
@@ -164,11 +161,15 @@ export default {
     },
   },
   created() {
+    const signalr = useSignalR();
+    signalr.on("RecommendationAdded", (data) => {
+      console.log("OK");
+      this.recommendations.push(data);
+    });
     this.query = this.$route.params.query;
     this.page = this.$route.params.page;
     this.skillId = this.$route.query.skillId;
     this.fetchCourses();
-    // console.log(this.$route.query.skillId);
   },
   beforeRouteUpdate(to, from, next) {
     this.query = to.params.query;

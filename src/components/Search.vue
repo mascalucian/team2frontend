@@ -1,18 +1,11 @@
-<template
-  ><div>
+<template>
+  <div>
     <form class="search" @submit.prevent="search()">
-      <input
-        class="input"
-        placeholder="Search for anything"
-        v-model="searchQuery"
-      />
-      <button
-        type="submit"
-        class="fas fa-search fa-lg"
-        :disabled="!searchQuery"
-      />
-    </form></div
-></template>
+      <input class="input" placeholder="Search for anything" v-model="searchQuery" />
+      <button type="submit" class="fas fa-search fa-lg" :disabled="!searchQuery" />
+    </form>
+  </div>
+</template>
 
 <script>
 export default {
@@ -80,5 +73,9 @@ button {
   &:hover {
     cursor: pointer;
   }
+}
+
+div {
+  padding: 0 2vw;
 }
 </style>
