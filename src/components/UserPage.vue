@@ -9,7 +9,7 @@
             <div class="user-data">
                 <img src="../assets/logo.png" class="avatar">
                 <h1>Lucian Masca</h1>
-                <h1 class="nrrec">0 recomendations made.</h1>
+                <h1 class="nrrec">0 recommendations made.</h1>
             </div>
             <div class="user-recommends">
                 <h1 class="recommended">Recommended courses:</h1>
