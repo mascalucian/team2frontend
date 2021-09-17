@@ -8,15 +8,19 @@
         <div class="data-input">
           <i class="fas fa-user"></i>
           <input
+            v-model.trim="username"
             type="text"
             class="text-box"
             placeholder="Username *"
+            pattern="[A-Za-z]+"
+            title="Only letters in your username please"
             required
           />
         </div>
         <div class="data-input">
           <i class="fas fa-key"></i>
           <input
+            v-model="password"
             type="password"
             class="text-box"
             placeholder="Password *"
@@ -26,6 +30,7 @@
         <div class="data-input">
           <i class="fas fa-key"></i>
           <input
+            v-model="confirmedPassword"
             type="password"
             class="text-box"
             placeholder="Confirm Password *"
@@ -34,7 +39,14 @@
         </div>
         <div class="data-input">
           <i class="fas fa-envelope"></i>
-          <input type="email" class="text-box" placeholder="Email *" required />
+          <input
+            v-model.trim="email"
+            type="email"
+            class="text-box"
+            placeholder="Email *"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            required
+          />
         </div>
         <button type="submit" class="button">Log in</button>
       </div>
@@ -52,7 +64,12 @@
 // import axios from "axios";
 export default {
   data() {
-    return {};
+    return {
+      username: "",
+      password: "",
+      confirmedPassword: "",
+      email: "",
+    };
   },
   methods: {},
   created() {},

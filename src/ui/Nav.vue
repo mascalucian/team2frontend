@@ -38,9 +38,13 @@
           >
             My learning
           </a>
+        </div>
+        <div class="btndiv">
           <router-link to="/login" class="btn">
             Log in
           </router-link>
+        </div>
+        <div class="btndiv">
           <router-link to="/register" class="btn">
             Register
           </router-link>
@@ -106,6 +110,7 @@ a {
 }
 .btndiv {
   padding-left: 12px;
+  text-align: center;
 }
 .btn {
   text-decoration: none;

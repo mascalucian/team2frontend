@@ -7,11 +7,20 @@
       <div class="data">
         <div class="data-input">
           <i class="fas fa-user"></i>
-          <input type="text" class="text-box" placeholder="Username" required />
+          <input
+            v-model="username"
+            type="text"
+            class="text-box"
+            placeholder="Username"
+            pattern="[A-Za-z]+"
+            title="Only letters in your username please"
+            required
+          />
         </div>
         <div class="data-input">
           <i class="fas fa-key"></i>
           <input
+            v-model="password"
             type="password"
             class="text-box"
             placeholder="Password"
@@ -34,7 +43,10 @@
 // import axios from "axios";
 export default {
   data() {
-    return {};
+    return {
+      username: "",
+      password: "",
+    };
   },
   methods: {},
   created() {},
