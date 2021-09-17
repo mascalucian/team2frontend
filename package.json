@@ -9,12 +9,9 @@
   },
   "dependencies": {
     "@aspnet/signalr": "^1.0.27",
-    "@latelier/vue-signalr": "^2.0.4",
     "@quangdao/vue-signalr": "0.0.6",
     "axios": "^0.21.2",
-    "babel-runtime": "^6.26.0",
     "core-js": "^3.6.5",
-    "pubsub.js": "^1.5.2",
     "sass": "^1.39.0",
     "sass-loader": "^10.1.1",
     "vue": "^3.0.0",
