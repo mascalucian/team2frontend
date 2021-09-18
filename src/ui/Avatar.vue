@@ -1,6 +1,12 @@
 <template>
-  <div class="wrapper">
-    <div class="avatar" :style="{ backgroundColor: '#' + getBackgroundColor(name) }">
+  <div id="wrapper">
+    <div
+      id="avatar"
+      :style="{
+        backgroundColor: '#' + getBackgroundColor(name),
+      }"
+      ref="avatar"
+    >
       <p>{{ name[0] }}</p>
     </div>
   </div>
@@ -12,6 +18,7 @@ export default {
     name: {
       type: String,
       required: true,
+      fontSize: "20",
     },
   },
   methods: {
@@ -23,13 +30,22 @@ export default {
       let hexString = asciiSum.toString(16);
       return hexString;
     },
+    getFontSize() {
+      const avatarDiv = this.$refs.avatar;
+      var height = avatarDiv.offsetHeight;
+      avatarDiv.style.fontSize = height / 2 + "px";
+      avatarDiv.style.lineHeight = height + "px";
+    },
+  },
+  mounted() {
+    this.getFontSize();
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  .avatar {
+#wrapper {
+  #avatar {
     width: 100%;
     aspect-ratio: 1 / 1;
     border-radius: 50% !important;
@@ -39,8 +55,8 @@ export default {
     text-align: center;
     vertical-align: middle;
     display: table-cell;
-    font-size: 6em;
     color: white;
+    font-family: "Roboto", sans-serif;
   }
 }
 </style>
