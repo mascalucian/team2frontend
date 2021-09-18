@@ -14,7 +14,7 @@
             placeholder="Username *"
           />
         </div>
-        <ErrorMessage name="username" />
+        <ErrorMessage name="username" class="error-message" />
         <div class="data-input">
           <i class="fas fa-envelope"></i>
           <Field
@@ -24,28 +24,30 @@
             placeholder="Email *"
           />
         </div>
-        <ErrorMessage name="email" as="div" />
+        <ErrorMessage name="email" class="error-message" />
         <div class="data-input">
           <i class="fas fa-key"></i>
           <Field
             class="text-box"
+            type="password"
             name="password"
             v-model="password"
             placeholder="Password *"
           />
         </div>
-        <ErrorMessage name="password" />
+        <ErrorMessage name="password" class="error-message" />
         <div class="data-input">
           <i class="fas fa-key"></i>
           <Field
             class="text-box"
+            type="password"
             name="confirmedPassword"
             v-model="confirmedPassword"
             placeholder="Confirm Password *"
           />
         </div>
-        <ErrorMessage name="confirmedPassword" />
-        <button type="submit" class="button">Log in</button>
+        <ErrorMessage name="confirmedPassword" class="error-message" />
+        <button type="submit" class="button">Sign up</button>
       </div>
       <div id="text">
         <p>
@@ -69,20 +71,23 @@ export default {
   },
   data() {
     const registerSchema = yup.object().shape({
-      username: yup.string().required(),
+      username: yup.string().required("No username provided"),
       email: yup
         .string()
         .email()
-        .required(),
+        .required("No email provided."),
       password: yup
         .string()
-        .required()
-        .min(6)
-        .max(25)
+        .required("No password provided.")
+        .min(8, "Password is too short - should be 8 chars minimum.")
         .matches(
-          /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-          "Must Contain: /<br>/ 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+          /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+          "Password must contain at least 8 characters, one uppercase, one number and one special case character"
         ),
+      // .matches(
+      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      //   "Must contain: 8 characters, one uppercase, one lowercase, one number, one special case character"
+      // ),
       passwordConfirm: yup
         .string()
         .oneOf([yup.ref("password"), null], "Passwords must match"),
@@ -117,17 +122,16 @@ export default {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    ///height: 450px;
     height: fit-content;
     width: 350px;
-    margin-top: auto;
+    margin-top: 6em;
     margin-bottom: auto;
     background-color: whitesmoke;
     color: black;
     border-radius: 20px;
     .logo {
-      position: absolute;
-      top: 110px;
+      position: relative;
+      top: -85px;
       height: 170px;
       width: 170px;
       border-radius: 50%;
@@ -144,11 +148,12 @@ export default {
       }
     }
     .data {
+      position: relative;
+      top: -60px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      margin-top: 6em;
       .data-input {
         display: flex;
         padding: 0.25em;
@@ -162,28 +167,40 @@ export default {
             border-color: #40abdd;
           }
         }
+        i {
+          background: #ba9bc9;
+          color: white;
+          padding: 0.4em;
+          border: 0;
+          border-radius: 0.25rem 0 0 0.25rem;
+        }
       }
-      i {
-        background: #ba9bc9;
-        color: white;
-        padding: 0.4em;
-        border: 0;
-        border-radius: 0.25rem 0 0 0.25rem;
+      .error-message {
+        width: 55%;
+        font-size: 13px;
+        text-align: center;
+        color: rgb(228, 11, 11);
       }
       .button {
         background-color: #ba9bc9;
         border: none;
         color: white;
+        font-weight: 600;
         padding: 0.75em 1.5em;
-        margin: 1em 0 1em 0;
+        margin: 1em 0 0.5em 0;
         border-radius: 25px;
         &:hover {
           cursor: pointer;
+          background-color: #838bc5;
         }
       }
     }
     #text {
-      margin-bottom: 1em;
+      position: relative;
+      top: -40px;
+      p {
+        margin: 0;
+      }
       .link {
         text-decoration: none;
       }

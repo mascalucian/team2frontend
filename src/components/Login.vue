@@ -10,21 +10,23 @@
           <Field
             class="text-box"
             name="username"
+            type="text"
             v-model="username"
             placeholder="Username"
           />
         </div>
-        <ErrorMessage name="username" />
+        <ErrorMessage name="username" class="error-message" />
         <div class="data-input">
           <i class="fas fa-key"></i>
           <Field
             class="text-box"
             name="password"
+            type="password"
             v-model="password"
             placeholder="Password"
           />
         </div>
-        <ErrorMessage name="password" />
+        <ErrorMessage name="password" class="error-message" />
         <button type="submit" class="button">Log in</button>
       </div>
       <div>
@@ -49,15 +51,11 @@ export default {
   },
   data() {
     const loginSchema = yup.object().shape({
-      email: yup
-        .string()
-        .email()
-        .required(),
+      username: yup.string().required("No username provided"),
       password: yup
         .string()
-        .required()
-        .min(6)
-        .max(25),
+        .required("No password provided.")
+        .min(8, "Password is too short - should be 8 chars minimum."),
     });
     return {
       username: "",
@@ -121,6 +119,13 @@ export default {
         display: flex;
         padding: 0.25em;
         margin: 0.55em;
+        i {
+          background: #ba9bc9;
+          color: white;
+          padding: 0.4em;
+          border: 0;
+          border-radius: 0.25rem 0 0 0.25rem;
+        }
         input {
           outline: none;
           border: 1px solid grey;
@@ -131,22 +136,23 @@ export default {
           }
         }
       }
-      i {
-        background: #ba9bc9;
-        color: white;
-        padding: 0.4em;
-        border: 0;
-        border-radius: 0.25rem 0 0 0.25rem;
+      .error-message {
+        width: 55%;
+        font-size: 13px;
+        text-align: center;
+        color: rgb(228, 11, 11);
       }
       .button {
         background-color: #ba9bc9;
         border: none;
         color: white;
+        font-weight: 600;
         padding: 0.75em 1.5em;
         margin: 1em 0 1.35em 0;
         border-radius: 25px;
         &:hover {
           cursor: pointer;
+          background-color: #838bc5;
         }
       }
     }
