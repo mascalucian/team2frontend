@@ -5,7 +5,6 @@ import "vue-loading-overlay/dist/vue-loading.css";
 
 import router from "./router";
 import axios from "axios";
-import Avatar from 'vue-avatar'
 
 import { VueSignalR } from "@quangdao/vue-signalr";
 
@@ -20,7 +19,6 @@ if (process.env.NODE_ENV === "production") {
 
 app.config.globalProperties.$http = axios;
 app.use(router);
-app.use(Avatar);
 app.use(
   VueLoading,
   {
