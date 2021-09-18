@@ -7,12 +7,15 @@
     <div class="alignment">
         <div class="main-container">
             <div class="user-data">
+                <avatar username="Andrei M"></avatar>
                 <img src="../assets/logo.png" class="avatar">
                 <h1>Lucian Masca</h1>
                 <h1 class="nrrec">0 recommendations made.</h1>
             </div>
             <div class="user-recommends">
+                
                 <h1 class="recommended">Recommended courses:</h1>
+                
             </div>
             <div></div>
         </div>           
@@ -22,14 +25,12 @@
 
 <script lang="ts">
 // import axios from "axios";
+
+ 
 export default {
   data() {
     return {
     };
-  },
-  methods: {
-  },
-  created() {
   },
 };
 </script>
