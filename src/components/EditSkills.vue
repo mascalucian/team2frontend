@@ -19,20 +19,22 @@
         :is-full-page="false"
         :background-color="'none'"
       ></loading>
-      <article v-for="skill in skills" :key="skill.id">
-        <Skill
-          v-bind:skillName="skill.name"
-          v-bind:skillId="skill.id"
-          @delete-skill="deleteSkill"
-          @edit-skill="editSkill"
-        />
-      </article>
+      <Skill
+        v-for="(skill, index) in skills"
+        :key="skill.id"
+        v-bind:skillName="skill.name"
+        v-bind:skillId="skill.id"
+        @delete-skill="deleteSkill"
+        @edit-skill="editSkill"
+        :index="index"
+      />
     </section>
   </main>
 </template>
 
 <script>
-import axios from "axios";
+import { inject } from "vue";
+import { useSignalR } from "@quangdao/vue-signalr";
 import Skill from "../ui/Skill.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
@@ -49,12 +51,11 @@ export default {
       isLoading: true,
     };
   },
+  setup() {},
   methods: {
     addSkill() {
-      // this.newSkill =
-      //   this.newSkill.charAt(0).toUpperCase() + this.newSkill.toLowerCase().slice(1);
-      axios
-        .post("https://team-2-backend.herokuapp.com/Skills", {
+      this.$http
+        .post("/Skills", {
           name: this.newSkill,
         })
         .then(() => {
@@ -68,8 +69,8 @@ export default {
     deleteSkill(id) {
       var canDelete = confirm("Are you sure you want to delete the skill?");
       if (canDelete) {
-        axios
-          .delete(`https://team-2-backend.herokuapp.com/Skills/${id}`)
+        this.$http
+          .delete(`/Skills/${id}`)
           .then(() => {
             this.fetchSkills();
           })
@@ -79,17 +80,8 @@ export default {
       }
     },
     editSkill(name, id) {
-      // var skillToEdit = this.testSkills.find((skill) => skill.id === id);
-      // // this.testSkills.splice(this.testSkills.indexOf(skill), 1, name);
-      // //console.log(name);
-      // var index = this.testSkills.indexOf(skillToEdit);
-      // this.testSkills[index].name = name;
-      // console.log(name);
-      // console.log(index);
-      // console.log(skillToEdit);
-      // console.log(this.testSkills);
-      axios
-        .put(`https://team-2-backend.herokuapp.com/Skills/${id}`, {
+      this.$http
+        .put(`/Skills/${id}`, {
           id: id,
           name: name,
         })
@@ -103,8 +95,8 @@ export default {
     async fetchSkills() {
       this.skills = this.skills.splice(0);
       this.isLoading = true;
-      axios
-        .get("https://team-2-backend.herokuapp.com/Skills")
+      this.$http
+        .get("/Skills")
         .then((response) => {
           this.isLoading = false;
           this.skills = response.data;
@@ -117,6 +109,19 @@ export default {
   },
   created() {
     this.fetchSkills();
+    const signalr = useSignalR();
+    signalr.on("SkillCreated", (data) => {
+      this.skills.push(data);
+    });
+    signalr.on("SkillUpdated", (data) => {
+      let index = this.skills.findIndex((_) => _.id == data.id);
+      this.skills[index] = data;
+      this.skills.push(this.skills.splice(index, 1)[0]);
+    });
+    signalr.on("SkillDeleted", (data) => {
+      let index = this.skills.findIndex((_) => _.id == data.id);
+      this.skills.splice(index, 1);
+    });
   },
 };
 </script>
@@ -158,23 +163,6 @@ section {
   align-content: center;
 }
 article {
-  width: 20rem;
-  background-color: $c-u-pur;
-  color: white;
-  margin: 3%;
-  text-align: center;
-  padding: 1rem;
-  border-radius: 20px;
-  box-shadow: 0 2px 11px 1px rgb(0 0 0 / 26%);
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0 2px 7px 4px rgb(0 0 0 / 26%);
-    background-color: $c-u-bl;
-  }
-  h2 {
-    font-size: xx-large;
-    font-weight: bolder;
-  }
 }
 
 form {

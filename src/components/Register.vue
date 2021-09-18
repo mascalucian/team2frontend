@@ -112,7 +112,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #838bc5;
+  background-color: $d-violet;
   #register {
     //overflow-y: scroll;
     font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
@@ -139,7 +139,7 @@ export default {
       padding: 10px;
       display: flex;
       align-items: center;
-      border: 10px solid #838bc5;
+      border: 10px solid $d-violet;
       &-img {
         max-width: 100%;
         max-height: 100%;
@@ -168,7 +168,7 @@ export default {
           }
         }
         i {
-          background: #ba9bc9;
+          background: $l-violet;
           color: white;
           padding: 0.4em;
           border: 0;
@@ -182,7 +182,7 @@ export default {
         color: rgb(228, 11, 11);
       }
       .button {
-        background-color: #ba9bc9;
+        background-color: $l-violet;
         border: none;
         color: white;
         font-weight: 600;
@@ -191,7 +191,7 @@ export default {
         border-radius: 25px;
         &:hover {
           cursor: pointer;
-          background-color: #838bc5;
+          background-color: $d-violet;
         }
       }
     }

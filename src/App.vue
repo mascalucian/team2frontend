@@ -1,14 +1,24 @@
 <template>
   <Nav />
   <router-view></router-view>
+  <Notifications />
 </template>
 
 <script>
 import Nav from "./ui/Nav.vue";
+import Notifications from "./ui/Notifications.vue";
+import PubSub from "pubsub.js";
+import { inject } from "vue";
+import { useSignalR } from "@quangdao/vue-signalr";
 export default {
   name: "App",
   components: {
     Nav,
+    Notifications,
+  },
+  setup() {
+    const signalr = useSignalR();
+    signalr.on("Yeehaw", () => console.log("Yeeeeeeeeeehaw! 🤠"));
   },
 };
 </script>
@@ -37,9 +47,8 @@ body {
   display: flex;
   flex-direction: column;
   background-color: whitesmoke;
-  font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
-    segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
-    segoe ui symbol;
+  font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui,
+    Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
 }
 
 #app {
@@ -48,6 +57,8 @@ body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
 }
 
 * {
