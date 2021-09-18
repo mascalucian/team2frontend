@@ -13,7 +13,13 @@
       ></i>
     </div>
     <div id="route">
-      <i class="fab" :class="getFaIcon(skillName)" @click.stop="goToSkill(skill)"> </i>
+      <i
+        class="fab"
+        :class="getFaIcon(skillName)"
+        @click.stop="goToSkill(skill)"
+        :style="dropDelay"
+      >
+      </i>
       <div id="skill-name" class="event">
         <input
           ref="nameInput"
@@ -50,6 +56,7 @@ export default {
       edit: false,
       name: this.skillName,
       showButtons: false,
+      dropDelay: `--order: ${this.index}`,
     };
   },
   props: {
@@ -58,6 +65,10 @@ export default {
       required: true,
     },
     skillId: {
+      required: true,
+    },
+    index: {
+      type: Number,
       required: true,
     },
   },
@@ -151,6 +162,23 @@ i {
   }
 }
 #wrapper {
+  width: 20rem;
+  background-color: $c-u-pur;
+  color: white;
+  margin: 3%;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 20px;
+  box-shadow: 0 2px 11px 1px rgb(0 0 0 / 26%);
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 2px 7px 4px rgb(0 0 0 / 26%);
+    background-color: $c-u-bl;
+  }
+  h2 {
+    font-size: xx-large;
+    font-weight: bolder;
+  }
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -172,10 +200,26 @@ i {
       width: 100%;
       padding: 2rem 0 1.5rem 0;
       font-size: 5rem;
+      opacity: 0;
+      animation: dropIcon 5s ease forwards;
+      animation-delay: calc(var(--order) * 200ms);
       &:hover,
       :active,
       :focus-visible {
         color: inherit;
+      }
+
+      @keyframes dropIcon {
+        20% {
+          opacity: 0;
+          transform: translateY(-50%);
+        }
+
+        30%,
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
     }
     #skill-name {

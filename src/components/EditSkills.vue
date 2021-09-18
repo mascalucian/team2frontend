@@ -19,14 +19,15 @@
         :is-full-page="false"
         :background-color="'none'"
       ></loading>
-      <article v-for="skill in skills" :key="skill.id">
-        <Skill
-          v-bind:skillName="skill.name"
-          v-bind:skillId="skill.id"
-          @delete-skill="deleteSkill"
-          @edit-skill="editSkill"
-        />
-      </article>
+      <Skill
+        v-for="(skill, index) in skills"
+        :key="skill.id"
+        v-bind:skillName="skill.name"
+        v-bind:skillId="skill.id"
+        @delete-skill="deleteSkill"
+        @edit-skill="editSkill"
+        :index="index"
+      />
     </section>
   </main>
 </template>
@@ -162,23 +163,6 @@ section {
   align-content: center;
 }
 article {
-  width: 20rem;
-  background-color: $c-u-pur;
-  color: white;
-  margin: 3%;
-  text-align: center;
-  padding: 1rem;
-  border-radius: 20px;
-  box-shadow: 0 2px 11px 1px rgb(0 0 0 / 26%);
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0 2px 7px 4px rgb(0 0 0 / 26%);
-    background-color: $c-u-bl;
-  }
-  h2 {
-    font-size: xx-large;
-    font-weight: bolder;
-  }
 }
 
 form {
