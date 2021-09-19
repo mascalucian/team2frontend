@@ -1,9 +1,11 @@
 <template>
-  <div id="wrapper">
+  <div id="wrapper" :style="{ width: size + 'px', height: size + 'px' }">
     <div
       id="avatar"
       :style="{
         backgroundColor: '#' + getBackgroundColor(name),
+        fontSize: size / 2 + 'px',
+        lineHeight: size + 'px',
       }"
       ref="avatar"
     >
@@ -18,7 +20,10 @@ export default {
     name: {
       type: String,
       required: true,
-      fontSize: "20",
+    },
+    size: {
+      type: Number,
+      required: true,
     },
   },
   methods: {
@@ -30,15 +35,6 @@ export default {
       let hexString = asciiSum.toString(16);
       return hexString;
     },
-    getFontSize() {
-      const avatarDiv = this.$refs.avatar;
-      var height = avatarDiv.offsetHeight;
-      avatarDiv.style.fontSize = height / 2 + "px";
-      avatarDiv.style.lineHeight = height + "px";
-    },
-  },
-  mounted() {
-    this.getFontSize();
   },
 };
 </script>

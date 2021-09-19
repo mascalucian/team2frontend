@@ -7,7 +7,7 @@
   <div class="alignment">
     <div class="main-container">
       <div class="user-data">
-        <Avatar :name="'Lucian'" class="avatar" />
+        <Avatar :name="'Lucian'" :size="200" />
         <h1>Lucian Masca</h1>
         <h1 class="nrrec">0 recommendations made.</h1>
       </div>
