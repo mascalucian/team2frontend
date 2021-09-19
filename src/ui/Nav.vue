@@ -19,6 +19,11 @@
         <div class="btndiv" v-if="!isLoggedin">
           <router-link to="/register" class="btn"> Register </router-link>
         </div>
+        <router-link :to="'/user/' + getUserData.id" class="account-button"
+          ><Avatar :name="getUserData.userName" :size="40" v-if="isLoggedin" />
+          <p>{{ getUserData.userName }}</p>
+        </router-link>
+
         <div class="btndiv" v-if="isLoggedin">
           <button type="button" @click.stop.prevent="logout()" class="btn">Logout</button>
         </div>
@@ -29,13 +34,15 @@
 
 <script>
 import Search from "../components/Search.vue";
+import Avatar from "../ui/Avatar.vue";
 import { mapGetters } from "vuex";
 export default {
   components: {
     Search,
+    Avatar,
   },
   computed: {
-    ...mapGetters(["isLoggedin"]),
+    ...mapGetters(["isLoggedin", "getUserData"]),
   },
   methods: {
     logout() {
@@ -103,5 +110,14 @@ a {
 .btn:hover,
 .router-link-active {
   color: rgb(150, 7, 150);
+}
+.account-button {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  p {
+    margin: 0 2rem 0 0.7rem;
+  }
 }
 </style>
