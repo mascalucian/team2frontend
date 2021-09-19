@@ -76,6 +76,7 @@ export default {
         .then((response) => {
           this.results = response.data.courses;
           this.loader.hide();
+          this.loader = undefined;
           this.maxPage = Math.ceil(response.data.numberOfCoursesFound / 12);
           if (response.data.numberOfCoursesFound == 0) {
             if (response.data.wasOverFullFiled) this.message = "Page not found.";
