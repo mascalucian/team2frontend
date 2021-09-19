@@ -7,23 +7,23 @@
         :course="result"
         :recommendations="getRecommendationsForCourse(result)"
       />
-      <div v-if="message && !isLoading" id="error-message">
+      <div v-if="message && !loader" id="error-message">
         {{ message }}
       </div>
     </div>
     <footer v-if="!message">
       <router-link to="/">Go back</router-link>
       <h4>Page: {{ page }} of {{ maxPage }}</h4>
-      <button @click.prevent="first()" :disabled="$route.params.page == '1' || isLoading">
+      <button @click.prevent="first()" :disabled="$route.params.page == '1' || loader">
         <i class="fas fa-angle-double-left"></i>
       </button>
-      <button @click.prevent="prev()" :disabled="$route.params.page == '1' || isLoading">
+      <button @click.prevent="prev()" :disabled="$route.params.page == '1' || loader">
         <i class="fas fa-angle-left"></i>
       </button>
-      <button @click.prevent="next()" :disabled="isLoading || page == maxPage">
+      <button @click.prevent="next()" :disabled="loader || page == maxPage">
         <i class="fas fa-angle-right"></i>
       </button>
-      <button @click.prevent="last()" :disabled="isLoading || page == maxPage">
+      <button @click.prevent="last()" :disabled="loader || page == maxPage">
         <i class="fas fa-angle-double-right"></i>
       </button>
     </footer>

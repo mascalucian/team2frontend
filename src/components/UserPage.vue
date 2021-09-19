@@ -1,32 +1,105 @@
 <template>
-  <div class="banner background-tint">
-    <div>
-      <a href="/#/skills"><img src="../assets/home.png" class="home" /></a>
-    </div>
-  </div>
-  <div class="alignment">
-    <div class="main-container">
-      <div class="user-data">
-        <Avatar :name="'Lucian'" :size="200" />
-        <h1>Lucian Masca</h1>
-        <h1 class="nrrec">0 recommendations made.</h1>
+  <main>
+    <div v-if="user">
+      <div class="banner background-tint">
+        <div>
+          <a href="/#/skills"><img src="../assets/home.png" class="home" /></a>
+        </div>
       </div>
-      <div class="user-recommends">
-        <h1 class="recommended">Recommended courses:</h1>
+      <div class="alignment">
+        <div class="main-container">
+          <div class="user-data">
+            <Avatar :name="user?.userName" :size="200" class="avatar" />
+            <h1>{{ user?.userName }}</h1>
+            <h2>{{ user?.email }}</h2>
+            <p
+              v-for="role in user?.roles"
+              :key="role"
+              class="role"
+              :class="role == 'Admin' ? 'role-admin' : 'role-user'"
+            >
+              {{ role + (role == "Admin" ? " 🔧" : " 😩") }}
+            </p>
+            <h2 class="nrrec">
+              {{
+                recommendations.length
+                  ? recommendations.length + " recommendations made."
+                  : "No recommendations made yet."
+              }}
+            </h2>
+          </div>
+          <div class="user-recommends">
+            <h1 class="recommended">Recommended courses:</h1>
+            <div class="user-recommendations-wrapper">
+              <p v-for="recommendation in recommendations" :key="recommendation.id">
+                Recommended course: {{ recommendation.courseId }} for skill:
+                {{ recommendation.skillId }} with rating {{ recommendation.rating }} and
+                feedback:<br />{{ recommendation.feedback }}
+              </p>
+            </div>
+          </div>
+          <div></div>
+        </div>
       </div>
-      <div></div>
     </div>
-  </div>
+    <div v-else class="vld-parent" ref="loaderWrapper"></div>
+  </main>
 </template>
 
-<script lang="ts">
+<script>
+import { inject } from "vue";
+import { useSignalR } from "@quangdao/vue-signalr";
+import { mapGetters } from "vuex";
 import Avatar from "../ui/Avatar.vue";
 export default {
   data() {
-    return {};
+    return {
+      user: undefined,
+      loader: undefined,
+      recommendations: [],
+    };
+  },
+  computed: {
+    ...mapGetters(["getUserData"]),
   },
   components: {
     Avatar,
+  },
+  methods: {
+    loadData(id) {
+      this.loader = this.$loading.show({
+        container: this.$refs.loaderWrapper,
+        isFullPage: false,
+        backgroundColor: "none",
+        loader: "bars",
+      });
+      this.$http
+        .all([
+          this.$http.get("/users/" + id).then((result) => {
+            this.user = result.data;
+          }),
+          this.$http.get("/Recomandations/user/" + id).then((result) => {
+            this.recommendations = result.data;
+          }),
+        ])
+        .then(() => {
+          this.loader.hide();
+        });
+    },
+  },
+  beforeMount() {
+    this.loadData(this.$route.params.id);
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.loadData(to.params.id);
+    next();
+  },
+  created() {
+    const signalr = useSignalR();
+    signalr.on("RecommendationAdded", (data) => {
+      if (data.recomandation.userId == this.$route.params.id)
+        this.recommendations.push(data.recomandation);
+    });
   },
 };
 </script>
@@ -41,8 +114,7 @@ export default {
   font-size: 30px;
 }
 .avatar {
-  width: 200px;
-  height: 200px;
+  margin-top: 15%;
 }
 .user-data {
   width: 40%;
@@ -86,11 +158,19 @@ export default {
 }
 h1 {
   color: #ffffff;
-  font-size: 48px;
+  font-size: 3rem;
   font-family: "Signika", sans-serif;
-  padding-bottom: 10px;
   text-align: center;
-  padding-top: 30px;
+  padding: 2rem 0;
+  margin: 0;
+}
+h2 {
+  color: #ffffff;
+  font-size: 2rem;
+  font-family: "Signika", sans-serif;
+  text-align: center;
+  padding: 1rem 0;
+  margin: 0;
 }
 .recommended {
   color: black;
@@ -121,5 +201,26 @@ h1 {
   h1 {
     padding-top: 0px;
   }
+}
+
+.vld-parent {
+  height: 100%;
+}
+.user-recommendations-wrapper {
+}
+
+.role {
+  display: inline-block;
+  color: white;
+  padding: 0.5rem 2rem;
+  border-radius: 40px;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.26);
+}
+
+.role-admin {
+  background-color: steelblue;
+}
+.role-user {
+  background-color: indianred;
 }
 </style>

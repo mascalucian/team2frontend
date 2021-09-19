@@ -52,12 +52,6 @@ export default {
         this.addNotification("A skill was deleted: " + data.name, "deleted");
     });
     signalr.on("RecommendationAdded", (data) => {
-      console.log(
-        "Recommendation id: " +
-          data.recomandation.userId +
-          "\nCurrent user id: " +
-          this.getUserData?.id
-      );
       if (
         data.recomandation.userId != this.getUserData?.id ||
         this.getUserData === null
