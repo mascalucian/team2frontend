@@ -1,5 +1,5 @@
 <template>
-  <div id="wrapper" :style="{ width: size + 'px', height: size + 'px' }">
+  <div id="avatar-wrapper" :style="{ width: size + 'px', height: size + 'px' }">
     <div
       id="avatar"
       :style="{
@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#wrapper {
+#avatar-wrapper {
   #avatar {
     width: 100%;
     aspect-ratio: 1 / 1;

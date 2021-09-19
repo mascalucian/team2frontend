@@ -52,6 +52,7 @@ const routes = [
   },
   {
     path: "/user/:id",
+    name: "UserPage",
     component: UserPage,
   },
 ];

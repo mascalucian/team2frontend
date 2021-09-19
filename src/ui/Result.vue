@@ -42,9 +42,20 @@
               </span>
               <h6>Recommended by:</h6>
               <ul>
-                <li v-for="recommendation in recommendations" :key="recommendation.id">
-                  {{ recommendation.authorName }}
-                  gave rating {{ recommendation.rating }}: "{{ recommendation.feedback }}"
+                <li
+                  v-for="recommendation in recommendations"
+                  :key="recommendation.id"
+                  class="result-recommendation"
+                  @click.stop.prevent="goToUser(recommendation.userId)"
+                >
+                  <Avatar :name="recommendation.userName" :size="30" />
+                  <div class="result-recommendation-details">
+                    <p>
+                      {{ recommendation.userName }} gave rating
+                      {{ recommendation.rating }}
+                    </p>
+                    <em>"{{ recommendation.feedback }}"</em>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -68,7 +79,11 @@
 </template>
 
 <script>
+import Avatar from "./Avatar.vue";
 export default {
+  components: {
+    Avatar,
+  },
   data() {
     return {
       isRecommended: false,
@@ -96,6 +111,14 @@ export default {
         },
         query: {
           skillId: this.$route.query.skillId,
+        },
+      });
+    },
+    goToUser(id) {
+      this.$router.push({
+        name: "UserPage",
+        params: {
+          id,
         },
       });
     },
@@ -302,7 +325,7 @@ export default {
   background-color: white;
   opacity: 0;
 
-  max-height: 20rem;
+  max-height: 50vh;
   z-index: 1000 !important;
   border: 1px solid $c-u-gr;
   padding-right: 1rem;
@@ -346,6 +369,42 @@ export default {
     cursor: pointer;
     box-shadow: 0 2px 7px 4px rgb(0 0 0 / 26%);
     background-color: rgba($c-u-pur, 0.8);
+  }
+}
+
+ul {
+  list-style: none;
+  padding: 5%;
+  width: 100%;
+}
+.result-recommendation {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+  &-details {
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  em {
+    padding-top: 0.35rem !important;
+    font-size: 0.8rem !important;
+    margin: 0 !important;
+    font-weight: lighter !important;
+    font-variation-settings: "MONO" 1, "CASL" 1 !important;
+  }
+  p {
+    font-size: 1rem !important;
+    margin: 0 !important;
+    font-weight: normal !important;
+    font-variation-settings: "MONO" 1, "CASL" 1 !important;
+  }
+  &:hover,
+  :active,
+  :focus-visible {
+    background-color: $c-u-gr;
   }
 }
 </style>
