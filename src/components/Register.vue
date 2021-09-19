@@ -126,6 +126,15 @@ export default {
       }
       this.message = "Success!";
       this.isMessageError = false;
+      await this.$store.dispatch("login", {
+        username: this.username,
+        password: this.password,
+      });
+      setTimeout(() => {
+        if (this.$route.params.returnUrl)
+          this.$router.push({ path: this.$route.params.returnUrl });
+        else this.$router.push({ name: "Home" });
+      }, 2000);
     },
   },
   unmounted() {

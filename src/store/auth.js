@@ -56,9 +56,7 @@ const auth = {
           email,
           password,
         })
-        .then(() => {
-          dispatch("login", { username, password });
-        })
+        .then(() => {})
         .catch((error) => {
           console.log(error);
           commit("setErrorMessage", error.response.data.message);
