@@ -8,14 +8,6 @@
           </router-link>
         </div>
         <div class="btndiv">
-          <a
-            href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-            class="btn"
-          >
-            Explore
-          </a>
-        </div>
-        <div class="btndiv">
           <router-link to="/skills" class="btn">
             Skills
           </router-link>
@@ -23,22 +15,6 @@
       </div>
       <Search v-if="$route.name != 'Home'" />
       <div class="rightside">
-        <div class="btndiv">
-          <a
-            href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-            class="btn"
-          >
-            Teach
-          </a>
-        </div>
-        <div class="btndiv">
-          <a
-            href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-            class="btn"
-          >
-            My learning
-          </a>
-        </div>
         <div class="btndiv">
           <router-link to="/login" class="btn">
             Log in
