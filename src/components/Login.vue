@@ -132,12 +132,7 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: $d-violet;
-  form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
+
   #login {
     display: flex;
     align-items: center;
@@ -150,6 +145,12 @@ export default {
     background-color: whitesmoke;
     color: black;
     border-radius: 20px;
+    form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
     .logo {
       position: absolute;
       top: 145px;
@@ -264,6 +265,19 @@ export default {
 
 #loaderWrapper {
   position: absolute;
-  height: 3rem;
+  height: 5rem;
+  width: 5rem;
+  color: $loader;
+}
+
+@media screen and (max-width: 925px) {
+  #wrapper {
+    margin-top: 5em;
+  }
+}
+@media screen and (max-width: 653px) {
+  #wrapper {
+    margin-top: 10em;
+  }
 }
 </style>

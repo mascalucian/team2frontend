@@ -183,17 +183,8 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: $d-violet;
-  form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
+
   #register {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
     height: fit-content;
     width: 25em;
     margin-top: 6em;
@@ -201,6 +192,12 @@ export default {
     background-color: whitesmoke;
     color: black;
     border-radius: 20px;
+    form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
     .logo {
       position: relative;
       top: -85px;
@@ -320,6 +317,19 @@ export default {
 
 #loaderWrapper {
   position: absolute;
-  height: 3rem;
+  height: 5rem;
+  width: 5rem;
+  color: $loader;
+}
+
+@media screen and (max-width: 925px) {
+  #wrapper {
+    margin-top: 5em;
+  }
+}
+@media screen and (max-width: 653px) {
+  #wrapper {
+    margin-top: 10em;
+  }
 }
 </style>
