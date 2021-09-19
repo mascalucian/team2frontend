@@ -2,15 +2,20 @@
   <div
     id="wrapper"
     @mouseenter="showButtons = true"
-    @mouseleave="(showButtons = false), cancelEdit()"
+    @mouseleave="(showButtons = false), cancelEdit(), (deleteConfirm = false)"
     @keyup.escape="cancelEdit()"
   >
-    <div id="delete">
+    <div id="delete" :style="[!showButtons ? { visibility: 'hidden' } : '']">
       <i
-        :style="[!showButtons ? { visibility: 'hidden' } : '']"
+        :style="[deleteConfirm ? { visibility: 'hidden' } : '']"
         class="event fas fa-trash-alt fa-lg"
-        v-on:click="deleteSkill(skillId)"
+        @click.stop.prevent="/*deleteSkill(skillId)*/ deleteConfirm = true"
       ></i>
+      <div :class="[deleteConfirm ? 'show' : '']" class="delete-confirm">
+        Delete skill?
+        <i class="fas fa-times" @click.stop.prevent="deleteConfirm = false"></i>
+        <i class="fas fa-check" @click.stop.prevent="deleteSkill(skillId)"></i>
+      </div>
     </div>
     <div id="route">
       <i
@@ -57,6 +62,7 @@ export default {
       name: this.skillName,
       showButtons: false,
       dropDelay: `--order: ${this.index}`,
+      deleteConfirm: false,
     };
   },
   props: {
@@ -187,6 +193,9 @@ i {
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    flex-direction: row;
+    z-index: 502;
     i {
       margin: 0.45em 0.75em 0 0;
     }
@@ -259,5 +268,47 @@ i {
 #save-button {
   position: absolute;
   right: 3rem !important;
+}
+
+.delete-confirm {
+  width: 0;
+  position: absolute;
+  overflow: hidden;
+  margin: 0;
+  white-space: nowrap;
+  z-index: 501;
+  text-align: left;
+  i {
+    margin: 0 0.4rem !important;
+    cursor: pointer;
+    font-size: 1.3rem;
+    &.fa-times {
+      &:hover,
+      :active,
+      :focus-visible {
+        color: red;
+      }
+    }
+    &.fa-check {
+      &:hover,
+      :active,
+      :focus-visible {
+        color: greenyellow;
+      }
+    }
+  }
+}
+
+.show {
+  animation: grow 1s forwards;
+}
+
+@keyframes grow {
+  from {
+    width: 0;
+  }
+  to {
+    width: 10rem;
+  }
 }
 </style>

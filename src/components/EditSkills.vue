@@ -71,15 +71,12 @@ export default {
         });
     },
     deleteSkill(id) {
-      var canDelete = confirm("Are you sure you want to delete the skill?");
-      if (canDelete) {
-        this.$http
-          .delete(`/Skills/${id}`)
-          .then(() => {})
-          .catch((error) => {
-            console.log(error);
-          });
-      }
+      this.$http
+        .delete(`/Skills/${id}`)
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
     },
     editSkill(name, id) {
       this.$http
