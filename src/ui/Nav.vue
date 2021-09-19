@@ -75,7 +75,8 @@ export default {
   box-shadow: 0px 1px 5px #888888;
 }
 
-a {
+a,
+button {
   font-size: 1.15em !important;
 }
 
@@ -106,14 +107,19 @@ a {
   text-align: center;
 }
 .btn {
-  text-decoration: none;
-  color: black;
-  font-size: 14px;
-  margin: 0 0.25em;
+  text-decoration: none !important;
+  color: black !important;
+  margin: 0 0.25em !important;
+  font-family: inherit;
+  outline: none;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
 }
 .btn:hover,
-.router-link-active {
-  color: rgb(150, 7, 150);
+.router-link-active,
+button:hover {
+  color: rgb(150, 7, 150) !important;
 }
 .account-button {
   display: flex;
