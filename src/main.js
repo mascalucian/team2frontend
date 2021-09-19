@@ -5,6 +5,7 @@ import "vue-loading-overlay/dist/vue-loading.css";
 
 import router from "./router";
 import axios from "axios";
+import store from "./store";
 
 import { VueSignalR } from "@quangdao/vue-signalr";
 
@@ -32,4 +33,5 @@ app.use(
 app.use(VueSignalR, {
   url: `${app.config.globalProperties.$http.defaults.baseURL}/message-hub`,
 });
+app.use(store);
 app.mount("#app");

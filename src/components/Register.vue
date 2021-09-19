@@ -1,67 +1,68 @@
 <template>
   <div id="wrapper">
-    <Form id="register" :validation-schema="registerSchema">
-      <router-link to="/" class="logo">
-        <img class="logo-img" src="../assets/udemi.png" />
-      </router-link>
-      <div class="data">
-        <div class="data-input">
-          <i class="fas fa-user"></i>
-          <Field
-            class="text-box"
-            name="username"
-            v-model="username"
-            placeholder="Username *"
-          />
+    <Form id="register" v-slot="{ handleSubmit }" :validation-schema="registerSchema">
+      <form action="#" @submit.prevent="handleSubmit($event, register)">
+        <router-link to="/" class="logo">
+          <img class="logo-img" src="../assets/udemi.png" />
+        </router-link>
+        <div class="data">
+          <div class="data-input">
+            <i class="fas fa-user"></i>
+            <Field
+              class="text-box"
+              name="username"
+              v-model="username"
+              placeholder="Username *"
+            />
+          </div>
+          <ErrorMessage name="username" class="error-message" />
+          <div class="data-input">
+            <i class="fas fa-envelope"></i>
+            <Field class="text-box" name="email" v-model="email" placeholder="Email *" />
+          </div>
+          <ErrorMessage name="email" class="error-message" />
+          <div class="data-input">
+            <i class="fas fa-key"></i>
+            <Field
+              class="text-box"
+              type="password"
+              name="password"
+              v-model="password"
+              placeholder="Password *"
+            />
+          </div>
+          <ErrorMessage name="password" class="error-message" />
+          <div class="data-input">
+            <i class="fas fa-key"></i>
+            <Field
+              class="text-box"
+              type="password"
+              name="confirmedPassword"
+              v-model="confirmedPassword"
+              placeholder="Confirm Password *"
+            />
+          </div>
+          <ErrorMessage name="confirmedPassword" class="error-message" />
+          <button type="submit" class="button">Sign up</button>
         </div>
-        <ErrorMessage name="username" class="error-message" />
-        <div class="data-input">
-          <i class="fas fa-envelope"></i>
-          <Field
-            class="text-box"
-            name="email"
-            v-model="email"
-            placeholder="Email *"
-          />
+        <div id="text">
+          <p>
+            Already have an account?
+            <router-link to="/login" class="link">Log in</router-link>
+          </p>
         </div>
-        <ErrorMessage name="email" class="error-message" />
-        <div class="data-input">
-          <i class="fas fa-key"></i>
-          <Field
-            class="text-box"
-            type="password"
-            name="password"
-            v-model="password"
-            placeholder="Password *"
-          />
+        <div id="loaderWrapper" ref="loaderWrapper" class="vld-parent"></div>
+        <div v-if="message" :class="isMessageError ? 'error' : 'success'">
+          <p>{{ message }}</p>
         </div>
-        <ErrorMessage name="password" class="error-message" />
-        <div class="data-input">
-          <i class="fas fa-key"></i>
-          <Field
-            class="text-box"
-            type="password"
-            name="confirmedPassword"
-            v-model="confirmedPassword"
-            placeholder="Confirm Password *"
-          />
-        </div>
-        <ErrorMessage name="confirmedPassword" class="error-message" />
-        <button type="submit" class="button">Sign up</button>
-      </div>
-      <div id="text">
-        <p>
-          Already have an account?
-          <router-link to="/login" class="link">Log in</router-link>
-        </p>
-      </div>
+      </form>
     </Form>
   </div>
 </template>
 
 <script lang="ts">
-// import axios from "axios";
 import { Field, Form, ErrorMessage } from "vee-validate";
+import { mapGetters } from "vuex";
 import * as yup from "yup";
 export default {
   components: {
@@ -72,36 +73,78 @@ export default {
   data() {
     const registerSchema = yup.object().shape({
       username: yup.string().required("No username provided"),
-      email: yup
-        .string()
-        .email()
-        .required("No email provided."),
+      email: yup.string().email().required("No email provided."),
       password: yup
         .string()
-        .required("No password provided.")
-        .min(8, "Password is too short - should be 8 chars minimum.")
         .matches(
           /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
           "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-        ),
-      // .matches(
-      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      //   "Must contain: 8 characters, one uppercase, one lowercase, one number, one special case character"
-      // ),
-      passwordConfirm: yup
+        )
+        .min(8, "Password is too short - should be 8 chars minimum.")
+        .required("No password provided."),
+      confirmedPassword: yup
         .string()
-        .oneOf([yup.ref("password"), null], "Passwords must match"),
+        .oneOf([yup.ref("password"), null], "Passwords must match")
+        .required("Please confirm your password."),
     });
     return {
       username: "",
       password: "",
       confirmedPassword: "",
       email: "",
+      message: "",
+      isMessageError: false,
       registerSchema,
+      loader: undefined,
     };
   },
-  methods: {},
-  created() {},
+  computed: {
+    ...mapGetters(
+      ["isLoggedin", "getErrorMessage"] // -> this.someGetter
+    ),
+  },
+  methods: {
+    async register() {
+      this.loader = this.$loading.show({
+        container: this.$refs.loaderWrapper,
+        isFullPage: false,
+        backgroundColor: "none",
+        loader: "bars",
+      });
+      this.$store.commit("setErrorMessage", "");
+      await this.$store.dispatch("register", {
+        username: this.username,
+        email: this.email,
+        password: this.password,
+      });
+      this.loader.hide();
+
+      if (this.getErrorMessage) {
+        this.message = this.getErrorMessage;
+        this.isMessageError = true;
+        return;
+      }
+      this.message = "Success!";
+      this.isMessageError = false;
+      await this.$store.dispatch("login", {
+        username: this.username,
+        password: this.password,
+      });
+      setTimeout(() => {
+        if (this.$route.params.returnUrl)
+          this.$router.push({ path: this.$route.params.returnUrl });
+        else this.$router.push({ name: "Home" });
+      }, 2000);
+    },
+  },
+  unmounted() {
+    this.$store.commit("setErrorMessage", "");
+  },
+  created() {
+    if (this.isLoggedin) {
+      this.$router.go(-1);
+    }
+  },
 };
 </script>
 
@@ -115,9 +158,8 @@ export default {
   background-color: $d-violet;
   #register {
     //overflow-y: scroll;
-    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
-      segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
-      segoe ui symbol;
+    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui,
+      Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -206,5 +248,16 @@ export default {
       }
     }
   }
+}
+
+.error {
+  color: red;
+}
+.success {
+  color: green;
+}
+
+#loaderWrapper {
+  height: 5rem;
 }
 </style>

@@ -1,47 +1,53 @@
 <template>
   <div id="wrapper">
-    <Form id="login" :validation-schema="loginSchema">
-      <router-link to="/" class="logo">
-        <img class="logo-img" src="../assets/udemi.png" />
-      </router-link>
-      <div class="data">
-        <div class="data-input">
-          <i class="fas fa-user"></i>
-          <Field
-            class="text-box"
-            name="username"
-            type="text"
-            v-model="username"
-            placeholder="Username"
-          />
+    <Form v-slot="{ handleSubmit }" id="login" :validation-schema="loginSchema">
+      <form action="#" @submit.prevent="handleSubmit($event, login)">
+        <router-link to="/" class="logo">
+          <img class="logo-img" src="../assets/udemi.png" />
+        </router-link>
+        <div class="data">
+          <div class="data-input">
+            <i class="fas fa-user"></i>
+            <Field
+              class="text-box"
+              name="username"
+              type="text"
+              v-model="username"
+              placeholder="Username"
+            />
+          </div>
+          <ErrorMessage name="username" class="error-message" />
+          <div class="data-input">
+            <i class="fas fa-key"></i>
+            <Field
+              class="text-box"
+              name="password"
+              type="password"
+              v-model="password"
+              placeholder="Password"
+            />
+          </div>
+          <ErrorMessage name="password" class="error-message" />
+          <button type="submit" class="button">Log in</button>
         </div>
-        <ErrorMessage name="username" class="error-message" />
-        <div class="data-input">
-          <i class="fas fa-key"></i>
-          <Field
-            class="text-box"
-            name="password"
-            type="password"
-            v-model="password"
-            placeholder="Password"
-          />
+        <div>
+          <p>
+            Don't have an account?
+            <router-link to="/register" class="link">Sign up</router-link>
+          </p>
         </div>
-        <ErrorMessage name="password" class="error-message" />
-        <button type="submit" class="button">Log in</button>
-      </div>
-      <div>
-        <p>
-          Don't have an account?
-          <router-link to="/register" class="link">Sign up</router-link>
-        </p>
-      </div>
+        <div id="loaderWrapper" ref="loaderWrapper" class="vld-parent"></div>
+        <div v-if="message" :class="isMessageError ? 'error' : 'success'">
+          <p>{{ message }}</p>
+        </div>
+      </form>
     </Form>
   </div>
 </template>
 
 <script lang="ts">
-// import axios from "axios";
 import { Field, Form, ErrorMessage } from "vee-validate";
+import { mapGetters } from "vuex";
 import * as yup from "yup";
 export default {
   components: {
@@ -60,11 +66,52 @@ export default {
     return {
       username: "",
       password: "",
+      message: "",
+      isMessageError: false,
       loginSchema,
+      loader: undefined,
     };
   },
-  methods: {},
-  created() {},
+  methods: {
+    async login() {
+      this.loader = this.$loading.show({
+        container: this.$refs.loaderWrapper,
+        isFullPage: false,
+        backgroundColor: "none",
+        loader: "bars",
+      });
+      await this.$store.dispatch("login", {
+        username: this.username,
+        password: this.password,
+      });
+      this.loader.hide();
+      if (!this.isLoggedin) {
+        this.message = this.getErrorMessage;
+        this.isMessageError = true;
+        return;
+      }
+      this.message = "Success!";
+      this.isMessageError = false;
+      setTimeout(() => {
+        if (this.$route.params.returnUrl)
+          this.$router.push({ path: this.$route.params.returnUrl });
+        else this.$router.push({ name: "Home" });
+      }, 2000);
+    },
+  },
+  computed: {
+    ...mapGetters(
+      ["isLoggedin", "getErrorMessage"] // -> this.someGetter
+    ),
+  },
+  created() {
+    if (this.isLoggedin) {
+      this.$router.go(-1);
+    }
+  },
+  unmounted() {
+    this.$store.commit("setErrorMessage", "");
+  },
 };
 </script>
 
@@ -77,9 +124,8 @@ export default {
   justify-content: center;
   background-color: $d-violet;
   #login {
-    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
-      segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
-      segoe ui symbol;
+    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui,
+      Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -160,5 +206,16 @@ export default {
       text-decoration: none;
     }
   }
+}
+
+.error {
+  color: red;
+}
+.success {
+  color: green;
+}
+
+#loaderWrapper {
+  height: 5rem;
 }
 </style>

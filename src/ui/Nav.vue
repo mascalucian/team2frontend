@@ -8,22 +8,19 @@
           </router-link>
         </div>
         <div class="btndiv">
-          <router-link to="/skills" class="btn">
-            Skills
-          </router-link>
+          <router-link to="/skills" class="btn"> Skills </router-link>
         </div>
       </div>
       <Search v-if="$route.name != 'Home'" />
       <div class="rightside">
-        <div class="btndiv">
-          <router-link to="/login" class="btn">
-            Log in
-          </router-link>
+        <div class="btndiv" v-if="!isLoggedin">
+          <router-link to="/login" class="btn"> Log in </router-link>
         </div>
-        <div class="btndiv">
-          <router-link to="/register" class="btn">
-            Register
-          </router-link>
+        <div class="btndiv" v-if="!isLoggedin">
+          <router-link to="/register" class="btn"> Register </router-link>
+        </div>
+        <div class="btndiv" v-if="isLoggedin">
+          <button type="button" @click.stop.prevent="logout()" class="btn">Logout</button>
         </div>
       </div>
     </div>
@@ -32,9 +29,18 @@
 
 <script>
 import Search from "../components/Search.vue";
+import { mapGetters } from "vuex";
 export default {
   components: {
     Search,
+  },
+  computed: {
+    ...mapGetters(["isLoggedin"]),
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+    },
   },
 };
 </script>
