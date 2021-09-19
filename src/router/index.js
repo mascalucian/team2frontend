@@ -8,6 +8,8 @@ import Login from "../components/Login.vue";
 import Register from "../components/Register.vue";
 import UserPage from "../components/UserPage.vue";
 
+import store from "../store";
+
 const routes = [
   {
     path: "/",
@@ -29,7 +31,8 @@ const routes = [
     component: EditSkills,
   },
   {
-    path: "/login",
+    path: "/login/:returnUrl?",
+    name: "Login",
     component: Login,
   },
   {
@@ -56,6 +59,19 @@ const router = createRouter({
   scrollBehavior() {
     document.getElementById("app").scrollIntoView();
   },
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresLogin)) {
+    if (!store.getters.isLoggedin)
+      next({
+        name: "Login",
+        params: { returnUrl: to.fullPath },
+      });
+    else next();
+  } else {
+    next();
+  }
 });
 
 export default router;
