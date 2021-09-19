@@ -1,6 +1,10 @@
 <template>
   <div id="wrapper">
-    <Form id="register" v-slot="{ handleSubmit }" :validation-schema="registerSchema">
+    <Form
+      id="register"
+      v-slot="{ handleSubmit }"
+      :validation-schema="registerSchema"
+    >
       <form action="#" @submit.prevent="handleSubmit($event, register)">
         <router-link to="/" class="logo">
           <img class="logo-img" src="../assets/udemi.png" />
@@ -14,35 +18,55 @@
               v-model="username"
               placeholder="Username *"
             />
+            <ErrorMessage name="username" class="error-message" />
           </div>
-          <ErrorMessage name="username" class="error-message" />
+
           <div class="data-input">
             <i class="fas fa-envelope"></i>
-            <Field class="text-box" name="email" v-model="email" placeholder="Email *" />
+            <Field
+              class="text-box"
+              name="email"
+              v-model="email"
+              placeholder="Email *"
+            />
+            <ErrorMessage name="email" class="error-message" />
           </div>
-          <ErrorMessage name="email" class="error-message" />
           <div class="data-input">
             <i class="fas fa-key"></i>
             <Field
-              class="text-box"
-              type="password"
+              class="text-box pass"
+              v-bind:type="[showPassword ? 'text' : 'password']"
               name="password"
               v-model="password"
               placeholder="Password *"
             />
+            <ErrorMessage name="password" class="error-message" />
+            <i
+              class="fa eye"
+              :class="[showPassword ? 'fa-eye' : 'fa-eye-slash']"
+              aria-hidden="true"
+              v-on:click="showPassword = !showPassword"
+            ></i>
           </div>
-          <ErrorMessage name="password" class="error-message" />
+
           <div class="data-input">
             <i class="fas fa-key"></i>
             <Field
-              class="text-box"
-              type="password"
+              class="text-box pass"
+              v-bind:type="[showConfirmedPassword ? 'text' : 'password']"
               name="confirmedPassword"
               v-model="confirmedPassword"
               placeholder="Confirm Password *"
             />
+            <ErrorMessage name="confirmedPassword" class="error-message" />
+            <i
+              class="fa eye"
+              :class="[showConfirmedPassword ? 'fa-eye' : 'fa-eye-slash']"
+              aria-hidden="true"
+              v-on:click="showConfirmedPassword = !showConfirmedPassword"
+            ></i>
           </div>
-          <ErrorMessage name="confirmedPassword" class="error-message" />
+
           <button type="submit" class="button">Sign up</button>
         </div>
         <div id="text">
@@ -73,15 +97,16 @@ export default {
   data() {
     const registerSchema = yup.object().shape({
       username: yup.string().required("No username provided"),
-      email: yup.string().email().required("No email provided."),
+      email: yup
+        .string()
+        .email("Email format is invalid")
+        .required("No email provided."),
       password: yup
         .string()
         .matches(
           /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-          "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-        )
-        .min(8, "Password is too short - should be 8 chars minimum.")
-        .required("No password provided."),
+          "Password needs: 8 characters, one uppercase, one number, one special character"
+        ),
       confirmedPassword: yup
         .string()
         .oneOf([yup.ref("password"), null], "Passwords must match")
@@ -92,6 +117,8 @@ export default {
       password: "",
       confirmedPassword: "",
       email: "",
+      showPassword: false,
+      showConfirmedPassword: false,
       message: "",
       isMessageError: false,
       registerSchema,
@@ -156,21 +183,21 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: $d-violet;
+
   #register {
-    //overflow-y: scroll;
-    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui,
-      Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
     height: fit-content;
-    width: 350px;
+    width: 25em;
     margin-top: 6em;
     margin-bottom: auto;
     background-color: whitesmoke;
     color: black;
     border-radius: 20px;
+    form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
     .logo {
       position: relative;
       top: -85px;
@@ -191,21 +218,26 @@ export default {
     }
     .data {
       position: relative;
-      top: -60px;
+      top: -70px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
       .data-input {
         display: flex;
-        padding: 0.25em;
+        justify-content: center;
+        padding: 0.75em;
         margin: 0.55em;
+
         input {
+          width: 15em;
           outline: none;
           border: 1px solid grey;
           border-radius: 0 0.25rem 0.25rem 0;
           &:focus,
-          &:hover {
+          &:focus + .eye,
+          &:hover,
+          &:hover + .eye {
             border-color: #40abdd;
           }
         }
@@ -216,9 +248,26 @@ export default {
           border: 0;
           border-radius: 0.25rem 0 0 0.25rem;
         }
+        .eye {
+          background-color: white;
+          color: rgb(168, 167, 167);
+          border: 1px solid grey;
+          border-left: none;
+          border-radius: 0 0.25rem 0.25rem 0;
+        }
+        .fa-eye-slash {
+          padding: 6.4px 5px;
+        }
+        .pass {
+          width: 13em;
+          border-right: none;
+          border-radius: 0;
+        }
       }
       .error-message {
-        width: 55%;
+        // width: 65%;
+        position: absolute;
+        margin-top: 3em;
         font-size: 13px;
         text-align: center;
         color: rgb(228, 11, 11);
@@ -229,7 +278,7 @@ export default {
         color: white;
         font-weight: 600;
         padding: 0.75em 1.5em;
-        margin: 1em 0 0.5em 0;
+        margin: 1.2em 0 0.5em 0;
         border-radius: 25px;
         &:hover {
           cursor: pointer;
@@ -256,8 +305,31 @@ export default {
 .success {
   color: green;
 }
+.error,
+.success {
+  position: relative;
+  top: -20px;
+  padding: 5px;
+  p {
+    margin: 0;
+  }
+}
 
 #loaderWrapper {
+  position: absolute;
   height: 5rem;
+  width: 5rem;
+  color: $loader;
+}
+
+@media screen and (max-width: 925px) {
+  #wrapper {
+    margin-top: 5em;
+  }
+}
+@media screen and (max-width: 653px) {
+  #wrapper {
+    margin-top: 10em;
+  }
 }
 </style>

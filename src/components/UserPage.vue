@@ -3,7 +3,7 @@
     <div v-if="user">
       <div class="banner background-tint">
         <div>
-          <a href="/#/skills"><img src="../assets/home.png" class="home" /></a>
+          <a href="/#/skills"><img src="../assets/home.png" class="home"/></a>
         </div>
       </div>
       <div class="alignment">
@@ -31,10 +31,15 @@
           <div class="user-recommends">
             <h1 class="recommended">Recommended courses:</h1>
             <div class="user-recommendations-wrapper">
-              <p v-for="recommendation in recommendations" :key="recommendation.id">
+              <p
+                v-for="recommendation in recommendations"
+                :key="recommendation.id"
+              >
                 Recommended course: {{ recommendation.courseId }} for skill:
-                {{ recommendation.skillId }} with rating {{ recommendation.rating }} and
-                feedback:<br />{{ recommendation.feedback }}
+                {{ recommendation.skillId }} with rating
+                {{ recommendation.rating }} and feedback:<br />{{
+                  recommendation.feedback
+                }}
               </p>
             </div>
           </div>
@@ -206,8 +211,8 @@ h2 {
 .vld-parent {
   height: 100%;
 }
-.user-recommendations-wrapper {
-}
+/* .user-recommendations-wrapper {
+} */
 
 .role {
   display: inline-block;
