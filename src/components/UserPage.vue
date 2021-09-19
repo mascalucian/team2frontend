@@ -30,10 +30,10 @@
           </div>
           <div class="user-recommends">
             <h1 class="recommended">Recommended courses:</h1>
-            <div class="user-recommendations-wrapper recommendation">
+            <div class="user-recommendations-wrapper recommendation" v-for="recommendation in recommendations" :key="recommendation.id">
               <p
-                v-for="recommendation in recommendations"
-                :key="recommendation.id"
+                
+                
               >
                 Recommended course: {{ recommendation.courseId }} for skill:
                 {{ recommendation.skillId }} with rating
