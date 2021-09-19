@@ -1,55 +1,61 @@
 <template>
   <div id="wrapper">
-    <Form id="login" :validation-schema="loginSchema">
-      <router-link to="/" class="logo">
-        <img class="logo-img" src="../assets/udemi.png" />
-      </router-link>
-      <div class="data">
-        <div class="data-input">
-          <i class="fas fa-user"></i>
-          <Field
-            class="text-box"
-            name="username"
-            type="text"
-            v-model="username"
-            placeholder="Username"
-          />
-          <ErrorMessage name="username" class="error-message" />
-        </div>
+    <Form v-slot="{ handleSubmit }" id="login" :validation-schema="loginSchema">
+      <form action="#" @submit.prevent="handleSubmit($event, login)">
+        <router-link to="/" class="logo">
+          <img class="logo-img" src="../assets/udemi.png" />
+        </router-link>
+        <div class="data">
+          <div class="data-input">
+            <i class="fas fa-user"></i>
+            <Field
+              class="text-box"
+              name="username"
+              type="text"
+              v-model="username"
+              placeholder="Username"
+            />
+            <ErrorMessage name="username" class="error-message" />
+          </div>
 
-        <div class="data-input">
-          <i class="fas fa-key"></i>
-          <Field
-            class="text-box pass"
-            name="password"
-            v-bind:type="[showPassword ? 'text' : 'password']"
-            v-model="password"
-            placeholder="Password"
-          />
-          <ErrorMessage name="password" class="error-message" />
-          <i
-            class="fa eye"
-            :class="[showPassword ? 'fa-eye' : 'fa-eye-slash']"
-            aria-hidden="true"
-            v-on:click="showPassword = !showPassword"
-          ></i>
-        </div>
+          <div class="data-input">
+            <i class="fas fa-key"></i>
+            <Field
+              class="text-box pass"
+              name="password"
+              v-bind:type="[showPassword ? 'text' : 'password']"
+              v-model="password"
+              placeholder="Password"
+            />
+            <ErrorMessage name="password" class="error-message" />
+            <i
+              class="fa eye"
+              :class="[showPassword ? 'fa-eye' : 'fa-eye-slash']"
+              aria-hidden="true"
+              v-on:click="showPassword = !showPassword"
+            ></i>
+          </div>
 
-        <button type="submit" class="button">Log in</button>
-      </div>
-      <div>
-        <p>
-          Don't have an account?
-          <router-link to="/register" class="link">Sign up</router-link>
-        </p>
-      </div>
+          <button type="submit" class="button">Log in</button>
+        </div>
+        <div>
+          <p>
+            Don't have an account?
+            <router-link to="/register" class="link">Sign up</router-link>
+          </p>
+        </div>
+        <div id="loaderWrapper" ref="loaderWrapper" class="vld-parent"></div>
+        <div v-if="message" :class="isMessageError ? 'error' : 'success'">
+          <p>{{ message }}</p>
+        </div>
+      </form>
     </Form>
   </div>
 </template>
 
 <script lang="ts">
-// import axios from "axios";
 import { Field, Form, ErrorMessage } from "vee-validate";
+import { mapGetters } from "vuex";
 import * as yup from "yup";
 export default {
   components: {
@@ -69,11 +75,52 @@ export default {
       username: "",
       password: "",
       showPassword: false,
+      message: "",
+      isMessageError: false,
       loginSchema,
+      loader: undefined,
     };
   },
-  methods: {},
-  created() {},
+  methods: {
+    async login() {
+      this.loader = this.$loading.show({
+        container: this.$refs.loaderWrapper,
+        isFullPage: false,
+        backgroundColor: "none",
+        loader: "bars",
+      });
+      await this.$store.dispatch("login", {
+        username: this.username,
+        password: this.password,
+      });
+      this.loader.hide();
+      if (!this.isLoggedin) {
+        this.message = this.getErrorMessage;
+        this.isMessageError = true;
+        return;
+      }
+      this.message = "Success!";
+      this.isMessageError = false;
+      setTimeout(() => {
+        if (this.$route.params.returnUrl)
+          this.$router.push({ path: this.$route.params.returnUrl });
+        else this.$router.push({ name: "Home" });
+      }, 2000);
+    },
+  },
+  computed: {
+    ...mapGetters(
+      ["isLoggedin", "getErrorMessage"] // -> this.someGetter
+    ),
+  },
+  created() {
+    if (this.isLoggedin) {
+      this.$router.go(-1);
+    }
+  },
+  unmounted() {
+    this.$store.commit("setErrorMessage", "");
+  },
 };
 </script>
 
@@ -193,5 +240,16 @@ export default {
       text-decoration: none;
     }
   }
+}
+
+.error {
+  color: red;
+}
+.success {
+  color: green;
+}
+
+#loaderWrapper {
+  height: 5rem;
 }
 </style>

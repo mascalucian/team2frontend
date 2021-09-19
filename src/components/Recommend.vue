@@ -6,10 +6,6 @@
       </div>
       <div class="stars">
         <form id="feedback-form" @submit.prevent="submit()" class="formflex">
-          <div class="inputbox">
-            <label for="fullname">Full name: </label>
-            <input type="text" name="fullname" v-model="recomandation.userName" />
-          </div>
           <div>
             <input
               class="star star-5"
@@ -82,13 +78,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       picked: 1,
       message: "",
       recomandation: {
-        userName: "",
         feedback: "",
         rating: 5,
         courseId: undefined,
@@ -96,15 +92,19 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters(["getUserData"]),
+  },
   methods: {
     submit() {
       this.$http
         .post(`/Recomandations`, {
           courseId: this.recomandation.courseId,
-          userName: this.recomandation.userName,
+          userName: this.getUserData.userName,
           feedback: this.recomandation.feedback,
           rating: this.picked,
           skillId: this.recomandation.skillId,
+          userId: this.getUserData.id,
         })
         .then(() => {
           this.message = "Recommended successfully!";

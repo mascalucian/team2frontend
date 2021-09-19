@@ -8,46 +8,27 @@
           </router-link>
         </div>
         <div class="btndiv">
-          <a
-            href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-            class="btn"
-          >
-            Explore
-          </a>
-        </div>
-        <div class="btndiv">
-          <router-link to="/skills" class="btn">
-            Skills
-          </router-link>
+          <router-link to="/skills" class="btn"> Skills </router-link>
         </div>
       </div>
       <Search v-if="$route.name != 'Home'" />
       <div class="rightside">
-        <div class="btndiv">
-          <a
-            href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-            class="btn"
-          >
-            Teach
-          </a>
+        <div class="btndiv" v-if="!isLoggedin">
+          <router-link to="/login" class="btn"> Log in </router-link>
         </div>
-        <div class="btndiv">
-          <a
-            href="https://principalgroup.udemy.com/organization/home/category/top-picks/"
-            class="btn"
-          >
-            My learning
-          </a>
+        <div class="btndiv" v-if="!isLoggedin">
+          <router-link to="/register" class="btn"> Register </router-link>
         </div>
-        <div class="btndiv">
-          <router-link to="/login" class="btn">
-            Log in
-          </router-link>
-        </div>
-        <div class="btndiv">
-          <router-link to="/register" class="btn">
-            Register
-          </router-link>
+        <router-link
+          :to="'/user/' + getUserData.id"
+          class="account-button"
+          v-if="isLoggedin"
+          ><Avatar :name="getUserData.userName" :size="40" />
+          <p>{{ getUserData.userName }}</p>
+        </router-link>
+
+        <div class="btndiv" v-if="isLoggedin">
+          <button type="button" @click.stop.prevent="logout()" class="btn">Logout</button>
         </div>
       </div>
     </div>
@@ -56,9 +37,20 @@
 
 <script>
 import Search from "../components/Search.vue";
+import Avatar from "../ui/Avatar.vue";
+import { mapGetters } from "vuex";
 export default {
   components: {
     Search,
+    Avatar,
+  },
+  computed: {
+    ...mapGetters(["isLoggedin", "getUserData"]),
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+    },
   },
 };
 </script>
@@ -74,6 +66,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   height: 80px;
+  flex-wrap: wrap;
   align-items: center;
   padding-left: 20px;
   padding-right: 20px;
@@ -121,5 +114,29 @@ a {
 .btn:hover,
 .router-link-active {
   color: rgb(150, 7, 150);
+}
+.account-button {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  p {
+    margin: 0 2rem 0 0.7rem;
+  }
+}
+
+@media screen and (max-width: 925px) {
+  .headerflex {
+    height: 160px;
+    align-content: center;
+  }
+}
+@media screen and (max-width: 653px) {
+  .headerflex {
+    height: 240px;
+    align-content: center;
+    flex-direction: column;
+    padding-bottom: 20px;
+  }
 }
 </style>

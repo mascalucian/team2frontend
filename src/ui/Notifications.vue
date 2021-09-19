@@ -24,6 +24,7 @@
 
 <script>
 import { inject } from "vue";
+import { mapGetters } from "vuex";
 import { useSignalR } from "@quangdao/vue-signalr";
 export default {
   data() {
@@ -32,6 +33,9 @@ export default {
       id: 1,
       notificationTimeout: 5000,
     };
+  },
+  computed: {
+    ...mapGetters(["getUserData"]),
   },
   mounted() {
     const signalr = useSignalR();
@@ -48,13 +52,17 @@ export default {
         this.addNotification("A skill was deleted: " + data.name, "deleted");
     });
     signalr.on("RecommendationAdded", (data) => {
-      //condition to check whether userId is current User's id
-      this.addNotification(
-        data.recomandation.userName +
-          " just added a recommendation to skill: " +
-          data.skill.name,
-        "recommendation"
-      );
+      if (
+        data.recomandation.userId != this.getUserData?.id ||
+        this.getUserData === null
+      ) {
+        this.addNotification(
+          data.recomandation.userName +
+            " just added a recommendation to skill: " +
+            data.skill.name,
+          "recommendation"
+        );
+      }
     });
   },
   methods: {

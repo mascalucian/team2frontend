@@ -60,7 +60,6 @@ export default {
         })
         .then(() => {
           this.newSkill = "";
-          this.fetchSkills();
         })
         .catch((error) => {
           console.error(error);
@@ -71,9 +70,7 @@ export default {
       if (canDelete) {
         this.$http
           .delete(`/Skills/${id}`)
-          .then(() => {
-            this.fetchSkills();
-          })
+          .then(() => {})
           .catch((error) => {
             console.log(error);
           });
@@ -86,7 +83,7 @@ export default {
           name: name,
         })
         .then(() => {
-          this.fetchSkills();
+          // this.fetchSkills();
         })
         .catch((error) => {
           console.log(error);
