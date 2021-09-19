@@ -14,19 +14,27 @@
             v-model="username"
             placeholder="Username"
           />
+          <ErrorMessage name="username" class="error-message" />
         </div>
-        <ErrorMessage name="username" class="error-message" />
+
         <div class="data-input">
           <i class="fas fa-key"></i>
           <Field
-            class="text-box"
+            class="text-box pass"
             name="password"
-            type="password"
+            v-bind:type="[showPassword ? 'text' : 'password']"
             v-model="password"
             placeholder="Password"
           />
+          <ErrorMessage name="password" class="error-message" />
+          <i
+            class="fa eye"
+            :class="[showPassword ? 'fa-eye' : 'fa-eye-slash']"
+            aria-hidden="true"
+            v-on:click="showPassword = !showPassword"
+          ></i>
         </div>
-        <ErrorMessage name="password" class="error-message" />
+
         <button type="submit" class="button">Log in</button>
       </div>
       <div>
@@ -60,6 +68,7 @@ export default {
     return {
       username: "",
       password: "",
+      showPassword: false,
       loginSchema,
     };
   },
@@ -84,8 +93,8 @@ export default {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 370px;
-    width: 350px;
+    height: fit-content;
+    width: 25em;
     margin-top: auto;
     margin-bottom: auto;
     background-color: whitesmoke;
@@ -117,8 +126,21 @@ export default {
       margin-top: 5em;
       .data-input {
         display: flex;
-        padding: 0.25em;
+        justify-content: center;
+        padding: 0.75em;
         margin: 0.55em;
+        input {
+          width: 15em;
+          outline: none;
+          border: 1px solid grey;
+          border-radius: 0 0.25rem 0.25rem 0;
+          &:focus,
+          &:focus + .eye,
+          &:hover,
+          &:hover + .eye {
+            border-color: #40abdd;
+          }
+        }
         i {
           background: $l-violet;
           color: white;
@@ -126,18 +148,29 @@ export default {
           border: 0;
           border-radius: 0.25rem 0 0 0.25rem;
         }
-        input {
-          outline: none;
+        .eye {
+          background-color: white;
+          color: rgb(168, 167, 167);
           border: 1px solid grey;
+          border-left: none;
           border-radius: 0 0.25rem 0.25rem 0;
           &:focus,
           &:hover {
             border-color: #40abdd;
           }
         }
+        .fa-eye-slash {
+          padding: 6.4px 5px;
+        }
+        .pass {
+          width: 13em;
+          border-right: none;
+          border-radius: 0;
+        }
       }
       .error-message {
-        width: 55%;
+        position: absolute;
+        margin-top: 3em;
         font-size: 13px;
         text-align: center;
         color: rgb(228, 11, 11);
