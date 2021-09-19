@@ -13,8 +13,8 @@
       ></i>
       <div :class="[deleteConfirm ? 'show' : '']" class="delete-confirm">
         Delete skill?
-        <i class="fas fa-times" @click.stop.prevent="deleteConfirm = false"></i>
-        <i class="fas fa-check" @click.stop.prevent="deleteSkill(skillId)"></i>
+        <i class="fas fa-times fa-lg" @click.stop.prevent="deleteConfirm = false"></i>
+        <i class="fas fa-check fa-lg" @click.stop.prevent="deleteSkill(skillId)"></i>
       </div>
     </div>
     <div id="route">
@@ -281,7 +281,6 @@ i {
   i {
     margin: 0 0.4rem !important;
     cursor: pointer;
-    font-size: 1.3rem;
     &.fa-times {
       &:hover,
       :active,
