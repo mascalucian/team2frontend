@@ -66,6 +66,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   height: 80px;
+  flex-wrap: wrap;
   align-items: center;
   padding-left: 20px;
   padding-right: 20px;
@@ -121,6 +122,21 @@ a {
   color: black;
   p {
     margin: 0 2rem 0 0.7rem;
+  }
+}
+
+@media screen and (max-width: 925px) {
+  .headerflex {
+    height: 160px;
+    align-content: center;
+  }
+}
+@media screen and (max-width: 653px) {
+  .headerflex {
+    height: 240px;
+    align-content: center;
+    flex-direction: column;
+    padding-bottom: 20px;
   }
 }
 </style>

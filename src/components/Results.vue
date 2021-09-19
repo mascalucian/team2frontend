@@ -1,11 +1,6 @@
 <template>
   <div id="wrapper">
-    <div id="results-wrapper" class="vld-parent">
-      <loading
-        v-model:active="isLoading"
-        :is-full-page="false"
-        :background-color="'none'"
-      ></loading>
+    <div id="results-wrapper" class="vld-parent" ref="resultsWrapper">
       <Result
         v-for="result in results"
         :key="result.id"
@@ -39,7 +34,6 @@
 import { inject } from "vue";
 import { useSignalR } from "@quangdao/vue-signalr";
 import Result from "../ui/Result.vue";
-import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 export default {
   data() {
@@ -47,7 +41,7 @@ export default {
       query: "",
       page: 1,
       results: [],
-      isLoading: true,
+      loader: undefined,
       message: "",
       maxPage: undefined,
       skillId: undefined,
@@ -56,12 +50,16 @@ export default {
   },
   components: {
     Result,
-    Loading,
   },
   methods: {
     async fetchCourses() {
       this.message = "";
-      this.isLoading = true;
+      this.loader = this.$loading.show({
+        container: this.$refs.resultsWrapper,
+        isFullPage: false,
+        backgroundColor: "none",
+        color: "black",
+      });
       this.results.splice(0);
       if (this.skillId) {
         await this.$http
@@ -77,7 +75,7 @@ export default {
         .get(`/UdemyCourse/${encodeURIComponent(this.query)}/${this.page}`)
         .then((response) => {
           this.results = response.data.courses;
-          this.isLoading = false;
+          this.loader.hide();
           this.maxPage = Math.ceil(response.data.numberOfCoursesFound / 12);
           if (response.data.numberOfCoursesFound == 0) {
             if (response.data.wasOverFullFiled) this.message = "Page not found.";
@@ -96,9 +94,6 @@ export default {
         })
         .finally(() => {
           this.$forceUpdate();
-          // this.results.forEach((_) => {
-          //   console.log(this.hasRecommendations(_));
-          // });
         });
     },
     getRecommendationsForCourse(course) {
