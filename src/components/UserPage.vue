@@ -31,13 +31,10 @@
           <div class="user-recommends">
             <h1 class="recommended">Recommended courses:</h1>
             <div class="user-recommendations-wrapper recommendation" v-for="recommendation in recommendations" :key="recommendation.id">
-              <p
-                
-                
-              >
-                Recommended course: {{ recommendation.courseId }} for skill:
-                {{ recommendation.skillId }} with rating
-                {{ recommendation.rating }} and feedback:<br />{{
+              <Avatar :name="user?.userName" :size="50" class="avatarsmall"/>
+              <p>
+                recommended the course with nr. {{ recommendation.courseId }} giving a 
+                {{ recommendation.rating }} star rating and feedback:<br />{{
                   recommendation.feedback
                 }}
               </p>
@@ -129,6 +126,9 @@ export default {
 }
 .avatar {
   margin-top: 15%;
+}
+.avatarsmall {
+  margin-right: 10px;
 }
 .user-data {
   width: 40%;
