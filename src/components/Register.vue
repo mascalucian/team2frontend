@@ -53,9 +53,7 @@
             <i class="fas fa-key"></i>
             <Field
               class="text-box pass"
-              v-bind:type="[
-                showConfirmedPassword ? 'text' : 'confirmedPassword',
-              ]"
+              v-bind:type="[showConfirmedPassword ? 'text' : 'password']"
               name="confirmedPassword"
               v-model="confirmedPassword"
               placeholder="Confirm Password *"
@@ -107,7 +105,7 @@ export default {
         .string()
         .matches(
           /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-          "Password format is invalid"
+          "Password needs: 8 characters, one uppercase, one number, one special character"
         ),
       confirmedPassword: yup
         .string()
@@ -185,11 +183,13 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: $d-violet;
+  form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
   #register {
-    //overflow-y: scroll;
-    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
-      segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
-      segoe ui symbol;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -203,7 +203,7 @@ export default {
     border-radius: 20px;
     .logo {
       position: relative;
-      top: -75px;
+      top: -85px;
       height: 170px;
       width: 170px;
       border-radius: 50%;
@@ -221,7 +221,7 @@ export default {
     }
     .data {
       position: relative;
-      top: -60px;
+      top: -70px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -308,8 +308,18 @@ export default {
 .success {
   color: green;
 }
+.error,
+.success {
+  position: relative;
+  top: -20px;
+  padding: 5px;
+  p {
+    margin: 0;
+  }
+}
 
 #loaderWrapper {
-  height: 5rem;
+  position: absolute;
+  height: 3rem;
 }
 </style>

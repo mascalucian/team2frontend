@@ -132,10 +132,13 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: $d-violet;
+  form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
   #login {
-    font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
-      segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
-      segoe ui symbol;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -249,7 +252,18 @@ export default {
   color: green;
 }
 
+.error,
+.success {
+  position: relative;
+  top: -10px;
+  padding: 5px;
+  p {
+    margin: 0;
+  }
+}
+
 #loaderWrapper {
-  height: 5rem;
+  position: absolute;
+  height: 3rem;
 }
 </style>
