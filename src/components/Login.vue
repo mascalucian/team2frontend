@@ -2,9 +2,12 @@
   <div id="wrapper">
     <Form v-slot="{ handleSubmit }" id="login" :validation-schema="loginSchema">
       <form action="#" @submit.prevent="handleSubmit($event, login)">
-        <router-link to="/" class="logo">
-          <img class="logo-img" src="../assets/udemi.png" />
-        </router-link>
+        <div class="logo-parent">
+          <router-link to="/" class="logo">
+            <img class="logo-img" src="../assets/udemi.png" />
+          </router-link>
+        </div>
+
         <div class="data">
           <div class="data-input">
             <i class="fas fa-user"></i>
@@ -38,15 +41,16 @@
 
           <button type="submit" class="button">Log in</button>
         </div>
+        <div id="loaderWrapper" ref="loaderWrapper" class="vld-parent">
+          <div v-if="message && !loader" :class="isMessageError ? 'error' : 'success'">
+            <p>{{ message }}</p>
+          </div>
+        </div>
         <div>
           <p>
             Don't have an account?
             <router-link to="/register" class="link">Sign up</router-link>
           </p>
-        </div>
-        <div id="loaderWrapper" ref="loaderWrapper" class="vld-parent"></div>
-        <div v-if="message" :class="isMessageError ? 'error' : 'success'">
-          <p>{{ message }}</p>
         </div>
       </form>
     </Form>
@@ -68,8 +72,8 @@ export default {
       username: yup.string().required("No username provided"),
       password: yup
         .string()
-        .required("No password provided.")
-        .min(8, "Password is too short - should be 8 chars minimum."),
+        .min(8, "Password is too short - should be 8 chars minimum.")
+        .required("No password provided."),
     });
     return {
       username: "",
@@ -94,6 +98,7 @@ export default {
         password: this.password,
       });
       this.loader.hide();
+      this.loader = undefined;
       if (!this.isLoggedin) {
         this.message = this.getErrorMessage;
         this.isMessageError = true;
@@ -153,7 +158,7 @@ export default {
     }
     .logo {
       position: absolute;
-      top: 145px;
+      bottom: 20%;
       height: 170px;
       width: 170px;
       border-radius: 50%;
@@ -174,7 +179,6 @@ export default {
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      margin-top: 5em;
       .data-input {
         display: flex;
         justify-content: center;
@@ -263,13 +267,6 @@ export default {
   }
 }
 
-#loaderWrapper {
-  position: absolute;
-  height: 5rem;
-  width: 5rem;
-  color: $loader;
-}
-
 @media screen and (max-width: 925px) {
   #wrapper {
     margin-top: 5em;
@@ -279,5 +276,25 @@ export default {
   #wrapper {
     margin-top: 10em;
   }
+}
+
+input {
+  z-index: 10 !important;
+}
+
+.vld-parent {
+  height: 2rem;
+  z-index: 10 !important;
+  width: 100%;
+  padding: 0 4rem;
+  text-align: center;
+}
+
+.logo-parent {
+  display: flex;
+  justify-content: center;
+  height: 5rem;
+  position: relative;
+  width: 100%;
 }
 </style>

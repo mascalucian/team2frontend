@@ -1,10 +1,6 @@
 <template>
   <div id="wrapper">
-    <Form
-      id="register"
-      v-slot="{ handleSubmit }"
-      :validation-schema="registerSchema"
-    >
+    <Form id="register" v-slot="{ handleSubmit }" :validation-schema="registerSchema">
       <form action="#" @submit.prevent="handleSubmit($event, register)">
         <router-link to="/" class="logo">
           <img class="logo-img" src="../assets/udemi.png" />
@@ -23,12 +19,7 @@
 
           <div class="data-input">
             <i class="fas fa-envelope"></i>
-            <Field
-              class="text-box"
-              name="email"
-              v-model="email"
-              placeholder="Email *"
-            />
+            <Field class="text-box" name="email" v-model="email" placeholder="Email *" />
             <ErrorMessage name="email" class="error-message" />
           </div>
           <div class="data-input">
@@ -68,16 +59,18 @@
           </div>
 
           <button type="submit" class="button">Sign up</button>
+          <div id="loaderWrapper" ref="loaderWrapper" class="vld-parent">
+            <div v-if="message && !loader" :class="isMessageError ? 'error' : 'success'">
+              <p>{{ message }}</p>
+            </div>
+          </div>
         </div>
+
         <div id="text">
           <p>
             Already have an account?
             <router-link to="/login" class="link">Log in</router-link>
           </p>
-        </div>
-        <div id="loaderWrapper" ref="loaderWrapper" class="vld-parent"></div>
-        <div v-if="message" :class="isMessageError ? 'error' : 'success'">
-          <p>{{ message }}</p>
         </div>
       </form>
     </Form>
@@ -97,10 +90,7 @@ export default {
   data() {
     const registerSchema = yup.object().shape({
       username: yup.string().required("No username provided"),
-      email: yup
-        .string()
-        .email("Email format is invalid")
-        .required("No email provided."),
+      email: yup.string().email("Email format is invalid").required("No email provided."),
       password: yup
         .string()
         .matches(
@@ -145,7 +135,7 @@ export default {
         password: this.password,
       });
       this.loader.hide();
-
+      this.loader = undefined;
       if (this.getErrorMessage) {
         this.message = this.getErrorMessage;
         this.isMessageError = true;
@@ -307,19 +297,6 @@ export default {
 }
 .error,
 .success {
-  position: relative;
-  top: -20px;
-  padding: 5px;
-  p {
-    margin: 0;
-  }
-}
-
-#loaderWrapper {
-  position: absolute;
-  height: 5rem;
-  width: 5rem;
-  color: $loader;
 }
 
 @media screen and (max-width: 925px) {
@@ -331,5 +308,17 @@ export default {
   #wrapper {
     margin-top: 10em;
   }
+}
+
+input {
+  z-index: 10 !important;
+}
+
+.vld-parent {
+  height: 2rem;
+  z-index: 10 !important;
+  width: 100%;
+  padding: 0 4rem;
+  text-align: center;
 }
 </style>
