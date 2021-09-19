@@ -30,7 +30,7 @@
           </div>
           <div class="user-recommends">
             <h1 class="recommended">Recommended courses:</h1>
-            <div class="user-recommendations-wrapper">
+            <div class="user-recommendations-wrapper recommendation">
               <p
                 v-for="recommendation in recommendations"
                 :key="recommendation.id"
@@ -110,6 +110,15 @@ export default {
 </script>
 
 <style scoped>
+.recommendation {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width:90%;
+  height:150px;
+  padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
 .home {
   width: 100px;
   -webkit-filter: drop-shadow(2px 2px 5px rgb(255, 255, 255));
