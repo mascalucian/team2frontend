@@ -65,10 +65,7 @@ const auth = {
     async logout({ commit }) {
       commit("clearUser");
       commit("clearToken");
-      let route = router.currentRoute;
-      if (route._value.meta.requiresLogin === true) {
-        router.push({ name: "Home" });
-      }
+      router.push({ name: "Home" });
     },
   },
   getters: {

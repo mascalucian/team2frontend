@@ -6,7 +6,10 @@
         <h3>Add skill:</h3>
         <form @submit.prevent="addSkill()">
           <input type="text" v-model="newSkill" @keyup.escape="newSkill = ''" />
-          <input type="submit" value="Submit" :disabled="!newSkill" />
+          <div class="error-parent">
+            <input type="submit" value="Submit" :disabled="!newSkill" />
+            <p>{{ errorMessage }}</p>
+          </div>
         </form>
       </div>
 
@@ -49,11 +52,13 @@ export default {
       newSkill: "",
       skills: [],
       isLoading: true,
+      errorMessage: "",
     };
   },
   setup() {},
   methods: {
     addSkill() {
+      this.errorMessage = "";
       this.$http
         .post("/Skills", {
           name: this.newSkill,
@@ -62,7 +67,7 @@ export default {
           this.newSkill = "";
         })
         .catch((error) => {
-          console.error(error);
+          this.errorMessage = "Invalid skill name.";
         });
     },
     deleteSkill(id) {
@@ -163,6 +168,9 @@ article {
 }
 
 form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   input[type="text"] {
     height: 2rem;
     border-radius: 25px;
@@ -192,6 +200,19 @@ form {
       color: gray !important;
       cursor: default;
     }
+  }
+}
+
+.error-parent {
+  position: relative;
+  p {
+    position: absolute;
+    bottom: -1.5rem;
+    width: 150%;
+    text-align: center;
+    color: red;
+    margin: 0;
+    font-size: small;
   }
 }
 </style>
