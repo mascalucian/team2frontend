@@ -13,6 +13,16 @@
       </div>
       <div class="user-recommends">
         <h1 class="recommended">Recommended courses:</h1>
+
+        <div class="recommendation">
+          <Avatar :name="'Lucian'" class="avatarsmall" />
+          rated 
+          Title
+          with 
+          5stars
+        </div>
+
+
       </div>
       <div></div>
     </div>
@@ -32,6 +42,15 @@ export default {
 </script>
 
 <style scoped>
+.recommendation {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width:90%;
+  height:150px;
+  padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
 .home {
   width: 100px;
   -webkit-filter: drop-shadow(2px 2px 5px rgb(255, 255, 255));
@@ -43,6 +62,16 @@ export default {
 .avatar {
   width: 200px;
   height: 200px;
+  margin-top: -100px;
+  border-color: black;
+  filter: drop-shadow(2px 2px 5px rgb(0, 0, 0));
+}
+.avatarsmall {
+  width: 50px;
+  height: 50px;
+  border-color: black;
+  filter: drop-shadow(1px 1px 3px rgb(0, 0, 0));
+  margin-right: 10px;
 }
 .user-data {
   width: 40%;
@@ -69,7 +98,7 @@ export default {
 .alignment {
   width: 100vw;
   background-color: pink;
-  min-height: 60%;
+  min-height: 80%;
 }
 .background-tint {
   background-color: #5624d0;
@@ -78,8 +107,8 @@ export default {
 .banner {
   width: 100vw;
   background-image: url("https://thumbs.dreamstime.com/b/vector-education-pattern-educattion-seamless-background-vector-education-pattern-educattion-seamless-background-vector-113988685.jpg");
-  min-height: 40%;
-  max-height: 40%;
+  min-height: 20%;
+  max-height: 20%;
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
@@ -107,13 +136,6 @@ h1 {
   }
   .main-container {
     flex-direction: column;
-  }
-  .banner {
-    min-height: 20%;
-    max-height: 20%;
-  }
-  .alignment {
-    min-height: 80%;
   }
   .nrrec {
     margin-top: -20px;
