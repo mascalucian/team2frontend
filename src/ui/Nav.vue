@@ -19,8 +19,11 @@
         <div class="btndiv" v-if="!isLoggedin">
           <router-link to="/register" class="btn"> Register </router-link>
         </div>
-        <router-link :to="'/user/' + getUserData.id" class="account-button"
-          ><Avatar :name="getUserData.userName" :size="40" v-if="isLoggedin" />
+        <router-link
+          :to="'/user/' + getUserData.id"
+          class="account-button"
+          v-if="isLoggedin"
+          ><Avatar :name="getUserData.userName" :size="40" />
           <p>{{ getUserData.userName }}</p>
         </router-link>
 

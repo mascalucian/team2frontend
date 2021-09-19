@@ -18,6 +18,12 @@ if (process.env.NODE_ENV === "production") {
   axios.defaults.baseURL = "https://team-2-backend.herokuapp.com";
 }
 
+axios.interceptors.request.use(function(config) {
+  const token = store.getters.getToken;
+  config.headers.Authorization = token ? `Bearer ${token}` : "";
+  return config;
+});
+
 app.config.globalProperties.$http = axios;
 app.use(router);
 app.use(

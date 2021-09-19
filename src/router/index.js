@@ -46,6 +46,9 @@ const routes = [
     query: {
       skillId: "?skillId",
     },
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/user/:id",
