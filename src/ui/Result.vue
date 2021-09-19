@@ -111,6 +111,7 @@ export default {
         },
         query: {
           skillId: this.$route.query.skillId,
+          courseTitle: this.course.title,
         },
       });
     },
@@ -381,8 +382,7 @@ ul {
   width: 100%;
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  padding: 0 1rem;
+  padding: 1rem 0 1rem 1rem;
   &-details {
     padding-left: 1rem;
     display: flex;

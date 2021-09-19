@@ -3,7 +3,7 @@
     <div v-if="user">
       <div class="banner background-tint">
         <div>
-          <a href="/#/skills"><img src="../assets/home.png" class="home"/></a>
+          <a href="/#/skills"><img src="../assets/home.png" class="home" /></a>
         </div>
       </div>
       <div class="alignment">
@@ -30,11 +30,20 @@
           </div>
           <div class="user-recommends">
             <h1 class="recommended">Recommended courses:</h1>
-            <div class="user-recommendations-wrapper recommendation" v-for="recommendation in recommendations" :key="recommendation.id">
-              <Avatar :name="user?.userName" :size="50" class="avatarsmall"/>
+            <div
+              class="user-recommendations-wrapper recommendation"
+              v-for="recommendation in recommendations"
+              :key="recommendation.id"
+            >
+              <Avatar :name="user?.userName" :size="50" class="avatarsmall" />
               <p>
-                recommended the course with nr. {{ recommendation.courseId }} giving a 
-                {{ recommendation.rating }} star rating and feedback:<br />{{
+                {{ user?.userName }} recommended the course
+                {{ recommendation.courseTitle }} for skill
+                <router-link
+                  :to="`/results/${recommendation.skillName}/1?skillId=${recommendation.skillId}`"
+                  >{{ recommendation.skillName }}</router-link
+                >
+                giving a {{ recommendation.rating }} star rating and feedback:<br />{{
                   recommendation.feedback
                 }}
               </p>
@@ -108,11 +117,11 @@ export default {
 
 <style scoped>
 .recommendation {
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  width:90%;
-  height:150px;
+  width: 90%;
+  height: 150px;
   padding: 20px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }

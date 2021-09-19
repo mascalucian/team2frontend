@@ -45,6 +45,7 @@ const routes = [
     component: Recommend,
     query: {
       skillId: "?skillId",
+      courseTitle: "?courseTitle",
     },
     meta: {
       requiresLogin: true,

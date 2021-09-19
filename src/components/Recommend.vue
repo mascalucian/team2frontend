@@ -89,6 +89,7 @@ export default {
         rating: 5,
         courseId: undefined,
         skillId: undefined,
+        courseTitle: this.$route.query.courseTitle || undefined,
       },
     };
   },
@@ -100,6 +101,7 @@ export default {
       this.$http
         .post(`/Recomandations`, {
           courseId: this.recomandation.courseId,
+          courseTitle: this.recomandation.courseTitle,
           userName: this.getUserData.userName,
           feedback: this.recomandation.feedback,
           rating: this.picked,
@@ -107,6 +109,7 @@ export default {
           userId: this.getUserData.id,
         })
         .then(() => {
+          console.log(this.recomandation);
           this.message = "Recommended successfully!";
           setTimeout(() => {
             this.$router.go(-1);
@@ -120,6 +123,8 @@ export default {
   created() {
     this.recomandation.courseId = this.$route.params.courseId;
     this.recomandation.skillId = this.$route.query.skillId;
+    this.recomandation.courseTitle = this.$route.query.courseTitle;
+    console.log(this.$route.query);
   },
 };
 </script>

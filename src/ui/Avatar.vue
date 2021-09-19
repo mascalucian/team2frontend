@@ -1,5 +1,8 @@
 <template>
-  <div id="avatar-wrapper" :style="{ width: size + 'px', height: size + 'px' }">
+  <div
+    id="avatar-wrapper"
+    :style="{ width: size + 'px', height: size + 'px', minWidth: size + 'px' }"
+  >
     <div
       id="avatar"
       :style="{
