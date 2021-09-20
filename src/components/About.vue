@@ -3,7 +3,7 @@
     <header>
       <h1>Welcome to UDEMI. The best Udemy search engine.</h1>
       <h3>
-        Currently running API on
+        Currently running API on version:
         <strong>{{ apiVersion.toLowerCase() }}</strong>
       </h3>
     </header>
