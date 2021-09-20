@@ -4,7 +4,7 @@
       <h1>Welcome to UDEMI. The best Udemy search engine.</h1>
       <h3>
         Currently running API on
-        <strong>{{ apiVersion.toLowerCase() || "🐮" }}</strong>
+        <strong>{{ apiVersion.toLowerCase() }}</strong>
       </h3>
     </header>
     <section>
@@ -22,7 +22,7 @@
 export default {
   data() {
     return {
-      apiVersion: undefined,
+      apiVersion: "🐮",
     };
   },
   created() {
