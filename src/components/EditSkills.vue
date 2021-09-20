@@ -42,7 +42,7 @@
         :background-color="'none'"
       ></loading>
       <Skill
-        v-for="(skill, index) in parent ? parentSkills : skillParents"
+        v-for="(skill, index) in parent ? skills : skillParents"
         :key="skill.id"
         :skill="skill"
         @delete-skill="deleteSkill"
@@ -50,6 +50,9 @@
         @select="select"
         :index="index"
       />
+      <h3 v-if="skills.length == 0" class="empty-message">
+        There are no skills currently available.
+      </h3>
     </section>
   </main>
 </template>
@@ -132,10 +135,12 @@ export default {
         });
     },
     editSkill(name, id) {
+      console.log(name + id);
       this.$http
         .put(`/Skills/${id}`, {
           id: id,
           name: name,
+          parentId: this.parent?.id || 0,
         })
         .then(() => {
           // this.fetchSkills();
@@ -146,9 +151,10 @@ export default {
     },
     async fetchSkills() {
       this.skills = this.skills.splice(0);
-      if (this.parentId) {
+      if (this.parent) {
         this.skills = this.skills.splice(0);
         this.skills = this.parentSkills;
+        this.isLoading = false;
       } else {
         this.isLoading = true;
         this.$http
@@ -156,7 +162,7 @@ export default {
           .then((response) => {
             this.isLoading = false;
             this.skills = response.data;
-            this.skillParents = this.skills.filter((_) => !_?.parentId);
+            this.skillParents = this.skills.filter((_) => _?.parentId == 0);
           })
           .catch((error) => {
             this.isLoading = false;
@@ -169,16 +175,47 @@ export default {
     this.fetchSkills();
     const signalr = useSignalR();
     signalr.on("SkillCreated", (data) => {
-      this.skills.push(data);
+      if (!this.parent) {
+        if (data.parentId == 0) this.skillParents.push(data);
+        //parent skill added
+        else this.skills.push(data); //subskill added in another parent
+      } else if (data.parentId == this.parent?.id) this.skills.push(data); //subskill added in current parent
     });
     signalr.on("SkillUpdated", (data) => {
-      let index = this.skills.findIndex((_) => _.id == data.id);
-      this.skills[index] = data;
-      this.skills.push(this.skills.splice(index, 1)[0]);
+      console.log(data);
+      if (!this.parent) {
+        if (data.parentId == 0) {
+          let index = this.skillParents.findIndex((_) => _.id == data.id);
+          this.skillParents[index] = data;
+          this.skillParents.push(this.skillParents.splice(index, 1)[0]);
+        }
+        //parent skill added
+        else {
+          let index = this.skills.findIndex((_) => _.id == data.id);
+          this.skills[index] = data;
+          this.skills.push(this.skills.splice(index, 1)[0]);
+        }
+      } else if (data.parentId == this.parent?.id) {
+        let index = this.skills.findIndex((_) => _.id == data.id);
+        this.skills[index] = data;
+        this.skills.push(this.skills.splice(index, 1)[0]);
+      } //subskill added in current parent
     });
     signalr.on("SkillDeleted", (data) => {
-      let index = this.skills.findIndex((_) => _.id == data.id);
-      this.skills.splice(index, 1);
+      if (!this.parent) {
+        if (data.parentId == 0) {
+          let index = this.skillParents.findIndex((_) => _.id == data.id);
+          this.skillParents.splice(index, 1);
+        }
+        //parent skill added
+        else {
+          let index = this.skills.findIndex((_) => _.id == data.id);
+          this.skills.splice(index, 1);
+        } //subskill added in another parent
+      } else if (data.parentId == this.parent?.id) {
+        let index = this.skills.findIndex((_) => _.id == data.id);
+        this.skills.splice(index, 1);
+      } //subskill added in current parent
     });
   },
 };
@@ -278,5 +315,12 @@ form {
   font-family: $f-u-bm;
   margin: 0;
   padding: 2rem 0 1rem 2rem;
+}
+
+.empty-message {
+  color: $c-u-bl;
+  font-family: $f-u-bm;
+  text-align: center;
+  padding: 2rem 0;
 }
 </style>

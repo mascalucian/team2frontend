@@ -41,7 +41,7 @@
                 {{ recommendation.courseTitle }} for skill
                 <router-link
                   :to="`/results/${recommendation.skillName}/1?skillId=${recommendation.skillId}`"
-                  >{{ recommendation.skillName }}</router-link
+                  ><strong>{{ recommendation.skillName }}</strong></router-link
                 >
                 giving a {{ recommendation.rating }} star rating and feedback:<br />{{
                   recommendation.feedback
@@ -115,7 +115,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .recommendation {
   display: flex;
   justify-content: center;
@@ -229,8 +229,16 @@ h2 {
 .vld-parent {
   height: 100%;
 }
-/* .user-recommendations-wrapper {
-} */
+.user-recommendations-wrapper {
+  a {
+    color: black;
+    text-decoration: none;
+    &:hover {
+      color: $c-u-pur;
+      text-decoration: underline;
+    }
+  }
+}
 
 .role {
   display: inline-block;

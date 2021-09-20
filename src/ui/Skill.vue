@@ -16,7 +16,7 @@
       <div :class="[deleteConfirm ? 'show' : '']" class="delete-confirm">
         Delete skill?
         <i class="fas fa-times fa-lg" @click.stop.prevent="deleteConfirm = false"></i>
-        <i class="fas fa-check fa-lg" @click.stop.prevent="deleteSkill(skill.Id)"></i>
+        <i class="fas fa-check fa-lg" @click.stop.prevent="deleteSkill()"></i>
       </div>
     </div>
     <div id="route">
@@ -33,7 +33,7 @@
           type="text"
           v-if="edit"
           v-model="name"
-          @keydown.enter="editSkill(name, skill.Id)"
+          @keydown.enter="editSkill()"
           @keyup.escape="cancelEdit()"
         />
         <h2 v-else>
@@ -83,12 +83,12 @@ export default {
     ...mapGetters(["isAdmin"]),
   },
   methods: {
-    deleteSkill(id) {
-      this.$emit("delete-skill", id);
+    deleteSkill() {
+      this.$emit("delete-skill", this.skill.id);
     },
-    editSkill(name, id) {
+    editSkill() {
       this.edit = false;
-      this.$emit("edit-skill", name, id);
+      this.$emit("edit-skill", this.name, this.skill.id);
     },
     goToSkill() {
       if (this.skill.parentId == 0) {

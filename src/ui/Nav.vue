@@ -94,14 +94,7 @@ button {
   width: 180px;
   padding: 10px;
 }
-.companyname {
-  text-decoration: none;
-  color: black !important;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02rem;
-  font-size: 16px;
-}
+
 .btndiv {
   padding-left: 12px;
   text-align: center;
@@ -121,16 +114,27 @@ button {
 button:hover {
   color: rgb(150, 7, 150) !important;
 }
+
 .account-button {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: black;
+  color: black !important;
   p {
     margin: 0 2rem 0 0.7rem;
   }
 }
-
+.companyname {
+  text-decoration: none;
+  color: black !important;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02rem;
+  font-size: 16px;
+  &.router-link-active {
+    color: black;
+  }
+}
 @media screen and (max-width: 925px) {
   .headerflex {
     height: 160px;
