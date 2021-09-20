@@ -1,8 +1,10 @@
 <template>
   <div
     id="wrapper"
-    @mouseenter="showButtons = true"
-    @mouseleave="(showButtons = false), cancelEdit(), (deleteConfirm = false)"
+    @mouseenter="isAdmin ? (showButtons = true) : ''"
+    @mouseleave="
+      isAdmin ? ((showButtons = false), cancelEdit(), (deleteConfirm = false)) : ''
+    "
     @keyup.escape="cancelEdit()"
   >
     <div id="delete" :style="[!showButtons ? { visibility: 'hidden' } : '']">
@@ -55,6 +57,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -78,6 +82,9 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapGetters(["isAdmin"]),
+  },
   methods: {
     deleteSkill(id) {
       this.$emit("delete-skill", id);
@@ -95,6 +102,7 @@ export default {
         },
       });
     },
+
     startEdit() {
       this.edit = true;
       this.$nextTick(() => {

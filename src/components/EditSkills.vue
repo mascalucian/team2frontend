@@ -2,7 +2,7 @@
   <main>
     <header>
       <h1>Skills</h1>
-      <div id="add-skill">
+      <div id="add-skill" v-if="isAdmin">
         <h3>Add skill:</h3>
         <form @submit.prevent="addSkill()">
           <input type="text" v-model="newSkill" @keyup.escape="newSkill = ''" />
@@ -41,6 +41,7 @@ import { useSignalR } from "@quangdao/vue-signalr";
 import Skill from "../ui/Skill.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -55,7 +56,9 @@ export default {
       errorMessage: "",
     };
   },
-  setup() {},
+  computed: {
+    ...mapGetters(["isAdmin"]),
+  },
   methods: {
     addSkill() {
       this.errorMessage = "";

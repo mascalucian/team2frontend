@@ -73,6 +73,9 @@ const auth = {
     getUserData: (state) => state.userData,
     getToken: (state) => state.token,
     getErrorMessage: (state) => state.errorMessage,
+    isAdmin: (state) => {
+      return state.userData?.roles.includes("Admin");
+    },
   },
 };
 export default auth;
