@@ -163,6 +163,7 @@ export default {
             this.isLoading = false;
             this.skills = response.data;
             this.skillParents = this.skills.filter((_) => _?.parentId == 0);
+            console.table(this.skillParents);
           })
           .catch((error) => {
             this.isLoading = false;
