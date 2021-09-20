@@ -182,7 +182,6 @@ export default {
       } else if (data.parentId == this.parent?.id) this.skills.push(data); //subskill added in current parent
     });
     signalr.on("SkillUpdated", (data) => {
-      console.log(data);
       if (!this.parent) {
         if (data.parentId == 0) {
           let index = this.skillParents.findIndex((_) => _.id == data.id);

@@ -10,6 +10,9 @@
         <div class="btndiv">
           <router-link to="/skills" class="btn"> Skills </router-link>
         </div>
+        <div class="btndiv">
+          <router-link to="/about" class="btn"> About </router-link>
+        </div>
       </div>
       <Search v-if="$route.name != 'Home'" />
       <div class="rightside">

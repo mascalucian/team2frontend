@@ -7,6 +7,7 @@ import Recommend from "../components/Recommend.vue";
 import Login from "../components/Login.vue";
 import Register from "../components/Register.vue";
 import UserPage from "../components/UserPage.vue";
+import About from "../components/About.vue";
 
 import store from "../store";
 
@@ -57,6 +58,10 @@ const routes = [
     path: "/user/:id",
     name: "UserPage",
     component: UserPage,
+  },
+  {
+    path: "/about",
+    component: About,
   },
 ];
 
