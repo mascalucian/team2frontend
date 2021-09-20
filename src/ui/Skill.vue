@@ -11,18 +11,18 @@
       <i
         :style="[deleteConfirm ? { visibility: 'hidden' } : '']"
         class="event fas fa-trash-alt fa-lg"
-        @click.stop.prevent="/*deleteSkill(skillId)*/ deleteConfirm = true"
+        @click.stop.prevent="/*deleteSkill(skill.Id)*/ deleteConfirm = true"
       ></i>
       <div :class="[deleteConfirm ? 'show' : '']" class="delete-confirm">
         Delete skill?
         <i class="fas fa-times fa-lg" @click.stop.prevent="deleteConfirm = false"></i>
-        <i class="fas fa-check fa-lg" @click.stop.prevent="deleteSkill(skillId)"></i>
+        <i class="fas fa-check fa-lg" @click.stop.prevent="deleteSkill(skill.Id)"></i>
       </div>
     </div>
     <div id="route">
       <i
         class="fab"
-        :class="getFaIcon(skillName)"
+        :class="getFaIcon(skill.name)"
         @click.stop="goToSkill(skill)"
         :style="dropDelay"
       >
@@ -33,11 +33,11 @@
           type="text"
           v-if="edit"
           v-model="name"
-          @keydown.enter="editSkill(name, skillId)"
+          @keydown.enter="editSkill(name, skill.Id)"
           @keyup.escape="cancelEdit()"
         />
         <h2 v-else>
-          {{ skillName }}
+          {{ skill.name }}
         </h2>
         <i
           v-if="!edit"
@@ -49,7 +49,7 @@
           v-if="edit"
           id="save-button"
           class="fas fa-save fa-lg"
-          @click="editSkill(name, skillId)"
+          @click="editSkill(name, skill.Id)"
         ></i>
       </div>
     </div>
@@ -63,18 +63,15 @@ export default {
   data() {
     return {
       edit: false,
-      name: this.skillName,
+      name: this.skill.name,
       showButtons: false,
       dropDelay: `--order: ${this.index}`,
       deleteConfirm: false,
     };
   },
   props: {
-    skillName: {
-      type: String,
-      required: true,
-    },
-    skillId: {
+    skill: {
+      type: Object,
       required: true,
     },
     index: {
@@ -94,13 +91,18 @@ export default {
       this.$emit("edit-skill", name, id);
     },
     goToSkill() {
-      this.$router.push({
-        name: "Results",
-        params: { query: this.skillName, page: 1 },
-        query: {
-          skillId: this.skillId,
-        },
-      });
+      if (this.skill.parentId == 0) {
+        this.$emit("select", this.skill);
+      } else {
+        console.log(this.skill);
+        this.$router.push({
+          name: "Results",
+          params: { query: this.skill.name, page: 1 },
+          query: {
+            skillId: this.skill.id,
+          },
+        });
+      }
     },
 
     startEdit() {
@@ -111,7 +113,7 @@ export default {
       });
     },
     cancelEdit() {
-      this.name = this.skillName;
+      this.name = this.skill.name;
       this.edit = false;
     },
     getFaIcon(name) {
@@ -176,7 +178,7 @@ i {
   }
 }
 #wrapper {
-  width: 20rem;
+  width: 20rem !important;
   background-color: $c-u-pur;
   color: white;
   margin: 3%;
@@ -190,8 +192,10 @@ i {
     background-color: $c-u-bl;
   }
   h2 {
+    display: inline-block;
     font-size: xx-large;
     font-weight: bolder;
+    padding: 0 2rem;
   }
   display: flex;
   flex-direction: column;
@@ -267,7 +271,7 @@ i {
       i {
         font-size: 1.5rem;
         position: absolute;
-        right: -2rem;
+        right: 0;
       }
     }
   }
