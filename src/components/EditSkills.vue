@@ -201,6 +201,7 @@ export default {
       } //subskill added in current parent
     });
     signalr.on("SkillDeleted", (data) => {
+      console.log(data);
       if (!this.parent) {
         if (data.parentId == 0) {
           let index = this.skillParents.findIndex((_) => _.id == data.id);
