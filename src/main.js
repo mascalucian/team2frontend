@@ -5,7 +5,7 @@ import "vue-loading-overlay/dist/vue-loading.css";
 
 import router from "./router";
 import axios from "axios";
-// import store from "./store";
+import AuthService from './services/auth.service';
 
 import { VueSignalR } from "@quangdao/vue-signalr";
 
@@ -17,12 +17,12 @@ if (process.env.NODE_ENV === "development") {
 if (process.env.NODE_ENV === "production") {
   axios.defaults.baseURL = "https://team-2-backend.herokuapp.com";
 }
-
-axios.interceptors.request.use(function(config) {
-  // const token = store.getters.getToken;
-  // config.headers.Authorization = token ? `Bearer ${token}` : "";
-  return config;
-});
+AuthService.getAcessToken().then(
+  acessToken => {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + acessToken
+  }, err => {
+    console.log(err)
+  });
 
 app.config.globalProperties.$http = axios;
 app.use(router);
@@ -41,3 +41,4 @@ app.use(VueSignalR, {
 });
 // app.use(store);
 app.mount("#app");
+

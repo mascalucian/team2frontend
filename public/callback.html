@@ -13,7 +13,7 @@
     var mgr = new Oidc.UserManager({userStore: new Oidc.WebStorageStateStore({ store: window.sessionStorage }), loadUserInfo: true, filterProtocolClaims: true, response_mode: "query"});
     
     mgr.signinRedirectCallback().then(function (user) {
-        console.table(user.profile)
+        console.log(user.id_token)
       window.location.href = '../';
     }).catch(function (err) {
       console.log(err);

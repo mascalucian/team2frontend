@@ -1,5 +1,6 @@
 import Oidc from 'oidc-client';
 import 'babel-polyfill';
+import axios from 'axios';
 
 var BACKEND_URL;
 var FRONTEND_URL;
@@ -18,7 +19,7 @@ const settings = {
     redirect_uri: FRONTEND_URL + "/callback.html",
     post_logout_redirect_uri: FRONTEND_URL,
     response_type: "code",
-    scope: "openid profile",
+    scope: "team2backendAPI openid profile",
     automaticSilentRenew: true,
     includeIdTokenInSilentRenew: true
 }
@@ -30,6 +31,10 @@ Oidc.Log.level = Oidc.Log.INFO;
 
 mgr.events.addUserLoaded(function (user) {  
   console.log('New User Loaded：', arguments);
+  axios.interceptors.request.use(function(config) {
+    config.headers.Authorization = "Bearer " + user.access_token;
+    return config;
+  });
   console.log('Acess_token: ', user.access_token)
 });
 
@@ -166,7 +171,6 @@ class AuthService {
     return new Promise((resolve, reject) => {
       mgr.getUser().then(function (user) {
         if (user == null) {
-          self.signIn()
           return resolve(null)
         } else{          
           return resolve(user.session_state)
@@ -180,11 +184,9 @@ class AuthService {
 
   // Get the access token of the logged in user
   getAcessToken(){
-    let self = this
     return new Promise((resolve, reject) => {
       mgr.getUser().then(function (user) {
         if (user == null) {
-          self.signIn()
           return resolve(null)
         } else{          
           return resolve(user.access_token)
@@ -198,11 +200,9 @@ class AuthService {
 
   // Takes the scopes of the logged in user
   getScopes(){
-    let self = this
     return new Promise((resolve, reject) => {
       mgr.getUser().then(function (user) {
         if (user == null) {
-          self.signIn()
           return resolve(null)
         } else{          
           return resolve(user.scopes)
