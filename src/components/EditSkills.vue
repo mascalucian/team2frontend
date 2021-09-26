@@ -116,7 +116,6 @@ export default {
     select(skill) {
       if (skill.parentId == 0) {
         this.selectedParentSkill = skill;
-
         this.selectedParentSkills = this.skills.filter((_) => _.parentId == skill.id);
         this.showDialog = true;
       }
@@ -201,7 +200,6 @@ export default {
       } //subskill added in current parent
     });
     signalr.on("SkillDeleted", (data) => {
-      console.log(data);
       if (!this.parent) {
         if (data.parentId == 0) {
           let index = this.skillParents.findIndex((_) => _.id == data.id);
@@ -257,9 +255,6 @@ section {
   justify-content: center;
   align-content: center;
 }
-article {
-}
-
 form {
   display: flex;
   flex-direction: row;
