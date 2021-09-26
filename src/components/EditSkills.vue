@@ -15,7 +15,7 @@
       <h1>
         {{ !parent ? "Skillsets" : "Skills for " + parent.name }}
       </h1>
-      <div id="add-skill" v-if="isAdmin">
+      <div id="add-skill">
         <h3>
           Add
           {{ !parent ? "skillset" : "skill" }}
@@ -64,7 +64,7 @@ import Skill from "../ui/Skill.vue";
 import BaseDialog from "../ui/BaseDialog.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
-import { mapGetters } from "vuex";
+// import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -84,9 +84,9 @@ export default {
       selectedParentSkills: [],
     };
   },
-  computed: {
-    ...mapGetters(["isAdmin"]),
-  },
+  // computed: {
+  //   ...mapGetters(["isAdmin"]),
+  // },
   props: {
     parent: {
       type: Object,

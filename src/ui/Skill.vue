@@ -57,8 +57,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
   data() {
     return {
@@ -67,6 +65,7 @@ export default {
       showButtons: false,
       dropDelay: `--order: ${this.index}`,
       deleteConfirm: false,
+      isAdmin: false,
     };
   },
   props: {
@@ -78,9 +77,6 @@ export default {
       type: Number,
       required: true,
     },
-  },
-  computed: {
-    ...mapGetters(["isAdmin"]),
   },
   methods: {
     deleteSkill() {

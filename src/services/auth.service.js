@@ -7,7 +7,7 @@ const settings = {
     redirect_uri: "http://localhost:8080/callback.html",
     post_logout_redirect_uri: "http://localhost:8080/",
     response_type: "code",
-    scope: "Team2Backend openid profile",
+    scope: "openid profile",
     automaticSilentRenew: true,
     includeIdTokenInSilentRenew: true
 }
@@ -119,11 +119,9 @@ class AuthService {
 
   // Get the profile of the user logged in
   getProfile () {
-    let self = this
     return new Promise((resolve, reject) => {
       mgr.getUser().then(function (user) {
         if (user == null) {
-          self.signIn()
           return resolve(null)
         } else{          
           return resolve(user.profile)
@@ -137,11 +135,9 @@ class AuthService {
 
   // Get the token id
   getIdToken(){
-    let self = this
     return new Promise((resolve, reject) => {
       mgr.getUser().then(function (user) {
         if (user == null) {
-          self.signIn()
           return resolve(null)
         } else{          
           return resolve(user.id_token)
@@ -213,7 +209,6 @@ class AuthService {
     return new Promise((resolve, reject) => {
       mgr.getUser().then(function (user) {
         if (user == null) {
-          self.signIn()
           return resolve(null)
         } else{          
           return resolve(user.profile.role)

@@ -5,7 +5,7 @@ import "vue-loading-overlay/dist/vue-loading.css";
 
 import router from "./router";
 import axios from "axios";
-import store from "./store";
+// import store from "./store";
 
 import { VueSignalR } from "@quangdao/vue-signalr";
 
@@ -19,8 +19,8 @@ if (process.env.NODE_ENV === "production") {
 }
 
 axios.interceptors.request.use(function(config) {
-  const token = store.getters.getToken;
-  config.headers.Authorization = token ? `Bearer ${token}` : "";
+  // const token = store.getters.getToken;
+  // config.headers.Authorization = token ? `Bearer ${token}` : "";
   return config;
 });
 
@@ -39,5 +39,5 @@ app.use(
 app.use(VueSignalR, {
   url: `${app.config.globalProperties.$http.defaults.baseURL}/message-hub`,
 });
-app.use(store);
+// app.use(store);
 app.mount("#app");

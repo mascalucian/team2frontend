@@ -16,22 +16,22 @@
       </div>
       <Search v-if="$route.name != 'Home'" />
       <div class="rightside">
-        <div class="btndiv" v-if="!isLoggedin">
-          <router-link to="/login" class="btn"> Log in </router-link>
-        </div>
-        <div class="btndiv" v-if="!isLoggedin">
+        <!-- <div class="btndiv" v-if="!isLoggedin">
           <router-link to="/register" class="btn"> Register </router-link>
-        </div>
+        </div> -->
         <router-link
-          :to="'/user/' + getUserData.id"
+          :to="'/user/' + userProfile?.sub"
           class="account-button"
-          v-if="isLoggedin"
-          ><Avatar :name="getUserData.userName" :size="40" />
-          <p>{{ getUserData.userName }}</p>
+          v-if="isSignedIn"
+          ><Avatar :name="userProfile?.name" :size="40" />
+          <p>{{ userProfile.name.split("@")[0] }}</p>
         </router-link>
 
-        <div class="btndiv" v-if="isLoggedin">
-          <button type="button" @click.stop.prevent="logout()" class="btn">Logout</button>
+        <div class="btndiv" v-if="isSignedIn">
+          <button type="button" @click.prevent="logout" class="btn">Logout</button>
+        </div>
+        <div class="btndiv" v-else>
+          <button type="button" @click.prevent="login" class="btn">Log in</button>
         </div>
       </div>
     </div>
@@ -41,19 +41,29 @@
 <script>
 import Search from "../components/Search.vue";
 import Avatar from "../ui/Avatar.vue";
-import { mapGetters } from "vuex";
+import AuthService from "../services/auth.service.js";
 export default {
+  data() {
+    return {
+      isSignedIn: false,
+      userProfile: null,
+    };
+  },
   components: {
     Search,
     Avatar,
   },
-  computed: {
-    ...mapGetters(["isLoggedin", "getUserData"]),
-  },
   methods: {
-    logout() {
-      this.$store.dispatch("logout");
+    login() {
+      AuthService.signIn();
     },
+    logout() {
+      AuthService.signOut();
+    },
+  },
+  async created() {
+    this.userProfile = await AuthService.getProfile();
+    this.isSignedIn = await AuthService.getSignedIn();
   },
 };
 </script>

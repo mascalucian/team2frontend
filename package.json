@@ -11,6 +11,7 @@
     "@microsoft/signalr": "^5.0.10",
     "@quangdao/vue-signalr": "0.0.6",
     "axios": "^0.21.2",
+    "babel-polyfill": "^6.26.0",
     "core-js": "^3.6.5",
     "oidc-client": "^1.11.5",
     "pubsub.js": "^1.5.2",
@@ -22,6 +23,7 @@
     "vue-loading-overlay": "^4.0.4",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2",
+    "vuex-oidc": "^3.10.3",
     "vuex-persistedstate": "^4.0.0",
     "yup": "^0.32.9"
   },

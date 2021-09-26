@@ -73,17 +73,17 @@ const router = createRouter({
   },
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresLogin)) {
-    if (!store.getters.isLoggedin)
-      next({
-        name: "Login",
-        params: { returnUrl: to.fullPath },
-      });
-    else next();
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some((record) => record.meta.requiresLogin)) {
+//     if (!store.getters.isLoggedin)
+//       next({
+//         name: "Login",
+//         params: { returnUrl: to.fullPath },
+//       });
+//     else next();
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;
