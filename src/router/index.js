@@ -8,8 +8,7 @@ import Login from "../components/Login.vue";
 import Register from "../components/Register.vue";
 import UserPage from "../components/UserPage.vue";
 import About from "../components/About.vue";
-
-import store from "../store";
+import AuthService from "../services/auth.service.js";
 
 const routes = [
   {
@@ -34,15 +33,6 @@ const routes = [
     component: EditSkills,
   },
   {
-    path: "/login/:returnUrl?",
-    name: "Login",
-    component: Login,
-  },
-  {
-    path: "/register",
-    component: Register,
-  },
-  {
     path: "/recommend/:courseId",
     name: "Recommend",
     component: Recommend,
@@ -51,7 +41,7 @@ const routes = [
       courseTitle: "?courseTitle",
     },
     meta: {
-      requiresLogin: true,
+      expertGuard: true,
     },
   },
   {
@@ -73,17 +63,36 @@ const router = createRouter({
   },
 });
 
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some((record) => record.meta.requiresLogin)) {
-//     if (!store.getters.isLoggedin)
-//       next({
-//         name: "Login",
-//         params: { returnUrl: to.fullPath },
-//       });
-//     else next();
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.authGuard)) {
+    if (!await AuthService.getSignedIn())
+      AuthService.signIn();
+    else next();
+  } else if (to.matched.some((record) => record.meta.expertGuard)) {
+    const role = await AuthService.getRole();
+    console.log(role);
+    if (role!=='Expert'){
+      if (!await AuthService.getSignedIn()){
+        AuthService.signIn();
+      }
+      else next({
+        name: "Home"
+      });
+    }
+    else if (to.matched.some((record) => record.meta.adminGuard)) {
+      const role = await AuthService.getRole();
+      if (role!=='Admin')
+      if (!await AuthService.getSignedIn())AuthService.signIn();
+      else next({
+        path: '/'
+      });
+      else next();
+    } else {
+      next();
+    }
+    
+  }
+    else next();
+});
 
 export default router;

@@ -1,11 +1,22 @@
 import Oidc from 'oidc-client';
 import 'babel-polyfill';
 
+var BACKEND_URL;
+var FRONTEND_URL;
+if (process.env.NODE_ENV === "development") {
+  BACKEND_URL = "https://localhost:5001";
+  FRONTEND_URL = "http://localhost:8080";
+}
+if (process.env.NODE_ENV === "production") {
+  BACKEND_URL = "https://team-2-backend.herokuapp.com";
+  FRONTEND_URL = "https://team2-frontend.herokuapp.com";
+}
+
 const settings = {
-    authority: "https://localhost:5001",
+    authority: BACKEND_URL,
     client_id: "Team2Frontend",
-    redirect_uri: "http://localhost:8080/callback.html",
-    post_logout_redirect_uri: "http://localhost:8080/",
+    redirect_uri: FRONTEND_URL + "/callback.html",
+    post_logout_redirect_uri: FRONTEND_URL,
     response_type: "code",
     scope: "openid profile",
     automaticSilentRenew: true,

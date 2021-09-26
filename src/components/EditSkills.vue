@@ -15,7 +15,7 @@
       <h1>
         {{ !parent ? "Skillsets" : "Skills for " + parent.name }}
       </h1>
-      <div id="add-skill">
+      <div id="add-skill" v-if="isAdmin">
         <h3>
           Add
           {{ !parent ? "skillset" : "skill" }}
@@ -64,7 +64,7 @@ import Skill from "../ui/Skill.vue";
 import BaseDialog from "../ui/BaseDialog.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
-// import { mapGetters } from "vuex";
+import AuthService from "../services/auth.service.js";
 
 export default {
   components: {
@@ -82,11 +82,9 @@ export default {
       showDialog: false,
       selectedParentSkill: undefined,
       selectedParentSkills: [],
+      isAdmin: false,
     };
   },
-  // computed: {
-  //   ...mapGetters(["isAdmin"]),
-  // },
   props: {
     parent: {
       type: Object,
@@ -170,8 +168,11 @@ export default {
       }
     },
   },
-  created() {
+  async created() {
+    this.isAdmin = (await AuthService.getRole()) === "Admin" ? true : false;
     this.fetchSkills();
+  },
+  mounted() {
     const signalr = useSignalR();
     signalr.on("SkillCreated", (data) => {
       if (!this.parent) {
