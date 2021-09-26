@@ -4,8 +4,6 @@ import Home from "../components/Home.vue";
 import Results from "../components/Results.vue";
 import EditSkills from "../components/EditSkills.vue";
 import Recommend from "../components/Recommend.vue";
-import Login from "../components/Login.vue";
-import Register from "../components/Register.vue";
 import UserPage from "../components/UserPage.vue";
 import About from "../components/About.vue";
 import AuthService from "../services/auth.service.js";
