@@ -12,14 +12,23 @@
             <Avatar :name="user?.userName" :size="200" class="avatar" />
             <h1>{{ user?.userName }}</h1>
             <h2>{{ user?.email }}</h2>
-            <p
-              v-for="role in user?.roles"
-              :key="role"
-              class="role"
-              :class="role == 'Admin' ? 'role-admin' : 'role-user'"
-            >
-              {{ role + (role == "Admin" ? " 🔧" : " 😩") }}
-            </p>
+            <div class="roles">
+              <p
+                v-for="role in user?.roles"
+                :key="role"
+                class="role"
+                :class="
+                  role == 'Admin'
+                    ? 'role-admin'
+                    : role == 'Expert'
+                    ? 'role-expert'
+                    : 'role-user'
+                "
+              >
+                {{ role + (role == "Admin" ? " 🔧" : role == "Expert" ? " ⭐" : " 😩") }}
+              </p>
+            </div>
+
             <h2 class="nrrec">
               {{
                 recommendations.length
@@ -239,13 +248,18 @@ h2 {
     }
   }
 }
-
+.roles {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
 .role {
   display: inline-block;
   color: white;
   padding: 0.5rem 2rem;
   border-radius: 40px;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.26);
+  margin: 0.2rem 0.5rem;
 }
 
 .role-admin {
@@ -253,5 +267,8 @@ h2 {
 }
 .role-user {
   background-color: indianred;
+}
+.role-expert {
+  background-color: darkorchid;
 }
 </style>

@@ -72,13 +72,15 @@
       id="result-menu"
       v-if="showButtons && $route.query.skillId"
       @click.stop.prevent="goToRecommend()"
+      :disabled="!isExpert"
     >
-      Recommend this!
+      {{ isExpert ? "Recommend this!" : "Only Experts can recommend courses" }}
     </button>
   </a>
 </template>
 
 <script>
+import AuthService from "../services/auth.service.js";
 import Avatar from "./Avatar.vue";
 export default {
   components: {
@@ -90,6 +92,7 @@ export default {
       avgRating: undefined,
       filledStarsWidth: undefined,
       showButtons: false,
+      isExpert: false,
     };
   },
   props: {
@@ -124,7 +127,8 @@ export default {
       });
     },
   },
-  created() {
+  async created() {
+    this.isExpert = (await AuthService.getRole())?.includes("Expert");
     if (this.recommendations[0]) {
       this.isRecommended = true;
       this.avgRating =
@@ -370,6 +374,11 @@ export default {
     cursor: pointer;
     box-shadow: 0 2px 7px 4px rgb(0 0 0 / 26%);
     background-color: rgba($c-u-pur, 0.8);
+  }
+  &:disabled {
+    background-color: rgba($c-u-gr, 0.8);
+    opacity: 70%;
+    box-shadow: 0 2px 7px 4px rgb(0 0 0 / 10%);
   }
 }
 

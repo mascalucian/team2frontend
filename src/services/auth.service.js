@@ -17,11 +17,13 @@ const settings = {
     authority: BACKEND_URL,
     client_id: "Team2Frontend",
     redirect_uri: FRONTEND_URL + "/callback.html",
-    post_logout_redirect_uri: FRONTEND_URL,
+    post_logout_redirect_uri: FRONTEND_URL + "/logout.html",
     response_type: "code",
     scope: "team2backendAPI openid profile",
     automaticSilentRenew: true,
-    includeIdTokenInSilentRenew: true
+    includeIdTokenInSilentRenew: true,
+    filterProtocolClaims: true,
+    loadUserInfo: true,
 }
 
 var mgr = new Oidc.UserManager(settings)

@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@dafcoe/vue-collapsible-panel": "^0.2.0",
     "@microsoft/signalr": "^5.0.10",
     "@quangdao/vue-signalr": "0.0.6",
     "axios": "^0.21.2",

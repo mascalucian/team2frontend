@@ -169,7 +169,7 @@ export default {
     },
   },
   async created() {
-    this.isAdmin = (await AuthService.getRole()) === "Admin" ? true : false;
+    this.isAdmin = (await AuthService.getRole())?.includes("Admin");
     this.fetchSkills();
   },
   mounted() {

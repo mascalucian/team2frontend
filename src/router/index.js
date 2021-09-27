@@ -6,6 +6,7 @@ import EditSkills from "../components/EditSkills.vue";
 import Recommend from "../components/Recommend.vue";
 import UserPage from "../components/UserPage.vue";
 import About from "../components/About.vue";
+import Users from "../components/Users.vue";
 import AuthService from "../services/auth.service.js";
 
 const routes = [
@@ -50,6 +51,13 @@ const routes = [
   {
     path: "/about",
     component: About,
+  },
+  {
+    path: "/users",
+    component: Users,
+    meta: {
+      adminGuard: true,
+    },
   },
 ];
 

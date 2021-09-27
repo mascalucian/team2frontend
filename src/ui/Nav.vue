@@ -13,6 +13,9 @@
         <div class="btndiv">
           <router-link to="/about" class="btn"> About </router-link>
         </div>
+        <div class="btndiv" v-if="isAdmin">
+          <router-link to="/users" class="btn"> Users </router-link>
+        </div>
       </div>
       <Search v-if="$route.name != 'Home'" />
       <div class="rightside">
@@ -47,6 +50,7 @@ export default {
     return {
       isSignedIn: false,
       userProfile: null,
+      isAdmin: false,
     };
   },
   components: {
@@ -62,6 +66,7 @@ export default {
     },
   },
   async created() {
+    this.isAdmin = (await AuthService.getRole())?.includes("Admin");
     this.userProfile = await AuthService.getProfile();
     this.isSignedIn = await AuthService.getSignedIn();
   },
