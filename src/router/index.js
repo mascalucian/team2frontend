@@ -75,29 +75,36 @@ router.beforeEach(async (to, from, next) => {
       AuthService.signIn();
     else next();
   } else if (to.matched.some((record) => record.meta.expertGuard)) {
-    const role = await AuthService.getRole();
-    console.log(role);
-    if (role!=='Expert'){
+    const roles = await AuthService.getRole();
+    if (roles?.includes("Expert")) {
+      next();
+    }
+    else{
       if (!await AuthService.getSignedIn()){
         AuthService.signIn();
       }
-      else next({
-        name: "Home"
-      });
+      else{
+        next({
+          path: '/'
+        });
+      }
+
     }
-    else if (to.matched.some((record) => record.meta.adminGuard)) {
-      const role = await AuthService.getRole();
-      if (role!=='Admin')
-      if (!await AuthService.getSignedIn())AuthService.signIn();
-      else next({
-        path: '/'
-      });
-      else next();
-    } else {
-      next();
-    }
-    
   }
+    else if (to.matched.some((record) => record.meta.adminGuard)) {
+      const roles = await AuthService.getRole();
+      if (roles?.includes("Admin")){
+        next();
+      }
+      else if (!await AuthService.getSignedIn()){
+        AuthService.signIn();
+      }
+      else {
+        next({
+          path: '/'
+        });
+      }
+    } 
     else next();
 });
 

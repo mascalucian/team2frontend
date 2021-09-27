@@ -78,7 +78,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import AuthService from "../services/auth.service.js";
+
 export default {
   data() {
     return {
@@ -91,10 +92,8 @@ export default {
         skillId: undefined,
         courseTitle: this.$route.query.courseTitle || undefined,
       },
+      userProfile: null,
     };
-  },
-  computed: {
-    ...mapGetters(["getUserData"]),
   },
   methods: {
     submit() {
@@ -102,11 +101,11 @@ export default {
         .post(`/Recomandations`, {
           courseId: this.recomandation.courseId,
           courseTitle: this.recomandation.courseTitle,
-          userName: this.getUserData.userName,
+          userName: this.userProfile.name,
           feedback: this.recomandation.feedback,
           rating: this.picked,
           skillId: this.recomandation.skillId,
-          userId: this.getUserData.id,
+          userId: this.userProfile.id,
         })
         .then(() => {
           console.log(this.recomandation);
@@ -120,7 +119,8 @@ export default {
         });
     },
   },
-  created() {
+  async created() {
+    this.userProfile = await AuthService.getProfile();
     this.recomandation.courseId = this.$route.params.courseId;
     this.recomandation.skillId = this.$route.query.skillId;
     this.recomandation.courseTitle = this.$route.query.courseTitle;
