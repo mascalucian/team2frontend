@@ -4,7 +4,7 @@
       <div class="title">
         <h1>Users Management</h1>
         <div>
-          <button>Add User</button>
+          <button @click="startAddUser($event)">Add User</button>
           <button @click="loadData">Refresh</button>
         </div>
       </div>
@@ -23,7 +23,7 @@
           :class="{ selected: selectedUser == user }"
         >
           <td>{{ user.id }}</td>
-          <td>{{ user.email }}</td>
+          <td>{{ user?.email }}</td>
           <td class="roles">
             <p
               v-for="role in user.roles"
@@ -53,16 +53,45 @@
       <div class="dropdown-message" v-if="dropdownMessage">
         <p>{{ dropdownMessage }}</p>
       </div>
-
-      <form @submit.prevent.stop="submitEdit" class="vld-parent" ref="loaderForm">
-        <h3>{{ !selectedUser ? "Select a user:" : "User: " + selectedUser.email }}</h3>
-        <div class="fields" v-if="selectedUser">
+      <form
+        @submit.prevent.stop="editMode ? submitEdit() : submitAdd()"
+        class="vld-parent"
+        ref="loaderForm"
+      >
+        <h3>{{ editMode ? "User: " + selectedUser?.email : "Create a new user:" }}</h3>
+        <div v-if="!editMode">
+          <label> Email: </label>
+          <input
+            email
+            minlength="6"
+            type="text"
+            v-model="newUser.email"
+            autocomplete="off"
+          />
+          <label> Password: </label>
+          <input
+            minlength="6"
+            type="password"
+            v-model="newUser.password"
+            autocomplete="off"
+          />
+        </div>
+        <div class="fields" v-if="editMode && selectedUser">
           <label style="display: block">Roles:</label>
           <input type="checkbox" value="User" v-model="selectedUser.roles" />
           <label for="jack">User 😩</label>
           <input type="checkbox" value="Expert" v-model="selectedUser.roles" />
           <label for="john">Expert ⭐</label>
           <input type="checkbox" value="Admin" v-model="selectedUser.roles" />
+          <label for="mike">Admin 🔧</label>
+        </div>
+        <div class="fields" v-if="!editMode">
+          <label style="display: block">Roles:</label>
+          <input type="checkbox" value="User" v-model="newUser.roles" />
+          <label for="jack">User 😩</label>
+          <input type="checkbox" value="Expert" v-model="newUser.roles" />
+          <label for="john">Expert ⭐</label>
+          <input type="checkbox" value="Admin" v-model="newUser.roles" />
           <label for="mike">Admin 🔧</label>
         </div>
         <div class="button-row">
@@ -77,13 +106,14 @@
           >
             <input
               type="submit"
-              value="Save Changes"
+              :value="editMode ? 'Save Changes' : 'Add User'"
               :disabled="selectedUser?.roles.lenght == 0"
             />
             <button
               type="button"
               class="warn-button"
               @click.prevent.stop="confirm = true"
+              v-if="editMode"
             >
               Delete
             </button>
@@ -106,7 +136,9 @@
             ]"
           >
             <h4>Are you sure?</h4>
-            <button type="button" @click.prevent.stop="confirm = true">Yes</button>
+            <button type="button" @click.prevent.stop="deleteUser(selectedUser.id)">
+              Yes
+            </button>
             <button
               type="button"
               class="warn-button"
@@ -125,6 +157,11 @@
 export default {
   data() {
     return {
+      newUser: {
+        email: "",
+        password: "",
+        roles: ["User"],
+      },
       selectedUser: null,
       users: [],
       loader: undefined,
@@ -134,6 +171,7 @@ export default {
       },
       dropdownMessage: "",
       confirm: false,
+      editMode: true,
     };
   },
   methods: {
@@ -155,7 +193,13 @@ export default {
           this.loader = undefined;
         });
     },
+    startAddUser(event) {
+      this.editMode = false;
+      this.dropdownPosition.x = event.pageX;
+      this.dropdownPosition.y = event.pageY;
+    },
     selectUser(user, event) {
+      this.editMode = true;
       if (this.dropdownMessage) return;
       if (user?.id != this.selectedUser?.id) {
         this.confirm = false;
@@ -163,6 +207,43 @@ export default {
         this.dropdownPosition.y = event.pageY;
       }
       this.selectedUser = JSON.parse(JSON.stringify(user));
+    },
+    submitAdd() {
+      this.loader = this.$loading.show({
+        container: this.$refs.loaderForm,
+        isFullPage: false,
+        backgroundColor: "none",
+        style: "bars",
+      });
+      this.$http
+        .post("/users/", {
+          email: this.newUser.email,
+          password: this.newUser.password,
+          roles: this.newUser.roles,
+        })
+        .then(() => {
+          this.dropdownMessage = "User added successfully!";
+          setTimeout(() => {
+            this.newUser = {
+              email: "",
+              password: "",
+              roles: ["User"],
+            };
+            this.dropdownMessage = "";
+            this.cancelSelection();
+          }, 2000);
+        })
+        .catch((error) => {
+          this.dropdownMessage = error.data.message || "An error occured.";
+
+          setTimeout(() => {
+            this.dropdownMessage = "";
+          }, 2000);
+        })
+        .finally(() => {
+          this.loader.hide();
+          this.loader = undefined;
+        });
     },
     submitEdit() {
       this.loader = this.$loading.show({
@@ -203,10 +284,45 @@ export default {
           this.loader = undefined;
         });
     },
+    deleteUser(id) {
+      this.loader = this.$loading.show({
+        container: this.$refs.loaderForm,
+        isFullPage: false,
+        backgroundColor: "none",
+        style: "bars",
+      });
+      this.$http
+        .delete("/users/" + id)
+        .then(() => {
+          this.dropdownMessage = "User deleted successfully!";
+          setTimeout(() => {
+            this.dropdownMessage = "";
+            this.cancelSelection();
+          }, 2000);
+        })
+        .catch((error) => {
+          switch (error.response.status) {
+            case 404:
+              this.dropdownMessage = "Oops! User was already deleted.";
+              break;
+            default:
+              break;
+          }
+
+          setTimeout(() => {
+            this.dropdownMessage = "";
+          }, 2000);
+        })
+        .finally(() => {
+          this.loader.hide();
+          this.loader = undefined;
+        });
+    },
     cancelSelection() {
       this.dropdownPosition.x = null;
       this.dropdownPosition.y = null;
       setTimeout(() => {
+        this.editMode = true;
         this.selectedUser = null;
       }, 200);
     },
@@ -232,6 +348,15 @@ export default {
     flex-direction: column;
     justify-content: flex-end;
     height: 100%;
+    input[type="text"],
+    input[type="password"] {
+      display: block;
+      width: 100%;
+      border-radius: 5px;
+      margin: 1rem 0;
+      font-size: large;
+      padding: 0.3rem;
+    }
     button,
     input[type="submit"] {
       width: auto;
@@ -262,6 +387,8 @@ export default {
   }
 }
 .button-row {
+  display: flex;
+  justify-content: center;
   position: relative;
   margin: 1rem 0;
   > .confirm-buttons {
