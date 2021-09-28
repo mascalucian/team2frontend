@@ -1,8 +1,8 @@
 <template>
-  <main class="vld-parent" ref="loaderParent">
+  <main class="vld-parent">
     <header>
       <div class="title">
-        <h1>{{ "Users Management" + dropdownHeight }}</h1>
+        <h1>Users Management</h1>
         <div>
           <button @click="startAddUser($event)">Add User</button>
           <button @click="loadData">Refresh</button>
@@ -10,7 +10,7 @@
       </div>
     </header>
     <section>
-      <table>
+      <table class="vld-parent" ref="loaderParent">
         <tr>
           <th>Id</th>
           <th>Email</th>
@@ -46,10 +46,15 @@
     <div
       class="dropdown-menu"
       :style="[
-        { top: dropdownPosition?.y + 'px', left: dropdownPosition?.x + 'px' },
-        dropdownPosition?.x ? { opacity: '100%' } : { opacity: '0' },
+        windowWidth > dropdownX + width
+          ? { left: dropdownX + 'px' }
+          : { right: windowWidth - dropdownX + 'px' },
+        windowHeight > dropdownY + height
+          ? { top: dropdownY + 'px' }
+          : { bottom: windowHeight - dropdownY + 'px' },
+        dropdownX ? { opacity: '100%' } : { opacity: '0' },
       ]"
-      ref="dropdown"
+      id="dropdown"
     >
       <div class="dropdown-message" v-if="dropdownMessage">
         <p>{{ dropdownMessage }}</p>
@@ -166,16 +171,37 @@ export default {
       selectedUser: null,
       users: [],
       loader: undefined,
-      dropdownPosition: {
-        x: null,
-        y: null,
-      },
+      dropdownX: null,
+      dropdownY: null,
       dropdownMessage: "",
       confirm: false,
       editMode: true,
+      height: 0,
+      width: 0,
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight,
     };
   },
+  watch: {
+    selectedUser: function (newVal, oldVal) {
+      const dropdown = document.getElementById("dropdown");
+      this.$nextTick(() => {
+        this.height = dropdown.clientHeight;
+        this.width = dropdown.clientWidth;
+      });
+    },
+  },
   methods: {
+    onResize() {
+      this.windowWidth = window.innerWidth;
+      this.windowHeight = window.innerHeight;
+      if (this.dropdownX > this.windowWidth) {
+        this.dropdownX = this.windowWidth - 1;
+      }
+      if (this.dropdownY > this.windowHeight) {
+        this.dropdownY = this.windowHeight - 1;
+      }
+    },
     loadData() {
       this.cancelSelection();
       this.loader = this.$loading.show({
@@ -196,16 +222,16 @@ export default {
     },
     startAddUser(event) {
       this.editMode = false;
-      this.dropdownPosition.x = event.pageX;
-      this.dropdownPosition.y = event.pageY;
+      this.dropdownX = event.pageX;
+      this.dropdownY = event.pageY;
     },
     selectUser(user, event) {
       this.editMode = true;
       if (this.dropdownMessage) return;
       if (user?.id != this.selectedUser?.id) {
         this.confirm = false;
-        this.dropdownPosition.x = event.pageX;
-        this.dropdownPosition.y = event.pageY;
+        this.dropdownX = event.pageX;
+        this.dropdownY = event.pageY;
       }
       this.selectedUser = JSON.parse(JSON.stringify(user));
     },
@@ -320,32 +346,34 @@ export default {
         });
     },
     cancelSelection() {
-      this.dropdownPosition.x = null;
-      this.dropdownPosition.y = null;
+      this.dropdownX = null;
+      this.dropdownY = null;
       setTimeout(() => {
         this.editMode = true;
         this.selectedUser = null;
       }, 200);
     },
   },
-  created() {
-    this.loadData();
+  async mounted() {
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
+    await this.loadData();
   },
-  computed: {
-    dropdownHeight() {
-      return this.$refs.dropdown?.offsetHeight || 0;
-    },
+  unmounted() {
+    window.removeEventListener("resize", this.onResize);
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .dropdown-menu {
+  max-width: 75vw;
   position: fixed;
   background-color: white;
   border-radius: 30px;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.26);
-  padding: 1rem;
+  padding: 0.5rem;
   transition: 0.2s opacity ease-in-out, 0.1s top ease-in-out, 0.1s left ease-in-out;
   z-index: 100;
   form {
@@ -395,6 +423,7 @@ export default {
 .button-row {
   display: flex;
   justify-content: center;
+  align-items: center;
   position: relative;
   margin: 1rem 0;
   > .confirm-buttons {
@@ -467,6 +496,9 @@ input[type="submit"] {
 table {
   width: 100%;
   text-align: center;
+  &:not(:first-child) {
+    cursor: auto;
+  }
 }
 
 th {
