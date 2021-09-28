@@ -2,7 +2,7 @@
   <main class="vld-parent" ref="loaderParent">
     <header>
       <div class="title">
-        <h1>Users Management</h1>
+        <h1>{{ "Users Management" + dropdownHeight }}</h1>
         <div>
           <button @click="startAddUser($event)">Add User</button>
           <button @click="loadData">Refresh</button>
@@ -49,6 +49,7 @@
         { top: dropdownPosition?.y + 'px', left: dropdownPosition?.x + 'px' },
         dropdownPosition?.x ? { opacity: '100%' } : { opacity: '0' },
       ]"
+      ref="dropdown"
     >
       <div class="dropdown-message" v-if="dropdownMessage">
         <p>{{ dropdownMessage }}</p>
@@ -329,6 +330,11 @@ export default {
   },
   created() {
     this.loadData();
+  },
+  computed: {
+    dropdownHeight() {
+      return this.$refs.dropdown?.offsetHeight || 0;
+    },
   },
 };
 </script>

@@ -24,6 +24,7 @@ const settings = {
     includeIdTokenInSilentRenew: true,
     filterProtocolClaims: true,
     loadUserInfo: true,
+    silent_redirect_uri: FRONTEND_URL + "/silent-renew.html",
 }
 
 var mgr = new Oidc.UserManager(settings)
