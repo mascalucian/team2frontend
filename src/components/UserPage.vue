@@ -10,35 +10,20 @@
         <div class="main-container">
           <div class="user-data">
             <Avatar :name="user?.userName" :size="200" class="avatar" />
-            <h1>{{ user?.userName }}</h1>
             <h2>{{ user?.email }}</h2>
             <div class="roles">
-              <p
-                v-for="role in user?.roles"
-                :key="role"
-                class="role"
-                :class="
-                  role == 'Admin'
-                    ? 'role-admin'
-                    : role == 'Expert'
-                    ? 'role-expert'
-                    : 'role-user'
-                "
-              >
-                {{ role + (role == "Admin" ? " 🔧" : role == "Expert" ? " ⭐" : " 😩") }}
-              </p>
+              <Role v-for="role in user?.roles" :key="role" :role="role" :size="45" />
             </div>
-
-            <h2 class="nrrec">
+          </div>
+          <div class="user-recommends">
+            <h1 class="recommended">Recommended courses:</h1>
+            <h3 class="nrrec">
               {{
                 recommendations.length
                   ? recommendations.length + " recommendations made."
                   : "No recommendations made yet."
               }}
-            </h2>
-          </div>
-          <div class="user-recommends">
-            <h1 class="recommended">Recommended courses:</h1>
+            </h3>
             <div
               class="user-recommendations-wrapper recommendation"
               v-for="recommendation in recommendations"
@@ -71,6 +56,7 @@ import { inject } from "vue";
 import { useSignalR } from "@quangdao/vue-signalr";
 import { mapGetters } from "vuex";
 import Avatar from "../ui/Avatar.vue";
+import Role from "../ui/Role.vue";
 export default {
   data() {
     return {
@@ -84,6 +70,7 @@ export default {
   },
   components: {
     Avatar,
+    Role,
   },
   methods: {
     loadData(id) {
@@ -125,6 +112,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+main {
+  flex-grow: 1;
+  & > div {
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
 .recommendation {
   display: flex;
   justify-content: center;
@@ -140,7 +136,8 @@ export default {
   filter: drop-shadow(2px 2px 5px rgb(255, 255, 255));
 }
 .nrrec {
-  font-size: 30px;
+  font-size: 2rem;
+  color: black;
 }
 .avatar {
   margin-top: 15%;
@@ -149,7 +146,8 @@ export default {
   margin-right: 10px;
 }
 .user-data {
-  width: 40%;
+  padding: 2rem;
+  min-width: 40%;
   background: rgb(112, 54, 103);
   background: linear-gradient(34deg, rgb(65, 5, 88) 0%, rgb(60, 12, 194) 100%);
   display: flex;
@@ -158,7 +156,8 @@ export default {
   box-shadow: -10px 0px 10px 1px black;
 }
 .user-recommends {
-  width: 60%;
+  padding: 2rem;
+  min-width: 60%;
   background-color: white;
   box-shadow: -2px 0px 10px 1px black;
   display: flex;
@@ -171,6 +170,7 @@ export default {
   height: 100%;
 }
 .alignment {
+  flex-grow: 1;
   width: 100vw;
   background-color: pink;
   min-height: 60%;
@@ -182,8 +182,8 @@ export default {
 .banner {
   width: 100vw;
   background-image: url("https://thumbs.dreamstime.com/b/vector-education-pattern-educattion-seamless-background-vector-education-pattern-educattion-seamless-background-vector-113988685.jpg");
-  min-height: 40%;
-  max-height: 40%;
+  min-height: 25%;
+  height: 20vh;
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
@@ -197,6 +197,8 @@ h1 {
   margin: 0;
 }
 h2 {
+  word-wrap: break-word;
+  width: 100%;
   color: #ffffff;
   font-size: 2rem;
   font-family: "Signika", sans-serif;
@@ -210,12 +212,9 @@ h2 {
 @media screen and (max-width: 946px) {
   .user-data {
     width: 100%;
-    min-height: 40%;
   }
   .user-recommends {
     width: 100%;
-
-    min-height: 60%;
   }
   .main-container {
     flex-direction: column;
@@ -249,26 +248,9 @@ h2 {
   }
 }
 .roles {
+  flex-wrap: wrap;
   display: flex;
   justify-content: center;
   width: 100%;
-}
-.role {
-  display: inline-block;
-  color: white;
-  padding: 0.5rem 2rem;
-  border-radius: 40px;
-  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.26);
-  margin: 0.2rem 0.5rem;
-}
-
-.role-admin {
-  background-color: steelblue;
-}
-.role-user {
-  background-color: indianred;
-}
-.role-expert {
-  background-color: darkorchid;
 }
 </style>

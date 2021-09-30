@@ -18,9 +18,8 @@ export default {
 
 <style lang="scss" scoped>
 * {
-  font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto,
-    segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
-    segoe ui symbol;
+  font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui,
+    Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
 }
 
 .searchflex {
@@ -68,6 +67,7 @@ export default {
   color: rgb(150, 7, 150);
 }
 .searchdiv {
+  width: 100%;
   padding: 20px;
 }
 img {
