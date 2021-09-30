@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div v-if="user">
+    <div>
       <div class="banner background-tint">
         <div>
           <a href="/#/skills"><img src="../assets/home.png" class="home" /></a>
@@ -9,27 +9,34 @@
       <div class="alignment">
         <div class="main-container">
           <div class="user-data">
-            <Avatar :name="user?.userName" :size="200" class="avatar" />
-            <h2>{{ user?.email }}</h2>
+            <div class="skeleton avatar avatar-loading" v-if="!user"></div>
+            <Avatar :name="user?.userName" :size="200" class="avatar" v-if="user" />
+            <h2 :class="{ '.skeleton-text': !user }">{{ user?.email }}</h2>
             <div class="roles">
               <Role v-for="role in user?.roles" :key="role" :role="role" :size="45" />
             </div>
           </div>
           <div class="user-recommends">
-            <h1 class="recommended">Recommended courses:</h1>
-            <h3 class="nrrec">
+            <h1 class="recommended" v-if="user">Recommended courses:</h1>
+            <h3 class="nrrec" v-if="user">
               {{
                 recommendations.length
                   ? recommendations.length + " recommendations made."
                   : "No recommendations made yet."
               }}
             </h3>
+            <div v-if="!user" class="skeleton-parent">
+              <SkeletonRecommendation />
+              <SkeletonRecommendation v-for="index in nrSkeletons" :key="index" />
+            </div>
+
             <div
-              class="user-recommendations-wrapper recommendation"
+              v-else
+              class="recommendation"
               v-for="recommendation in recommendations"
               :key="recommendation.id"
             >
-              <Avatar :name="user?.userName" :size="50" class="avatarsmall" />
+              <Avatar v-if="user" :name="user?.userName" :size="50" class="avatarsmall" />
               <p>
                 {{ user?.userName }} recommended the course
                 {{ recommendation.courseTitle }} for skill
@@ -47,39 +54,31 @@
         </div>
       </div>
     </div>
-    <div v-else class="vld-parent" ref="loaderWrapper"></div>
   </main>
 </template>
 
 <script>
 import { inject } from "vue";
 import { useSignalR } from "@quangdao/vue-signalr";
-import { mapGetters } from "vuex";
 import Avatar from "../ui/Avatar.vue";
 import Role from "../ui/Role.vue";
+import SkeletonRecommendation from "../ui/skeleton/SkeletonRecommendation.vue";
 export default {
   data() {
     return {
       user: undefined,
       loader: undefined,
       recommendations: [],
+      nrSkeletons: 1,
     };
-  },
-  computed: {
-    ...mapGetters(["getUserData"]),
   },
   components: {
     Avatar,
     Role,
+    SkeletonRecommendation,
   },
   methods: {
     loadData(id) {
-      this.loader = this.$loading.show({
-        container: this.$refs.loaderWrapper,
-        isFullPage: false,
-        backgroundColor: "none",
-        loader: "bars",
-      });
       this.$http
         .all([
           this.$http.get("/users/" + id).then((result) => {
@@ -90,7 +89,7 @@ export default {
           }),
         ])
         .then(() => {
-          this.loader.hide();
+          // this.loader.hide();
         });
     },
   },
@@ -108,6 +107,20 @@ export default {
         this.recommendations.push(data.recomandation);
     });
   },
+  mounted() {
+    const recommendationWrapper = document.querySelector(".user-recommends");
+    const recommendation = document.querySelector(".recommendation");
+
+    var height = recommendation.offsetHeight;
+    height += parseInt(
+      window.getComputedStyle(recommendation).getPropertyValue("margin-top")
+    );
+    height += parseInt(
+      window.getComputedStyle(recommendation).getPropertyValue("margin-bottom")
+    );
+
+    this.nrSkeletons = Math.floor(recommendationWrapper.offsetHeight / height) - 1;
+  },
 };
 </script>
 
@@ -115,13 +128,14 @@ export default {
 main {
   flex-grow: 1;
   & > div {
+    height: 100% !important;
     flex-grow: 1;
-    height: 100%;
     display: flex;
     flex-direction: column;
   }
 }
 .recommendation {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -129,6 +143,14 @@ main {
   height: 150px;
   padding: 20px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  a {
+    color: black;
+    text-decoration: none;
+    &:hover {
+      color: $c-u-pur;
+      text-decoration: underline;
+    }
+  }
 }
 .home {
   width: 100px;
@@ -163,6 +185,8 @@ main {
   display: flex;
   align-items: center;
   flex-direction: column;
+  height: 100% !important;
+  flex-grow: 1;
 }
 .main-container {
   display: flex;
@@ -170,10 +194,10 @@ main {
   height: 100%;
 }
 .alignment {
+  height: 100% !important;
   flex-grow: 1;
   width: 100vw;
   background-color: pink;
-  min-height: 60%;
 }
 .background-tint {
   background-color: #5624d0;
@@ -205,6 +229,13 @@ h2 {
   text-align: center;
   padding: 1rem 0;
   margin: 0;
+  &:empty {
+    opacity: 0.7;
+    margin: 0.83em 0;
+    height: 2rem;
+    width: 100%;
+    animation: skeleton-loading 0.3s linear infinite alternate;
+  }
 }
 .recommended {
   color: black;
@@ -234,23 +265,55 @@ h2 {
   }
 }
 
+.skeleton-parent {
+  width: 100% !important;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .vld-parent {
   height: 100%;
 }
-.user-recommendations-wrapper {
-  a {
-    color: black;
-    text-decoration: none;
-    &:hover {
-      color: $c-u-pur;
-      text-decoration: underline;
-    }
-  }
-}
+
 .roles {
   flex-wrap: wrap;
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+.skeleton {
+  opacity: 0.7;
+  animation: skeleton-loading 0.3s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(200, 20%, 70%);
+  }
+  100% {
+    background-color: hsl(200, 20%, 95%);
+  }
+}
+
+.avatar-loading {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+}
+
+.avatar-loading-small {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.skeleton-text {
+  opacity: 0.7;
+  height: 1rem;
+  width: 100%;
+  animation: skeleton-loading 1s linear infinite alternate;
+  margin: 0.2rem;
 }
 </style>

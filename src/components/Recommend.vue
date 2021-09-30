@@ -105,7 +105,7 @@ export default {
           feedback: this.recomandation.feedback,
           rating: this.picked,
           skillId: this.recomandation.skillId,
-          userId: this.userProfile.id,
+          userId: this.userProfile?.sub,
         })
         .then(() => {
           console.log(this.recomandation);

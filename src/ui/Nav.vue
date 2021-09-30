@@ -29,13 +29,16 @@
           ><Avatar :name="userProfile?.name" :size="40" />
           <div id="account-button-user-name">
             <p>{{ userProfile?.name }}</p>
-            <div class="roles">
+            <div class="roles" v-if="typeof userProfile?.role !== 'string'">
               <Role
                 v-for="role in userProfile?.role"
                 :key="role"
                 :role="role"
                 :size="30"
               />
+            </div>
+            <div class="roles" v-else>
+              <Role :role="userProfile?.role" :size="30" />
             </div>
           </div>
         </router-link>

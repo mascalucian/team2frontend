@@ -42,12 +42,13 @@ p {
 }
 
 .role-admin {
-  background-color: steelblue;
+  background-color: rgb(26, 160, 160);
 }
 .role-expert {
-  background-color: darkorchid;
+  background-color: #5624d0;
 }
 .role-user {
-  background-color: indianred;
+  background-color: rgb(235, 235, 235);
+  color: black;
 }
 </style>
