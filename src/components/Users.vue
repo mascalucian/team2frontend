@@ -26,25 +26,12 @@
           v-for="user in users"
           :key="user.id"
           @click="selectUser(user, $event)"
-          :class="{ selected: selectedUser == user }"
+          :class="{ selected: selectedUser?.id == user?.id }"
         >
           <td>{{ user.id }}</td>
           <td>{{ user?.email }}</td>
           <td class="roles">
-            <p
-              v-for="role in user.roles"
-              :key="role"
-              class="role"
-              :class="
-                role == 'Admin'
-                  ? 'role-admin'
-                  : role == 'Expert'
-                  ? 'role-expert'
-                  : 'role-user'
-              "
-            >
-              {{ role + (role == "Admin" ? " 🔧" : role == "Expert" ? " ⭐" : " 😩") }}
-            </p>
+            <Role v-for="role in user.roles" :key="role" :role="role" />
           </td>
         </tr>
       </table>
@@ -168,8 +155,12 @@
 <script>
 import { inject } from "vue";
 import { useSignalR } from "@quangdao/vue-signalr";
+import Role from "../ui/Role.vue";
 
 export default {
+  components: {
+    Role,
+  },
   data() {
     return {
       newUser: {
@@ -556,24 +547,24 @@ td {
   border: 1px solid gray;
 }
 
-.role {
-  display: inline-block;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 40px;
-  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.26);
-  margin: 0.2rem 0.5rem;
-}
+// .role {
+//   display: inline-block;
+//   color: white;
+//   padding: 0.5rem 1rem;
+//   border-radius: 40px;
+//   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.26);
+//   margin: 0.2rem 0.5rem;
+// }
 
-.role-admin {
-  background-color: steelblue;
-}
-.role-expert {
-  background-color: darkorchid;
-}
-.role-user {
-  background-color: indianred;
-}
+// .role-admin {
+//   background-color: steelblue;
+// }
+// .role-expert {
+//   background-color: darkorchid;
+// }
+// .role-user {
+//   background-color: indianred;
+// }
 
 .roles {
   display: flex;

@@ -27,7 +27,17 @@
           class="account-button"
           v-if="isSignedIn"
           ><Avatar :name="userProfile?.name" :size="40" />
-          <p id="account-button-user-name">{{ userProfile.name.split("@")[0] }}</p>
+          <div id="account-button-user-name">
+            <p>{{ userProfile?.name }}</p>
+            <div class="roles">
+              <Role
+                v-for="role in userProfile?.role"
+                :key="role"
+                :role="role"
+                :size="30"
+              />
+            </div>
+          </div>
         </router-link>
 
         <div class="btndiv" v-if="isSignedIn">
@@ -44,6 +54,7 @@
 <script>
 import Search from "../components/Search.vue";
 import Avatar from "../ui/Avatar.vue";
+import Role from "../ui/Role.vue";
 import AuthService from "../services/auth.service.js";
 export default {
   data() {
@@ -56,6 +67,7 @@ export default {
   components: {
     Search,
     Avatar,
+    Role,
   },
   methods: {
     login() {
@@ -136,13 +148,22 @@ button:hover {
 
 .account-button {
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
   text-decoration: none;
   color: black !important;
+}
+#account-button-user-name {
+  display: flex;
+  flex-direction: column;
+
   p {
-    margin: 0 2rem 0 0.7rem;
+    color: black !important;
+    margin: 0 1rem;
   }
 }
+
 .companyname {
   text-decoration: none;
   color: black !important;
@@ -154,11 +175,17 @@ button:hover {
     color: black;
   }
 }
-@media screen and (max-width: 1204px) {
+
+.roles {
+  padding: 0.2rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+@media screen and (max-width: 1206px) {
   .headerflex {
     height: 160px;
     align-content: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
   }
 }
 @media screen and (max-width: 925px) {

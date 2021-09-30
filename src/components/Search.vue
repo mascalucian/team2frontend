@@ -31,10 +31,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+div {
+  flex-grow: 1;
+}
 .search {
-  height: 50px;
-  width: 38.5vw;
-  min-width: 340px;
+  margin: auto;
+  position: relative;
+  max-width: 30rem;
+  min-width: 15vw;
   padding-right: 20px;
   display: flex;
   justify-content: space-between;
@@ -42,13 +46,14 @@ export default {
   border-radius: 40px;
   background-color: transparent;
   align-items: center;
+  width: 100% !important;
 }
 .input {
   background-color: transparent;
   color: black;
   border: none;
-  padding: 20px;
-  width: 80vw;
+  padding: 1rem;
+  width: 100%;
   font-size: 20px;
 }
 
@@ -66,6 +71,8 @@ export default {
   color: rgba(240, 240, 240, 0.411);
 }
 button {
+  position: absolute;
+  right: 20px;
   color: black;
   background: none;
   outline: none;
