@@ -11,10 +11,10 @@
       <i
         :style="[deleteConfirm ? { visibility: 'hidden' } : '']"
         class="event fas fa-trash-alt fa-lg"
-        @click.stop.prevent="/*deleteSkill(skill.Id)*/ deleteConfirm = true"
+        @click.stop.prevent="deleteConfirm = true"
       ></i>
       <div :class="[deleteConfirm ? 'show' : '']" class="delete-confirm">
-        Delete skill?
+        {{ skill.parentId == 0 ? "Delete skillset?" : "Delete skill?" }}
         <i class="fas fa-times fa-lg" @click.stop.prevent="deleteConfirm = false"></i>
         <i class="fas fa-check fa-lg" @click.stop.prevent="deleteSkill()"></i>
       </div>
@@ -57,6 +57,8 @@
 </template>
 
 <script>
+import AuthService from "../services/auth.service.js";
+
 export default {
   data() {
     return {
@@ -160,6 +162,9 @@ export default {
       return "fas fa-pencil-alt";
     },
   },
+  async created() {
+    this.isAdmin = (await AuthService.getRole())?.includes("Admin");
+  },
 };
 </script>
 
@@ -254,7 +259,7 @@ i {
         background-color: transparent;
         outline: none;
         border: 0;
-        font-size: 1.5em;
+        font-size: xx-large;
         font-weight: bold;
         text-decoration: underline;
         text-align: center;

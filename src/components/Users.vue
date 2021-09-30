@@ -10,12 +10,18 @@
       </div>
     </header>
     <section>
-      <table class="vld-parent" ref="loaderParent">
+      <table>
         <tr>
           <th>Id</th>
           <th>Email</th>
           <th>Roles</th>
         </tr>
+        <div
+          class="vld-parent"
+          ref="loaderParent"
+          style="flex-grow: 1, padding-top:5rem"
+          v-if="loader"
+        ></div>
         <tr
           v-for="user in users"
           :key="user.id"
@@ -52,7 +58,7 @@
         windowHeight > dropdownY + height
           ? { top: dropdownY + 'px' }
           : { bottom: windowHeight - dropdownY + 'px' },
-        dropdownX ? { opacity: '100%' } : { opacity: '0' },
+        showDropdown ? { opacity: '100%' } : { opacity: '0' },
       ]"
       id="dropdown"
     >
@@ -160,6 +166,9 @@
 </template>
 
 <script>
+import { inject } from "vue";
+import { useSignalR } from "@quangdao/vue-signalr";
+
 export default {
   data() {
     return {
@@ -180,6 +189,7 @@ export default {
       width: 0,
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
+      showDropdown: false,
     };
   },
   watch: {
@@ -221,11 +231,14 @@ export default {
         });
     },
     startAddUser(event) {
+      this.confirm = false;
+      this.showDropdown = true;
       this.editMode = false;
       this.dropdownX = event.pageX;
       this.dropdownY = event.pageY;
     },
     selectUser(user, event) {
+      this.showDropdown = true;
       this.editMode = true;
       if (this.dropdownMessage) return;
       if (user?.id != this.selectedUser?.id) {
@@ -346,10 +359,12 @@ export default {
         });
     },
     cancelSelection() {
-      this.dropdownX = null;
-      this.dropdownY = null;
+      this.showDropdown = false;
+
       setTimeout(() => {
         this.editMode = true;
+        this.dropdownX = null;
+        this.dropdownY = null;
         this.selectedUser = null;
       }, 200);
     },
@@ -357,6 +372,20 @@ export default {
   async mounted() {
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
+    });
+    const signalr = useSignalR();
+    signalr.on("UserAdded", (data) => {
+      this.users.push(data);
+    });
+    signalr.on("UserEdited", (data) => {
+      console.table(data);
+      let index = this.users.findIndex((_) => _.id == data.id);
+      this.users[index] = data;
+      this.users.push(this.users.splice(index, 1)[0]);
+    });
+    signalr.on("UserDeleted", (data) => {
+      let index = this.users.findIndex((_) => _.id == data.id);
+      this.users.splice(index, 1);
     });
     await this.loadData();
   },
@@ -368,6 +397,7 @@ export default {
 
 <style lang="scss" scoped>
 .dropdown-menu {
+  word-break: break-all;
   max-width: 75vw;
   position: fixed;
   background-color: white;
@@ -393,6 +423,7 @@ export default {
     }
     button,
     input[type="submit"] {
+      margin: 0.2rem;
       width: auto;
       display: inline-block;
     }
@@ -494,11 +525,15 @@ input[type="submit"] {
   background-color: brown;
 }
 table {
+  overflow-x: auto;
   width: 100%;
   text-align: center;
   &:not(:first-child) {
     cursor: auto;
+    border-bottom: 0;
   }
+  border-bottom: 1px solid gray;
+  margin-bottom: 4rem;
 }
 
 th {
@@ -514,6 +549,11 @@ tr {
   }
   position: relative;
   cursor: pointer;
+  outline: none;
+}
+
+td {
+  border: 1px solid gray;
 }
 
 .role {
@@ -537,5 +577,6 @@ tr {
 
 .roles {
   display: flex;
+  flex-wrap: wrap;
 }
 </style>

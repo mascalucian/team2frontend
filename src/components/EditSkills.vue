@@ -25,6 +25,15 @@
           <div class="error-parent">
             <input type="submit" value="Submit" :disabled="!newSkill" />
             <p>{{ errorMessage }}</p>
+            <loading
+              v-model:active="loadingSubmitted"
+              :is-full-page="false"
+              :background-color="'none'"
+              :color="'#ffffff'"
+              :loader="'dots'"
+              :height="100"
+              :width="100"
+            ></loading>
           </div>
         </form>
       </div>
@@ -83,6 +92,7 @@ export default {
       selectedParentSkill: undefined,
       selectedParentSkills: [],
       isAdmin: false,
+      loadingSubmitted: false,
     };
   },
   props: {
@@ -98,6 +108,7 @@ export default {
   },
   methods: {
     addSkill() {
+      this.loadingSubmitted = true;
       this.errorMessage = "";
       this.$http
         .post("/Skills", {
@@ -109,6 +120,9 @@ export default {
         })
         .catch((error) => {
           this.errorMessage = "Invalid skill name.";
+        })
+        .finally(() => {
+          this.loadingSubmitted = false;
         });
     },
     select(skill) {

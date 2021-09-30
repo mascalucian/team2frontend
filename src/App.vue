@@ -23,7 +23,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 *,
 *:before,
 *::after {
@@ -52,7 +52,8 @@ body {
 }
 
 #app {
-  padding-top: 80px;
+  padding: 0;
+  margin-top: 80px;
   height: 100%;
   flex-grow: 1;
   display: flex;
@@ -63,5 +64,17 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+@media screen and (max-width: 1204px) {
+  #app {
+    margin-top: 160px !important;
+  }
+}
+
+@media screen and (max-width: 653px) {
+  #app {
+    margin-top: 180px !important;
+  }
 }
 </style>

@@ -27,7 +27,7 @@
           class="account-button"
           v-if="isSignedIn"
           ><Avatar :name="userProfile?.name" :size="40" />
-          <p>{{ userProfile.name.split("@")[0] }}</p>
+          <p id="account-button-user-name">{{ userProfile.name.split("@")[0] }}</p>
         </router-link>
 
         <div class="btndiv" v-if="isSignedIn">
@@ -99,6 +99,7 @@ button {
 }
 
 .leftside {
+  text-align: center;
   display: flex;
   align-items: center;
   left: 0;
@@ -153,18 +154,44 @@ button:hover {
     color: black;
   }
 }
+@media screen and (max-width: 1204px) {
+  .headerflex {
+    height: 160px;
+    align-content: center;
+    justify-content: space-around;
+  }
+}
 @media screen and (max-width: 925px) {
   .headerflex {
     height: 160px;
     align-content: center;
   }
 }
+@media screen and (max-width: 795px) {
+  .headerflex {
+    justify-content: flex-start;
+  }
+  #account-button-user-name {
+    display: none;
+  }
+}
 @media screen and (max-width: 653px) {
   .headerflex {
-    height: 240px;
-    align-content: center;
+    height: 180px;
+    align-items: center;
     flex-direction: column;
-    padding-bottom: 20px;
+    padding: 0;
+    justify-content: space-evenly;
+  }
+  .account-button {
+    margin: 0.6rem;
+  }
+  .titlediv {
+    padding: 0;
+  }
+
+  .btndiv {
+    padding: 0;
   }
 }
 </style>

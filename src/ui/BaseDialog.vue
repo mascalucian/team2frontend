@@ -52,11 +52,12 @@ export default {};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
+  max-height: 90vh;
 }
 
 .modal-footer {
-  height: 2.5rem;
-  margin: 1rem;
+  text-align: right;
+  padding: 1.5rem;
 }
 
 .modal-header h3 {
@@ -65,13 +66,12 @@ export default {};
 }
 
 .modal-body {
-  margin: 0 0 20px 0;
+  margin: 0;
   overflow-y: auto;
-  max-height: 75vh;
+  max-height: 65vh;
 }
 
 .modal-default-button {
-  float: right;
   height: 2rem;
   border-radius: 25px;
   font-family: $f-u-bm;
@@ -81,7 +81,6 @@ export default {};
   border: 0;
   box-shadow: 0 2px 11px 1px rgb(0 0 0 / 26%);
   cursor: pointer;
-  margin: auto 0;
   font-size: large;
   &:hover,
   :active,
