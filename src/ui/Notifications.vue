@@ -23,8 +23,8 @@
 </template>
 
 <script>
+import AuthService from "../services/auth.service.js";
 import { inject } from "vue";
-import { mapGetters } from "vuex";
 import { useSignalR } from "@quangdao/vue-signalr";
 export default {
   data() {
@@ -32,10 +32,8 @@ export default {
       notifications: [],
       id: 1,
       notificationTimeout: 5000,
+      userProfile: null,
     };
-  },
-  computed: {
-    ...mapGetters(["getUserData"]),
   },
   mounted() {
     const signalr = useSignalR();
@@ -52,9 +50,10 @@ export default {
         this.addNotification("A skill was deleted: " + data.name, "deleted");
     });
     signalr.on("RecommendationAdded", (data) => {
+      console.log(data);
       if (
-        data.recomandation.userId != this.getUserData?.id ||
-        this.getUserData === null
+        data.recomandation.userId != this.userProfile?.sub ||
+        this.userProfile === null
       ) {
         this.addNotification(
           data.recomandation.userName +
@@ -83,6 +82,9 @@ export default {
       this.notifications.splice(index, 1);
     },
   },
+  async created() {
+    this.userProfile = await AuthService.getProfile();
+  },
 };
 </script>
 
@@ -92,7 +94,7 @@ $color-added: rgb(76, 0, 255);
 $color-deleted: rgb(255, 47, 110);
 $color-recommendation: rgb(163, 255, 209);
 .notif-stack {
-  position: absolute;
+  position: fixed;
   right: 5vw;
   bottom: 5vh;
   display: flex;

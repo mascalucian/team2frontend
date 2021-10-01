@@ -17,13 +17,9 @@
             </div>
           </div>
           <div class="user-recommends">
-            <h1 class="recommended" v-if="user">Recommended courses:</h1>
-            <h3 class="nrrec" v-if="user">
-              {{
-                recommendations.length
-                  ? recommendations.length + " recommendations made."
-                  : "No recommendations made yet."
-              }}
+            <h1 class="recommended">Recommended courses:</h1>
+            <h3 class="nrrec" v-if="!recommendations.length && !user">
+              No recommendations made yet.
             </h3>
             <div v-if="!user" class="skeleton-parent">
               <SkeletonRecommendation />
@@ -39,7 +35,7 @@
               <Avatar v-if="user" :name="user?.userName" :size="50" class="avatarsmall" />
               <p>
                 {{ user?.userName }} recommended the course
-                {{ recommendation.courseTitle }} for skill
+                <em>{{ recommendation.courseTitle }}</em> for skill
                 <router-link
                   :to="`/results/${recommendation.skillName}/1?skillId=${recommendation.skillId}`"
                   ><strong>{{ recommendation.skillName }}</strong></router-link
@@ -204,9 +200,8 @@ main {
   background-blend-mode: multiply;
 }
 .banner {
-  width: 100vw;
+  width: 100%;
   background-image: url("https://thumbs.dreamstime.com/b/vector-education-pattern-educattion-seamless-background-vector-education-pattern-educattion-seamless-background-vector-113988685.jpg");
-  min-height: 25%;
   height: 20vh;
   display: flex;
   justify-content: flex-end;

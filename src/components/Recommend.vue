@@ -1,12 +1,19 @@
 <template>
   <div class="wrapper">
     <div class="bigcontainer">
+      <div class="icon">
+        <i class="fas fa-thumbs-up"></i>
+      </div>
+
       <div class="title">
-        <h1>How would you rate the course?</h1>
+        <h1>
+          How would you rate the course: <em>{{ recomandation.courseTitle }}</em
+          >?
+        </h1>
       </div>
       <div class="stars">
         <form id="feedback-form" @submit.prevent="submit()" class="formflex">
-          <div>
+          <div class="star-parent">
             <input
               class="star star-5"
               id="star-5"
@@ -55,10 +62,14 @@
           </div>
           <div class="inputbox">
             <label for="feedback">Feedback: </label>
-            <input type="text" name="feedback" v-model="recomandation.feedback" />
+            <textarea
+              name="feedback"
+              v-model="recomandation.feedback"
+              autofocus
+            ></textarea>
           </div>
 
-          <div class="stars">
+          <div class="submit-parent">
             <button
               class="submitbtn"
               :disabled="
@@ -69,7 +80,20 @@
             >
               Recommend course
             </button>
-            <h3 v-if="message" class="success">{{ message }}</h3>
+            <div class="message" :class="isError ? 'error' : 'success'">
+              {{ message }}
+            </div>
+            <div class="vld-parent loader-parent">
+              <loading
+                v-model:active="isLoading"
+                :is-full-page="false"
+                :background-color="'none'"
+                :loader="'bars'"
+                :height="50"
+                :width="50"
+                :color="'#5624d0'"
+              ></loading>
+            </div>
           </div>
         </form>
       </div>
@@ -79,6 +103,8 @@
 
 <script>
 import AuthService from "../services/auth.service.js";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   data() {
@@ -93,10 +119,17 @@ export default {
         courseTitle: this.$route.query.courseTitle || undefined,
       },
       userProfile: null,
+      isLoading: false,
+      isError: false,
     };
+  },
+  components: {
+    Loading,
   },
   methods: {
     submit() {
+      this.isError = false;
+      this.isLoading = true;
       this.$http
         .post(`/Recomandations`, {
           courseId: this.recomandation.courseId,
@@ -115,7 +148,11 @@ export default {
           }, 2000);
         })
         .catch((error) => {
-          console.log(error);
+          this.message = error;
+          this.isError = true;
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },
@@ -130,6 +167,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.loader-parent {
+  width: 100%;
+  height: 60px !important;
+  position: relative;
+}
+
+.submit-parent {
+  flex-grow: 1;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+.star-parent {
+  background: $c-pur1;
+  padding: 2rem 4rem;
+  border-radius: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
 input[type="text"] {
   width: 100%;
   padding: 12px 20px;
@@ -147,10 +202,17 @@ input[type="text"] {
   align-items: center;
 }
 .wrapper {
+  // aspect-ratio: 2/1;
   display: flex;
   justify-content: center;
-  color: white;
-  height: 100%;
+  color: black;
+  padding: 5rem;
+  flex-grow: 1;
+  background-repeat: no-repeat;
+  background-position: fixed;
+  background-size: contain;
+  background-image: url("../assets/svg/background-waves.svg");
+  background-color: black;
 }
 .bigcontainer {
   display: flex;
@@ -158,17 +220,23 @@ input[type="text"] {
   align-items: center;
   flex-direction: column;
   width: 70%;
-  height: 90%;
   min-width: 400px;
-  background-color: #5624d0;
+  background-color: white;
   border-radius: 20px;
   margin: auto;
+  padding: 2rem;
 }
 .title {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 40px;
+  h1 {
+    margin: 0;
+    text-align: center;
+    word-wrap: break-word;
+    padding: 2rem 4rem;
+  }
+  margin-bottom: 1rem;
 }
 .submitbtn {
   padding: 20px;
@@ -202,23 +270,32 @@ input[type="text"] {
 .inputbox {
   min-width: 300px;
   width: 40vw;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 2rem 0;
+  label {
+    font-size: larger;
+    font-family: $f-u-bm;
+    font-weight: bolder;
+  }
+  textarea {
+    margin-top: 0.5rem !important;
+    display: block;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    max-height: 10rem;
+    min-height: 5rem;
+    font-family: $f-u-bm;
+    font-size: large;
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
 }
 
 div.stars {
-  width: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
   position: relative;
-  .success {
-    position: absolute;
-    bottom: -4rem;
-    color: yellowgreen;
-    font-size: 1.5rem;
-  }
 }
 
 input.star {
@@ -255,5 +332,31 @@ label.star:hover {
 label.star:before {
   content: "\f006";
   font-family: FontAwesome;
+}
+
+.icon {
+  margin-top: 2rem;
+  color: $c-pur1;
+  font-size: 6rem;
+  i {
+    line-height: 8rem;
+  }
+}
+
+.message {
+  font-size: 2rem;
+  width: 100%;
+  padding: 1rem;
+  height: 2rem;
+  &:empty {
+    height: 2rem !important;
+  }
+}
+
+.success {
+  color: forestgreen;
+}
+.error {
+  color: maroon;
 }
 </style>
