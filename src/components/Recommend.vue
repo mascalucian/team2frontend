@@ -8,50 +8,21 @@
         <form id="feedback-form" @submit.prevent="submit()" class="formflex">
           <div>
             <input
-              class="star star-5"
-              id="star-5"
+              class="star"
+              :class="'star-' + (6 - index).toString()"
+              :id="'star-' + (6 - index).toString()"
               type="radio"
               name="star"
-              value="5"
+              :value="6 - index"
               v-model="picked"
             />
-            <label class="star star-5" for="star-5"></label>
-            <input
-              class="star star-4"
-              id="star-4"
-              type="radio"
-              name="star"
-              value="4"
-              v-model="picked"
-            />
-            <label class="star star-4" for="star-4"></label>
-            <input
-              class="star star-3"
-              id="star-3"
-              type="radio"
-              name="star"
-              value="3"
-              v-model="picked"
-            />
-            <label class="star star-3" for="star-3"></label>
-            <input
-              class="star star-2"
-              id="star-2"
-              type="radio"
-              name="star"
-              value="2"
-              v-model="picked"
-            />
-            <label class="star star-2" for="star-2"></label>
-            <input
-              class="star star-1"
-              id="star-1"
-              type="radio"
-              name="star"
-              value="1"
-              v-model="picked"
-            />
-            <label class="star star-1" for="star-1"></label>
+            <label
+              v-for="index in 5"
+              :key="index"
+              class="star"
+              :class="'star-' + (6 - index).toString()"
+              :for="'star-' + (6 - index).toString()"
+            ></label>
           </div>
           <div class="inputbox">
             <label for="feedback">Feedback: </label>
