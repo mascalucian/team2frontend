@@ -33,21 +33,22 @@ export default {
       id: 1,
       notificationTimeout: 5000,
       userProfile: null,
+      isAdmin: false,
     };
   },
   mounted() {
     const signalr = useSignalR();
     signalr.on("SkillCreated", (data) => {
-      if (this.$route.path != "/skills")
-        this.addNotification("New skill was added: " + data.name, "added");
+      if (this.$route.path == "/skills" && this.isAdmin) return;
+      else this.addNotification("New skill was added: " + data.name, "added");
     });
     signalr.on("SkillUpdated", (data) => {
-      if (this.$route.path != "/skills")
-        this.addNotification("A skill was updated: " + data.name, "info");
+      if (this.$route.path == "/skills" && this.isAdmin) return;
+      else this.addNotification("A skill was updated: " + data.name, "info");
     });
     signalr.on("SkillDeleted", (data) => {
-      if (this.$route.path != "/skills")
-        this.addNotification("A skill was deleted: " + data.name, "deleted");
+      if (this.$route.path == "/skills" && this.isAdmin) return;
+      else this.addNotification("A skill was deleted: " + data.name, "deleted");
     });
     signalr.on("RecommendationAdded", (data) => {
       console.log(data);
@@ -84,6 +85,7 @@ export default {
   },
   async created() {
     this.userProfile = await AuthService.getProfile();
+    this.isAdmin = (await AuthService.getRole())?.includes("Admin");
   },
 };
 </script>

@@ -10,18 +10,19 @@
       </div>
     </header>
     <section>
-      <table>
+      <table class="vld-parent">
         <tr>
           <th>Id</th>
           <th>Email</th>
           <th>Roles</th>
         </tr>
-        <div
-          class="vld-parent"
-          ref="loaderParent"
-          style="flex-grow: 1, padding-top:5rem"
-          v-if="loader"
-        ></div>
+        <loading
+          v-model:active="isLoading"
+          :is-full-page="false"
+          :background-color="'none'"
+          :color="'#000000'"
+          :height="500"
+        ></loading>
         <tr
           v-for="user in users"
           :key="user.id"
@@ -156,10 +157,13 @@
 import { inject } from "vue";
 import { useSignalR } from "@quangdao/vue-signalr";
 import Role from "../ui/Role.vue";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   components: {
     Role,
+    Loading,
   },
   data() {
     return {
@@ -170,7 +174,7 @@ export default {
       },
       selectedUser: null,
       users: [],
-      loader: undefined,
+      isLoading: false,
       dropdownX: null,
       dropdownY: null,
       dropdownMessage: "",
@@ -181,6 +185,7 @@ export default {
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
       showDropdown: false,
+      loader: undefined,
     };
   },
   watch: {
@@ -205,20 +210,14 @@ export default {
     },
     loadData() {
       this.cancelSelection();
-      this.loader = this.$loading.show({
-        container: this.$refs.loaderParent,
-        isFullPage: false,
-        backgroundColor: "none",
-        color: "black",
-      });
+      this.isLoading = true;
       this.$http
         .get("/users")
         .then((response) => {
           this.users = response.data;
         })
         .finally(() => {
-          this.loader.hide();
-          this.loader = undefined;
+          this.isLoading = false;
         });
     },
     startAddUser(event) {
