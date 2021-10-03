@@ -66,7 +66,7 @@ body {
   box-sizing: border-box;
 }
 
-@media screen and (max-width: 1206px) {
+@media screen and (max-width: 925px) {
   #app {
     margin-top: 160px !important;
   }

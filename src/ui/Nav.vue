@@ -186,7 +186,6 @@ button:hover {
 }
 @media screen and (max-width: 1206px) {
   .headerflex {
-    height: 160px;
     align-content: center;
     justify-content: space-evenly;
   }

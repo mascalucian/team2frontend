@@ -19,7 +19,7 @@
     "sass": "^1.39.0",
     "sass-loader": "^10.1.1",
     "signalr": "^2.4.2",
-    "vee-validate": "^4.4.11",
+    "vee-validate": "^4.5.2",
     "vue": "^3.0.0",
     "vue-loading-overlay": "^4.0.4",
     "vue-router": "^4.0.11",

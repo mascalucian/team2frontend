@@ -47,115 +47,137 @@
           ? { top: dropdownY + 'px' }
           : { bottom: windowHeight - dropdownY + 'px' },
         showDropdown ? { opacity: '100%' } : { opacity: '0' },
+        selectedUser || !editMode ? { zIndex: '100' } : { zIndex: '-1' },
       ]"
       id="dropdown"
     >
       <div class="dropdown-message" v-if="dropdownMessage">
         <p>{{ dropdownMessage }}</p>
       </div>
-      <form
-        @submit.prevent.stop="editMode ? submitEdit() : submitAdd()"
-        class="vld-parent"
-        ref="loaderForm"
+      <Form
+        v-slot="{ handleSubmit }"
+        :validation-schema="editMode ? noSchema : userSchema"
       >
-        <h3>{{ editMode ? "User: " + selectedUser?.email : "Create a new user:" }}</h3>
-        <div v-if="!editMode">
-          <label> Email: </label>
-          <input
-            email
-            minlength="6"
-            type="text"
-            v-model="newUser.email"
-            autocomplete="off"
-          />
-          <label> Password: </label>
-          <input
-            minlength="6"
-            type="password"
-            v-model="newUser.password"
-            autocomplete="off"
-          />
-        </div>
-        <div class="fields" v-if="editMode && selectedUser">
-          <label style="display: block">Roles:</label>
-          <input type="checkbox" value="User" v-model="selectedUser.roles" />
-          <label for="jack">User 😩</label>
-          <input type="checkbox" value="Expert" v-model="selectedUser.roles" />
-          <label for="john">Expert ⭐</label>
-          <input type="checkbox" value="Admin" v-model="selectedUser.roles" />
-          <label for="mike">Admin 🔧</label>
-        </div>
-        <div class="fields" v-if="!editMode">
-          <label style="display: block">Roles:</label>
-          <input type="checkbox" value="User" v-model="newUser.roles" />
-          <label for="jack">User 😩</label>
-          <input type="checkbox" value="Expert" v-model="newUser.roles" />
-          <label for="john">Expert ⭐</label>
-          <input type="checkbox" value="Admin" v-model="newUser.roles" />
-          <label for="mike">Admin 🔧</label>
-        </div>
-        <div class="button-row">
-          <div
-            :style="[
-              !confirm
-                ? { opacity: '100%', pointerEvents: 'auto' }
-                : { opacity: '0', pointerEvents: 'none' },
-              ,
-              { transition: '0.2s opacity ease-in-out' },
-            ]"
-          >
-            <input
-              type="submit"
-              :value="editMode ? 'Save Changes' : 'Add User'"
-              :disabled="selectedUser?.roles.lenght == 0"
-            />
-            <button
-              type="button"
-              class="warn-button"
-              @click.prevent.stop="confirm = true"
-              v-if="editMode"
-            >
-              Delete
-            </button>
-            <button
-              type="button"
-              class="warn-button"
-              @click.prevent.stop="cancelSelection"
-            >
-              Cancel
-            </button>
+        <form
+          @submit.prevent.stop="
+            editMode ? handleSubmit($event, submitEdit) : handleSubmit($event, submitAdd)
+          "
+          class="vld-parent"
+          ref="loaderForm"
+        >
+          <h3>{{ editMode ? "User: " + selectedUser?.email : "Create a new user:" }}</h3>
+          <div v-if="!editMode">
+            <div class="form-field">
+              <label> Email: </label>
+              <Field
+                minlength="6"
+                type="text"
+                v-model="newUser.email"
+                autocomplete="off"
+                name="email"
+              />
+              <ErrorMessage name="email" />
+            </div>
+            <div class="form-field">
+              <label> Password: </label>
+              <Field
+                name="password"
+                type="password"
+                v-model="newUser.password"
+                autocomplete="off"
+              />
+              <ErrorMessage name="password" />
+            </div>
           </div>
-          <div
-            class="confirm-buttons"
-            :style="[
-              confirm
-                ? { opacity: '100%', pointerEvents: 'auto' }
-                : { opacity: '0', pointerEvents: 'none' },
-              ,
-              { transition: '0.2s opacity ease-in-out' },
-            ]"
-          >
-            <h4>Are you sure?</h4>
-            <button type="button" @click.prevent.stop="deleteUser(selectedUser.id)">
-              Yes
-            </button>
-            <button
-              type="button"
-              class="warn-button"
-              @click.prevent.stop="confirm = false"
-            >
-              No
-            </button>
+          <div class="fields" v-if="editMode && selectedUser">
+            <label style="display: block">Roles:</label>
+            <input type="checkbox" value="Admin" v-model="selectedUser.roles" />
+            <label>Admin 🔧</label>
+            <input type="checkbox" value="Expert" v-model="selectedUser.roles" />
+            <label>Expert ⭐</label>
+            <input type="checkbox" value="User" v-model="selectedUser.roles" />
+            <label>User 😩</label>
           </div>
-        </div>
-      </form>
+          <div class="fields" v-if="!editMode">
+            <label style="display: block">Roles:</label>
+            <input type="checkbox" value="Admin" v-model="newUser.roles" />
+            <label>Admin 🔧</label>
+            <input type="checkbox" value="Expert" v-model="newUser.roles" />
+            <label>Expert ⭐</label>
+            <input type="checkbox" value="User" v-model="newUser.roles" />
+            <label>User 😩</label>
+          </div>
+          <div class="button-row">
+            <div
+              :style="[
+                !confirm
+                  ? { opacity: '100%', pointerEvents: 'auto' }
+                  : { opacity: '0', pointerEvents: 'none' },
+                ,
+                { transition: '0.2s opacity ease-in-out' },
+              ]"
+            >
+              <input
+                type="submit"
+                :value="editMode ? 'Save Changes' : 'Add User'"
+                :disabled="selectedUser?.roles.lenght == 0"
+              />
+              <input
+                type="button"
+                v-if="!editMode"
+                value="Reset Form"
+                @click="(newUser.password = ''), (newUser.email = '')"
+              />
+              <button
+                type="button"
+                class="warn-button"
+                @click.prevent.stop="confirm = true"
+                v-if="editMode"
+              >
+                Delete
+              </button>
+              <button
+                type="button"
+                class="warn-button"
+                @click.prevent.stop="cancelSelection"
+              >
+                Cancel
+              </button>
+            </div>
+            <div
+              class="confirm-buttons"
+              :style="[
+                confirm
+                  ? { opacity: '100%', pointerEvents: 'auto' }
+                  : { opacity: '0', pointerEvents: 'none' },
+                ,
+                { transition: '0.2s opacity ease-in-out' },
+              ]"
+            >
+              <h4>Are you sure?</h4>
+              <button type="button" @click.prevent.stop="deleteUser(selectedUser.id)">
+                Yes
+              </button>
+              <button
+                type="button"
+                class="warn-button"
+                @click.prevent.stop="confirm = false"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </form>
+      </Form>
     </div>
   </main>
 </template>
 
 <script>
+import * as yup from "yup";
 import { inject } from "vue";
 import { useSignalR } from "@quangdao/vue-signalr";
+import { Form, Field, ErrorMessage } from "vee-validate";
 import Role from "../ui/Role.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
@@ -164,8 +186,30 @@ export default {
   components: {
     Role,
     Loading,
+    Form,
+    Field,
+    ErrorMessage,
   },
   data() {
+    const noSchema = yup.object();
+    const userSchema = yup.object({
+      email: yup
+        .string()
+        .matches(
+          /^[-0-9A-Za-z_@./+-]*$/,
+          "Email can only contain letters, numbers and characters: @, -, _, . and +."
+        )
+        .email("Please enter a valid email adress.")
+        .required("Email adress is required."),
+      password: yup
+        .string()
+        .matches(
+          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/,
+          "Password must contain at least one number, upper case letter, lower case letter and a special character."
+        )
+        .min(6, "Password must be at least 6 characters long.")
+        .required("Password is required."),
+    });
     return {
       newUser: {
         email: "",
@@ -174,6 +218,7 @@ export default {
       },
       selectedUser: null,
       users: [],
+      initialRoles: [],
       isLoading: false,
       dropdownX: null,
       dropdownY: null,
@@ -186,6 +231,8 @@ export default {
       windowHeight: window.innerHeight,
       showDropdown: false,
       loader: undefined,
+      userSchema,
+      noSchema,
     };
   },
   watch: {
@@ -237,6 +284,7 @@ export default {
         this.dropdownY = event.pageY;
       }
       this.selectedUser = JSON.parse(JSON.stringify(user));
+      this.initialRoles = this.selectedUser.roles.sort((a, b) => a.localeCompare(b));
     },
     submitAdd() {
       this.loader = this.$loading.show({
@@ -264,7 +312,8 @@ export default {
           }, 2000);
         })
         .catch((error) => {
-          this.dropdownMessage = error.data.message || "An error occured.";
+          console.log({ error });
+          this.dropdownMessage = error.response.data.message || "An error occured.";
 
           setTimeout(() => {
             this.dropdownMessage = "";
@@ -282,7 +331,25 @@ export default {
         backgroundColor: "none",
         style: "bars",
       });
-      const roles = this.selectedUser.roles;
+      const roles = this.selectedUser.roles.sort((a, b) => a.localeCompare(b));
+      if (roles.length == 0) {
+        this.loader.hide();
+        this.loader = undefined;
+        this.dropdownMessage = "Please select at least one role.";
+        setTimeout(() => {
+          this.dropdownMessage = "";
+        }, 2000);
+        return;
+      }
+      if (JSON.stringify(roles) == JSON.stringify(this.initialRoles)) {
+        this.loader.hide();
+        this.loader = undefined;
+        this.dropdownMessage = "Roles are the same as before.";
+        setTimeout(() => {
+          this.dropdownMessage = "";
+        }, 2000);
+        return;
+      }
       this.$http
         .post(`/users/${this.selectedUser.id}/roles`, roles)
         .then((results) => {
@@ -386,6 +453,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+[role="alert"] {
+  width: 100%;
+  color: rgba(255, 0, 0, 0.74);
+  display: block;
+  text-align: center;
+  // padding: 0.25rem;
+  position: absolute;
+  bottom: 0;
+  font-size: 0.75rem;
+  font-family: $f-u-bm;
+  font-weight: bolder;
+  white-space: pre-wrap;
+  word-break: normal;
+}
+
+.form-field {
+  position: relative;
+  width: 100%;
+  padding: 0.5rem 0 2.5rem 0;
+}
 .dropdown-menu {
   word-break: break-all;
   max-width: 75vw;
@@ -487,7 +574,8 @@ h1 {
   margin: 0;
 }
 button,
-input[type="submit"] {
+input[type="submit"],
+input[type="button"] {
   height: 2rem;
   border-radius: 25px;
   font-family: $f-u-bm;

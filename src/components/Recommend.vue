@@ -12,102 +12,106 @@
         </h1>
       </div>
       <div class="stars">
-        <form id="feedback-form" @submit.prevent="submit()" class="formflex">
-          <div class="star-parent">
-            <input
-              class="star star-5"
-              id="star-5"
-              type="radio"
-              name="star"
-              value="5"
-              v-model="picked"
-            />
-            <label class="star star-5" for="star-5"></label>
-            <input
-              class="star star-4"
-              id="star-4"
-              type="radio"
-              name="star"
-              value="4"
-              v-model="picked"
-            />
-            <label class="star star-4" for="star-4"></label>
-            <input
-              class="star star-3"
-              id="star-3"
-              type="radio"
-              name="star"
-              value="3"
-              v-model="picked"
-            />
-            <label class="star star-3" for="star-3"></label>
-            <input
-              class="star star-2"
-              id="star-2"
-              type="radio"
-              name="star"
-              value="2"
-              v-model="picked"
-            />
-            <label class="star star-2" for="star-2"></label>
-            <input
-              class="star star-1"
-              id="star-1"
-              type="radio"
-              name="star"
-              value="1"
-              v-model="picked"
-            />
-            <label class="star star-1" for="star-1"></label>
-          </div>
-          <div class="inputbox">
-            <label for="feedback">Feedback: </label>
-            <textarea
-              name="feedback"
-              v-model="recomandation.feedback"
-              autofocus
-            ></textarea>
-          </div>
+        <Form v-slot="{ handleSubmit }" :validation-schema="recommendationSchema">
+          <form
+            id="feedback-form"
+            @submit.prevent="handleSubmit($event, submit)"
+            class="formflex"
+          >
+            <div class="star-parent">
+              <input
+                class="star star-5"
+                id="star-5"
+                type="radio"
+                name="star"
+                value="5"
+                v-model="picked"
+              />
+              <label class="star star-5" for="star-5"></label>
+              <input
+                class="star star-4"
+                id="star-4"
+                type="radio"
+                name="star"
+                value="4"
+                v-model="picked"
+              />
+              <label class="star star-4" for="star-4"></label>
+              <input
+                class="star star-3"
+                id="star-3"
+                type="radio"
+                name="star"
+                value="3"
+                v-model="picked"
+              />
+              <label class="star star-3" for="star-3"></label>
+              <input
+                class="star star-2"
+                id="star-2"
+                type="radio"
+                name="star"
+                value="2"
+                v-model="picked"
+              />
+              <label class="star star-2" for="star-2"></label>
+              <input
+                class="star star-1"
+                id="star-1"
+                type="radio"
+                name="star"
+                value="1"
+                v-model="picked"
+              />
+              <label class="star star-1" for="star-1"></label>
+            </div>
+            <div class="inputbox">
+              <label for="feedback">Feedback: </label>
+              <Field v-slot="{ field }" name="feedback" v-model="recomandation.feedback">
+                <textarea v-bind="field" autofocus></textarea>
+              </Field>
+              <ErrorMessage name="feedback" />
+            </div>
 
-          <div class="submit-parent">
-            <button
-              class="submitbtn"
-              :disabled="
-                recomandation.authorName == '' ||
-                recomandation.feedback == '' ||
-                message != ''
-              "
-            >
-              Recommend course
-            </button>
-            <div class="message" :class="isError ? 'error' : 'success'">
-              {{ message }}
-            </div>
-            <div class="vld-parent loader-parent">
-              <loading
-                v-model:active="isLoading"
-                :is-full-page="false"
-                :background-color="'none'"
-                :loader="'bars'"
-                :height="50"
-                :width="50"
-                :color="'#5624d0'"
-              ></loading>
-            </div>
-          </div>
-        </form>
+            <div class="submit-parent">
+              <input type="submit" class="submitbtn" value="Recommend course" />
+              <div class="message" :class="isError ? 'error' : 'success'">
+                {{ message }}
+              </div>
+              <div class="vld-parent loader-parent">
+                <loading
+                  v-model:active="isLoading"
+                  :is-full-page="false"
+                  :background-color="'none'"
+                  :loader="'bars'"
+                  :height="50"
+                  :width="50"
+                  :color="'#5624d0'"
+                ></loading>
+              </div>
+            </div></form
+        ></Form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import * as yup from "yup";
+import { Form, Field, ErrorMessage } from "vee-validate";
 import AuthService from "../services/auth.service.js";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   data() {
+    const recommendationSchema = yup.object({
+      feedback: yup
+        .string()
+        .min(5, "Please enter at least 5 characters.")
+        .max(100, "Maximum lenght is 100 characters.")
+        .required("Feedback is required."),
+    });
     return {
       picked: 1,
       message: "",
@@ -121,10 +125,14 @@ export default {
       userProfile: null,
       isLoading: false,
       isError: false,
+      recommendationSchema,
     };
   },
   components: {
     Loading,
+    Form,
+    Field,
+    ErrorMessage,
   },
   methods: {
     submit() {
@@ -167,6 +175,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
+[role="alert"] {
+  width: 100%;
+  color: rgba(255, 0, 0, 0.74);
+  display: block;
+  text-align: center;
+  padding: 0.5rem;
+  position: absolute;
+  bottom: 0;
+  font-size: 1rem;
+  line-height: 2rem;
+  font-family: $f-u-bm;
+  font-weight: bolder;
+}
+
 .loader-parent {
   width: 100%;
   height: 60px !important;
@@ -270,7 +292,9 @@ input[type="text"] {
 .inputbox {
   min-width: 300px;
   width: 40vw;
-  margin: 2rem 0;
+  padding: 2rem 0;
+  padding-bottom: 3rem;
+  position: relative;
   label {
     font-size: larger;
     font-family: $f-u-bm;
