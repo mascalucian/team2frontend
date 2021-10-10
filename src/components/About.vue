@@ -59,4 +59,9 @@ section {
     line-height: 300%;
   }
 }
+@media screen and (max-width: 600px) {
+  section > header {
+    width: 90%;
+  }
+}
 </style>

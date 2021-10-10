@@ -416,4 +416,59 @@ ul {
     background-color: $c-u-gr;
   }
 }
+@media screen and (max-width: 770px) {
+  #wrapper {
+    height: auto;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 1.5rem;
+    max-width: 90%;
+    padding-bottom: 5rem;
+  }
+  #details-wrapper {
+    max-width: 100%;
+  }
+  .course-img {
+    margin: 0;
+    margin-bottom: 1.6rem;
+  }
+  #details-wrapper > h3 {
+    text-align: center;
+    width: 100%;
+    font-size: larger;
+  }
+  .details {
+    margin-top: 1.6rem;
+  }
+  .details-left {
+    max-width: 50%;
+    flex: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .details-left > p {
+    font-size: medium !important;
+    margin: 0;
+    max-width: 100%;
+  }
+  .badge-instructor {
+    flex-direction: column-reverse;
+    max-width: 50%;
+  }
+  .instructor {
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+    margin-top: 0 !important;
+    margin-bottom: auto;
+    & > h5,
+    h6 {
+      margin: 0.5rem 0;
+    }
+  }
+  .badge > p {
+    margin: 0;
+  }
+}
 </style>

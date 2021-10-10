@@ -225,6 +225,7 @@ input[type="text"] {
 }
 .wrapper {
   // aspect-ratio: 2/1;
+  width: 100%;
   display: flex;
   justify-content: center;
   color: black;
@@ -242,7 +243,6 @@ input[type="text"] {
   align-items: center;
   flex-direction: column;
   width: 70%;
-  min-width: 400px;
   background-color: white;
   border-radius: 20px;
   margin: auto;
@@ -382,5 +382,21 @@ label.star:before {
 }
 .error {
   color: maroon;
+}
+@media screen and (max-width: 600px) {
+  .wrapper {
+    padding: 2rem 0;
+  }
+  .bigcontainer {
+    padding: 1rem;
+    width: 87%;
+  }
+  .title > h1 {
+    padding: 5% 5%;
+    font-size: large;
+  }
+  .star-parent {
+    padding: 5%;
+  }
 }
 </style>

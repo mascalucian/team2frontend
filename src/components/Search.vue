@@ -85,4 +85,12 @@ button {
 div {
   padding: 0 2vw;
 }
+@media screen and (max-width: 600px) {
+  div {
+    flex-grow: 0;
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0 5vw;
+  }
+}
 </style>

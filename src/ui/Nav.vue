@@ -190,7 +190,7 @@ button:hover {
     justify-content: space-evenly;
   }
 }
-@media screen and (max-width: 925px) {
+@media screen and (max-width: 1183px) {
   .headerflex {
     height: 160px;
     align-content: center;
@@ -221,6 +221,11 @@ button:hover {
 
   .btndiv {
     padding: 0;
+  }
+}
+@media screen and (max-width: 600px) {
+  .leftside {
+    margin-top: 0.21rem;
   }
 }
 </style>

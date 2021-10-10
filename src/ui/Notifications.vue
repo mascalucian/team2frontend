@@ -5,6 +5,7 @@
       v-for="notification in notifications"
       :key="notification.id"
       :class="'notif-stack-notif ' + notification.type"
+      @click="action(notification)"
     >
       <span class="icon-wrapper">
         <i
@@ -31,7 +32,8 @@ export default {
     return {
       notifications: [],
       id: 1,
-      notificationTimeout: 5000,
+      // notificationTimeout: 5000,
+      notificationTimeout: 50000,
       userProfile: null,
       isAdmin: false,
     };
@@ -82,6 +84,19 @@ export default {
       const index = this.notifications.findIndex((_) => _.id == notification.id);
       this.notifications.splice(index, 1);
     },
+    action(notification) {
+      switch (notification.type) {
+        case "recommendation":
+          break;
+
+        default:
+          this.$router.push({ path: "/skills" });
+          setTimeout(() => {
+            this.removeNotification(notification);
+          }, 100);
+          break;
+      }
+    },
   },
   async created() {
     this.userProfile = await AuthService.getProfile();
@@ -102,6 +117,7 @@ $color-recommendation: rgb(163, 255, 209);
   display: flex;
   flex-direction: column;
   width: 30vw;
+  z-index: 50000;
 }
 
 .notif-stack-notif {
@@ -114,6 +130,10 @@ $color-recommendation: rgb(163, 255, 209);
   text-align: left;
   color: black;
   font-size: 1rem;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 .notif-list-enter-from,

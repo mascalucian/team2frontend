@@ -298,4 +298,18 @@ footer {
     padding-left: 2rem;
   }
 }
+@media screen and (max-width: 600px) {
+  #results-wrapper {
+    padding: 0;
+  }
+  footer {
+    padding: 0.3rem 0;
+    margin: 0;
+    position: fixed;
+    bottom: 0;
+  }
+  footer > a {
+    margin-right: 1rem;
+  }
+}
 </style>
